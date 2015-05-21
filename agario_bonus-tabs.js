@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         agario_bonus-tabs
 // @namespace    ontando.io.agar
-// @version      0.2
+// @version      0.1
 // @description  Adar.io Bonus tabs with data
 // @author       ontando (angal)
 // @match        agar.io
@@ -57,10 +57,13 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
         if (name == null) {
             return;
         }
-        ip = name;
         action.connect(name);
     });
     jQuery("#angal_server_reconnect").click(function() {
         unsafeWindow.angal_connectDirect(ip);
+    });
+    this.onConnectingStartEvent(function(e) {
+        ip = e.ip;
+        jQuery("#angal_server").html(ip);
     });
 }]);

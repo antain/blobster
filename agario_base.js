@@ -137,6 +137,10 @@
     }
 
     function pa(a) {
+        a = f.ontando.core.connecting(a);
+        if (!a) {
+            return;
+        }
         if (l) {
             l.onopen = null;
             l.onmessage = null;

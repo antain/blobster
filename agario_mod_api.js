@@ -39,6 +39,13 @@ function Module(author, name, initializer, type) {
 Module.prototype = {
     version : v,
     constants : ENUM,
+    action : {
+        connect : function (ip) {
+            if (ip) {
+                unsafeWindow.ontando.script.connectDirect(ip);
+            }
+        }
+    },
     game_config : {
         name : {
             get : function() {
@@ -82,6 +89,9 @@ Module.prototype = {
     },
     onOptionChangeEvent : function(handler, priority) {
         events.onOptionChange.add(new EventHandler(handler, priority));
+    },
+    onConnectingStartEvent : function(handler, priority) {
+        events.onConnectingStart.add(new EventHandler(handler, priority));
     }
 };
 
@@ -112,6 +122,10 @@ function NameChangeEvent(name) {
 function OptionChangeEvent(option, value) {
     this.option = option;
     this.value = value;
+}
+
+function ConnectingStartEvent(ip) {
+    this.ip = ip;
 }
 
 ENUM.Options = {
@@ -149,7 +163,8 @@ var data = {
 
 var events = {
     onNameChange : new EventPool(),
-    onOptionChange : new EventPool()
+    onOptionChange : new EventPool(),
+    onConnectingStart : new EventPool()
 };
 unsafeWindow.dbg_e = events;
 
@@ -175,6 +190,11 @@ unsafeWindow.ontando.core = {
                 }
             }
         }
+    },
+    connecting : function(ip) {
+        var e = new ConnectingStartEvent(ip);
+        events.onConnectingStart.apply(e);
+        return e.ip;
     },
     options : {
         setNick : function(name) {
