@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         agario_bonus-tabs
 // @namespace    ontando.io.agar
-// @version      0.1
+// @version      0.2
 // @description  Adar.io Bonus tabs with data
 // @author       ontando (angal)
 // @match        agar.io
@@ -18,8 +18,9 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
         '<div style="position: absolute; left: 0px; right: 0px; top: 0px; z-index: 3; display: block;">'
         + '<div style="height: 50px; width: 500px; margin: 3px auto;">'
         + '<div style="height: 50px; width: 240px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
-        + 'Ontando Blobster mod | Version : ' + this.version.main + ' (' + this.version.script + ')'
+        + 'Ontando Blobster mod'
         + '<br /> '
+        + 'Version : ' + this.version.main + ' (' + this.version.script + ')'
         + '</div>'
         + '<div style="height: 50px; width: 240px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
         + 'IP: <b id="angal_server">None</b> <br /> '
@@ -46,17 +47,20 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
           + '</div>'
         + '</div>'
     );
+    var ip = "";
+    var action = this.action;
     jQuery("#angal_server_copy").click(function() {
-        GM_setClipboard(unsafeWindow.angal_data.server.name, "text");
+        GM_setClipboard(ip, "text");
     });
     jQuery("#angal_server_change").click(function() {
-        var name = prompt("Server Ip:", unsafeWindow.angal_data.server.name);
+        var name = prompt("Server Ip:", ip);
         if (name == null) {
             return;
         }
-        unsafeWindow.angal_connectDirect(name);
+        ip = name;
+        action.connect(name);
     });
     jQuery("#angal_server_reconnect").click(function() {
-        unsafeWindow.angal_connectDirect(unsafeWindow.angal_data.server.name);
+        unsafeWindow.angal_connectDirect(ip);
     });
 }]);
