@@ -35,10 +35,20 @@ function Module(author, name, initializer, type) {
         }
     }
 }
-
+var ent = {
+    all : {
+    },
+    me : {
+    }
+};
+var renderData = {
+    x : 0, y : 0, scale : 1
+}
 Module.prototype = {
     version : v,
     constants : ENUM,
+    entities : ent,
+    tmp_renderData : renderData,
     action : {
         connect : function (ip) {
             if (ip) {
@@ -92,8 +102,49 @@ Module.prototype = {
     },
     onConnectingStartEvent : function(handler, priority) {
         events.onConnectingStart.add(new EventHandler(handler, priority));
+    },
+    onRenderCompleteEvent : function(handler, priority) {
+        events.onRenderComplete.add(new EventHandler(handler, priority));
     }
 };
+
+function Entity(id, x, y, size, color, isVirus, name) {
+    this.id = id;
+    this.x = 0;
+    this.y = 0;
+    this.size = 0;
+    this.mass = 0;
+    this.color = "#FFFFFF";
+    this.isVirus = false;
+    this.isFood = false;
+    this.isMe = false;
+    this.name = name;
+    this.update(x, y, size, color, isVirus, name);
+    this.all[id] = this;
+}
+Entity.prototype = {
+    all : ent.all,
+    me : ent.me,
+    update : function(x, y, size, color, isVirus, name) {
+        this.x = x;
+        this.y = y;
+        this.size = size;
+        this.mass = this.size * this.size / 100;
+        this.color = color;
+        this.isVirus = isVirus;
+        this.isFood = this.mass < 9;
+        this.name = name;
+    },
+    setMe : function () {
+        this.isMe = true;
+        this.me[this.id] = this;
+    },
+    destroy : function() {
+        this.all[this.id] = undefined;
+        this.id = undefined;
+    }
+}
+
 
 function EventPool() {
     this.pool = [];
@@ -128,6 +179,10 @@ function ConnectingStartEvent(ip) {
     this.ip = ip;
 }
 
+function RenderCompleteEvent(canvasContext2D) {
+    this.canvasContext2D = canvasContext2D;
+}
+
 ENUM.Options = {
     SKINS : 0,
     NAMES : 1,
@@ -137,12 +192,42 @@ ENUM.Options = {
     GAME_MODE : 5,
     size : 6,
     data : {
-        0 : { values : {DISABLED : 0, ENABLED : 1}},
-        1 : { values : {DISABLED : 0, ENABLED : 1}},
-        2 : { values : {LIGHT : 0, DARK : 1}},
-        3 : { values : {DISABLED : 0, ENABLED : 1}},
-        4 : { values : {DISABLED : 0, ENABLED : 1}},
-        5 : { values : {FFA : 0, TEAMS : 1}}
+        0 : {
+            values : {
+                DISABLED : 0, 
+                ENABLED : 1
+            }
+        },
+        1 : {
+            values : {
+                DISABLED : 0,
+                ENABLED : 1
+            }
+        },
+        2 : {
+            values : {
+                LIGHT : 0, 
+                DARK : 1
+            }
+        },
+        3 : { 
+            values : {
+                DISABLED : 0,
+                ENABLED : 1
+            }
+        },
+        4 : { 
+            values : {
+                DISABLED : 0,
+                ENABLED : 1
+            }
+        },
+        5 : { 
+            values : {
+                FFA : 0,
+                TEAMS : 1
+            }
+        }
     }
 }
 
@@ -156,7 +241,7 @@ var data = {
             ENUM.Options.data[ENUM.Options.NAMES].values.ENABLED, 
             ENUM.Options.data[ENUM.Options.THEME].values.LIGHT,
             ENUM.Options.data[ENUM.Options.COLORS].values.ENABLED,
-            ENUM.Options.data[ENUM.Options.MASS].values.DISABLED,
+            ENUM.Options.data[ENUM.Options.MASS].values.DISABLED
         ]
     }
 };
@@ -164,11 +249,13 @@ var data = {
 var events = {
     onNameChange : new EventPool(),
     onOptionChange : new EventPool(),
-    onConnectingStart : new EventPool()
+    onConnectingStart : new EventPool(),
+    onRenderComplete : new EventPool()
 };
 unsafeWindow.dbg_e = events;
 
-unsafeWindow.ontando = {};
+unsafeWindow.ontando = {
+};
 unsafeWindow.ontando.module = {
     list : [],
     register : function(author, name, initializer, type) {
@@ -176,6 +263,7 @@ unsafeWindow.ontando.module = {
     }
 };
 unsafeWindow.ontando.core = {
+    newEntity : Entity,
     init : function() {
         var install = unsafeWindow.install;
         var list = unsafeWindow.ontando.module.list;
@@ -195,6 +283,18 @@ unsafeWindow.ontando.core = {
         var e = new ConnectingStartEvent(ip);
         events.onConnectingStart.apply(e);
         return e.ip;
+    },
+    preRender : function (xCenter, yCenter, scale) {
+        renderData.x = xCenter;
+        renderData.y = yCenter;
+        renderData.scale = scale;
+        return [xCenter, yCenter, scale];
+    },
+    postRender : function (canvasContext2D) {
+        events.onRenderComplete.apply(new RenderCompleteEvent(canvasContext2D));
+    },
+    postUpdate : function () {
+        
     },
     options : {
         setNick : function(name) {
@@ -240,5 +340,6 @@ unsafeWindow.ontando.core = {
 };
 
 unsafeWindow.ontando.script = {
-    connectDirect : "This function should connect to server send as first parameter"
+    connectDirect : "This function should connect to server send as first parameter",
+    newDocument : "Creates document for text render"
 };

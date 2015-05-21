@@ -61,8 +61,9 @@
         setInterval(G, 40);
         ma(r("#region").val());
         r("#overlays").show()
-        /* new */ f.ontando.core.init();
         /* new */ f.ontando.script.connectDirect = pa;
+        /* new */ f.ontando.script.newDocument = Y;
+        /* new */ f.ontando.core.init();
     }
 
     function za() {
@@ -246,6 +247,7 @@
     }
 
     function Da(a) {
+        /*new*/ var Entity = unsafeWindow.ontando.core.newEntity;
         E = +new Date;
         var b = Math.random(),
             c = 1;
@@ -277,13 +279,20 @@
             }
             n = null;
             w.hasOwnProperty(d) ? (n = w[d], n.updatePos(), n.ox = n.x, n.oy = n.y, n.oSize = n.size, n.color = h) : (n = new sa(d, e, k, f, h, m), n.pX = e, n.pY = k);
+            /*new*/ n.api == null ? n.api = new Entity(d, e, k, f, h, l, m) : n.api.update(e, k, f, h, l, m);/*x, y, size, color, isVirus, name*/
             n.isVirus = l;
             n.isAgitated = p;
             n.nx = e;
             n.ny = k;
             n.nSize = f;
             n.updateCode = b;
-            n.updateTime = E; - 1 != B.indexOf(d) && -1 == g.indexOf(n) && (document.getElementById("overlays").style.display = "none", g.push(n), 1 == g.length && (s = n.x, t = n.y))
+            n.updateTime = E; 
+            - 1 != B.indexOf(d) && -1 == g.indexOf(n) && (
+                document.getElementById("overlays").style.display = "none",
+                g.push(n), 
+                1 == g.length && (s = n.x, t = n.y),
+                /*new*/ n.api.setMe()
+            )
         }
         a.getUint16(c, !0);
         c += 2;
@@ -358,6 +367,8 @@
             s = (s + b) / 2;
             t = (t + c) / 2
         } else s = (29 * s + K) / 30, t = (29 * t + L) / 30, h = (9 * h + M) / 10;
+        /* new */ var tmp_a = unsafeWindow.ontando.core.preRender(/*coords (center of creen): x, y |, scale*/ s, t, h);
+        /* new */ s = tmp_a[0], t = tmp_a[1], h = tmp_a[2];
         za();
         aa();
         e.clearRect(0, 0, p, m);
@@ -388,7 +399,8 @@
         Ha();
         a = +new Date - a;
         a > 1E3 / 60 ? v -= .01 : a < 1E3 / 65 && (v += .01);.4 > v && (v = .4);
-        1 < v && (v = 1)
+        1 < v && (v = 1);
+        /* new */ unsafeWindow.ontando.core.postRender(/*canvas context*/ e);
     }
 
     function Ha() {
@@ -567,6 +579,7 @@
                 isAgitated: !1,
                 wasSimpleDrawing: !0,
                 destroy: function() {
+                    /*new*/ this.api.destroy();
                     var a;
                     for (a = 0; a < q.length; a++)
                         if (q[a] == this) {
