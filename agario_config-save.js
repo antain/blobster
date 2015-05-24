@@ -19,7 +19,7 @@ unsafeWindow.install.push(["ontando", "config-save", function() {
     });
     var value = GM_getValue("ontando.config-save.name");
     if (value !== undefined) {
-        this.game_config.name.set(value);
+        this.gameConfig.name.set(value);
     }
     
     this.onOptionChangeEvent(function(e) {
@@ -29,7 +29,7 @@ unsafeWindow.install.push(["ontando", "config-save", function() {
     for (var i = 0; i < this.constants.Options.size; i++) {
         var value = GM_getValue("ontando.config-save.option." + i);
         if (value !== undefined) {
-            this.game_config.options.set(i, value)
+            this.gameConfig.options.set(i, value)
         }
     }
     

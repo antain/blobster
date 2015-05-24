@@ -32,8 +32,9 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
     jQuery("#helloDialog").prepend(
         '<div style="height: 1px; position: absolute; left: 0px; right: 0px; top: 0px; z-index: 1; display: block;">'
           + '<div style="height: 1px; width: 950px; margin: 100px auto;">'
-            + '<div style="height: 50px; width: 200px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
-              + 'Agar.io client by <br /><b>angal</b> and <b>DiaLight</b>'
+            + '<div style="height: 500px; width: 250px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
+              + 'Modules:'
+              + '<p id="ontando_bonusTabs_moduleList"></p>'
             + '</div>'
           + '</div>'
         + '</div>'
@@ -66,4 +67,27 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
         ip = e.ip;
         jQuery("#angal_server").html(ip);
     });
+    var modules = unsafeWindow.ontando.module.list;
+    for (var i = 0; i < modules.length; i++) {
+        var m = modules[i];
+        var state = m.enabled ? "<b style='color:#008800'>" : "<b style='color:#880000'>";
+        var newState = m.willEnabled == m.enabled ? (!m.willEnabled ? "Enable" : "Disable") : (m.willEnabled ? "Will Enabled" : "Will Disabled");
+        $("#ontando_bonusTabs_moduleList").append(
+            i + ") " 
+            + state // "<b ...>"
+              + m.author + ":" + m.name 
+              + " <a style='font-size:8;' onClick='window.ontando_bonusTabs_togleModule(" + i + ")'>"
+                + "["
+                + "<u id='ontando_bonusTabs_moduleList_e" + i + "'>" + newState + "</u>"
+                + "]"
+              + "</a> " 
+            + "</b>"
+            + "<br />"
+        );
+    }
+    unsafeWindow.ontando_bonusTabs_togleModule = function(id) {
+        var m = modules[id];
+        m.togleState();
+        $("#ontando_bonusTabs_moduleList_e" + id).html(m.willEnabled == m.enabled ? (!m.willEnabled ? "Enable" : "Disable") : (m.willEnabled ? "Will Enabled" : "Will Disabled"));
+    };
 }]);

@@ -14,7 +14,6 @@
 if (!unsafeWindow.install) {
     unsafeWindow.install = [];
 }
-alert("test");
 
 unsafeWindow.install.push(["ontando", "renderTest", function() {
     var Document = unsafeWindow.ontando.script.newDocument;
@@ -25,8 +24,8 @@ unsafeWindow.install.push(["ontando", "renderTest", function() {
         var context = e.canvasContext2D;
         var l = context.innerWidth;
         var h = context.innerHeight;
-        renderMap(context, render.v, render.y, l, h, render.scale, doc);
-        renderInfo(context, render.v, render.y, l, h, render.scale, ent.all, ent.me, doc);
+        renderMap(context, render.x, render.y, l, h, render.scale, doc);
+        renderInfo(context, render.x, render.y, l, h, render.scale, ent.all, ent.me, doc);
     });
 }]);
 
@@ -104,17 +103,15 @@ function renderInfo(g, locX, locY, length, height, scale, entities, me, doc) {
         //if k < 40 & 0.33>r>0.27 then жырная линия зеленая
         //if k < 45 & 5<r<3 then жырная красная линия
         g.lineWidth = 1;
-        var splitRange_me = Math.sqrt(curMin) / minMe.size;
-        var splitRange_en = Math.sqrt(curMin) / curEnt.size;
 
         var r1 = curEnt.mass / minMe.mass;
         if (r1 < 0.27) { // 0.15
-            continue;
+            //continue;
         }
         doc.setValue(r1.toFixed(2));
         if(r1 < 0.375) {
             doc.setValue(r1.toFixed(2));
-            //var splitRange_old = Math.sqrt(curMin) / Math.sqrt(minMe.mass);
+            var splitRange_me = Math.sqrt(curMin) / minMe.size;
             if(splitRange_me < 4.5) { //splitRange_old < 40
                 g.lineWidth = 3;
             }
@@ -127,7 +124,7 @@ function renderInfo(g, locX, locY, length, height, scale, entities, me, doc) {
             drawLine(curEnt, minMe, 'orange');
         } else {
             doc.setValue(r1.toFixed(0));
-            //var splitRange_old = Math.sqrt(curMin) / Math.sqrt(curEnt.mass);
+            var splitRange_en = Math.sqrt(curMin) / curEnt.size;
             if(splitRange_en < 6) { //splitRange_old < 45
                 g.lineWidth = 3;
             }
@@ -149,7 +146,6 @@ function renderInfo(g, locX, locY, length, height, scale, entities, me, doc) {
         g.lineTo(tx - (tx - fx) / 20, ty - (ty - fy) / 20);
         g.stroke();
        
-        //doc.setValue(from.mass.toFixed(2) + "/" + to.mass.toFixed(2) + "=" + (from.mass / to.mass).toFixed(2));
         doc.setColor(color);
         g.drawImage(doc.render(), tx - (tx - fx) / 5, ty - (ty - fy) / 5);
     }

@@ -17,9 +17,11 @@ function Module(author, name, initializer, type) {
     this.author = author;
     this.name = name;
     this.init = initializer;
-    this.enabled = GM_getValue("ontando.module." + author + "." + name + ".enabled");
+    this.enabled = GM_getValue("ontando.module." + this.author + "." + this.name + ".enabled");
+    this.willEnabled = this.enabled;
     if (this.enabled === undefined) {
         this.enabled = true;
+        this.togleState();
     }
     if (type == "core") {
         this.type = -2;
@@ -45,6 +47,13 @@ var renderData = {
     x : 0, y : 0, scale : 1
 }
 Module.prototype = {
+    // Inner API
+    togleState : function() {
+        var state = !GM_getValue("ontando.module." + this.author + "." + this.name + ".enabled");
+        GM_setValue("ontando.module." + this.author + "." + this.name + ".enabled", state)
+        this.willEnabled = state;
+    },
+    // Public API
     version : v,
     constants : ENUM,
     entities : ent,
@@ -186,7 +195,7 @@ function RenderCompleteEvent(canvasContext2D) {
     this.canvasContext2D = canvasContext2D;
 }
 
-function EntityRenderColorEvent(fillColor, borderColor) {
+function EntityRenderColorSelectedEvent(fillColor, borderColor) {
     this.fillColor = fillColor;
     this.borderColor = borderColor;
 }
@@ -305,7 +314,7 @@ unsafeWindow.ontando.core = {
     postUpdate : function () {
         
     },
-    entoty : {
+    entity : {
         renderColor : function (fillColor, borderColor) {
             var e = new EntityRenderColorSelectedEvent(fillColor, borderColor);
             events.onEntityRenderColorSelected.apply(e);
