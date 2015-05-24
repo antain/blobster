@@ -695,6 +695,8 @@
                         e.lineCap = "round";
                         e.lineJoin = this.isVirus ? "mitter" : "round";
                         ha ? (e.fillStyle = "#FFFFFF", e.strokeStyle = "#AAAAAA") : (e.fillStyle = this.color, e.strokeStyle = this.color);
+                        /*new*/ var tmp_color = unsafeWindow.ontando.core.entity.renderColor(e.fillStyle, e.strokeStyle);
+                        /*new*/ e.fillStyle = tmp_color[0];  e.strokeStyle = tmp_color[1]; 
                         if (a) e.beginPath(), e.arc(this.x, this.y, this.size, 0, 2 * Math.PI, !1);
                         else {
                             this.movePoints();

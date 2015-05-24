@@ -87,6 +87,13 @@ unsafeWindow.install.push(["ontando", "example", function() {
     this.onRenderCompleteEvent(function(e) {            // Invoked after each render loop
         var 2d = e.canvasContext2D;                     // Render context. See this: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
     });
+    this.onEntityRenderColorSelected(function(e) {      // Invokes in each render tick (soon should be better implementation)
+        var originalColor = this.fillColor;             // Color, entity should render with
+        var originalBorder = this.borderColor;          // Color, entity border should render with
+        this.fillColor = "white";                       // Your awesome color
+        this.borderColor = "blue";                      // Your awesome border color
+        
+    });
     
     // ================
     // Entity structure

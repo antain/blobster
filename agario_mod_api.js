@@ -56,7 +56,7 @@ Module.prototype = {
             }
         }
     },
-    game_config : {
+    gameConfig : {
         name : {
             get : function() {
                 return data.gameConfig.name;
@@ -105,6 +105,9 @@ Module.prototype = {
     },
     onRenderCompleteEvent : function(handler, priority) {
         events.onRenderComplete.add(new EventHandler(handler, priority));
+    },
+    onEntityRenderColorSelectedEvent : function(handler, priority) {
+        events.onEntityRenderColorSelected.add(new EventHandler(handler, priority));
     }
 };
 
@@ -183,6 +186,11 @@ function RenderCompleteEvent(canvasContext2D) {
     this.canvasContext2D = canvasContext2D;
 }
 
+function EntityRenderColorEvent(fillColor, borderColor) {
+    this.fillColor = fillColor;
+    this.borderColor = borderColor;
+}
+
 ENUM.Options = {
     SKINS : 0,
     NAMES : 1,
@@ -250,7 +258,8 @@ var events = {
     onNameChange : new EventPool(),
     onOptionChange : new EventPool(),
     onConnectingStart : new EventPool(),
-    onRenderComplete : new EventPool()
+    onRenderComplete : new EventPool(),
+    onEntityRenderColorSelected : new EventPool()
 };
 unsafeWindow.dbg_e = events;
 
@@ -295,6 +304,13 @@ unsafeWindow.ontando.core = {
     },
     postUpdate : function () {
         
+    },
+    entoty : {
+        renderColor : function (fillColor, borderColor) {
+            var e = new EntityRenderColorSelectedEvent(fillColor, borderColor);
+            events.onEntityRenderColorSelected.apply(e);
+            return [e.fillColor, e.borderColor];
+        }
     },
     options : {
         setNick : function(name) {
