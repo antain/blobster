@@ -18,7 +18,20 @@ if (!unsafeWindow.install) { // Must be here (in all modules), couse it's hard t
 // Pair of author and name should be unique.
 // Priority is optional. Modules with less priority loades first.
 
-unsafeWindow.install.push(["ontando", "config-save", function() {
+unsafeWindow.install.push(["ontando", "example", function() {
+    
+    // ================
+    // Data, available from current object
+    // ================
+    
+    this.author;                                        // Your name
+    this.name;                                          // Script name
+    
+    // ================
+    // Data, available from prototype object
+    // ================
+    
+    
     this.version.main;                                  // Version of the main script
     this.version.script;                                // Version of Agar.io script we are based at
     
@@ -34,8 +47,8 @@ unsafeWindow.install.push(["ontando", "config-save", function() {
     this.constants.Options.MASS;                        // Shom mass? values: {DISABLED, ENABLED}. Default DISABLED.
     this.constants.Options.GAME_MODE;                   // Game mode? values: {FFA, TEAMS}. Default FFA.
     
-    this.entities.all                                   // List of all entities
-    this.entities.me                                    // List of current player entities
+    this.entities.all;                                  // List of all entities (Entity description at the bottom)
+    this.entities.me;                                  // List of current player entities
     
     this.tmp_renderData == {x : 0, y : 0, scale : 1}    // Temporary data. Rendering. 'x' and 'y' of screen center and current 'scale'.
     
@@ -53,28 +66,42 @@ unsafeWindow.install.push(["ontando", "config-save", function() {
     this.gameConfig.name.set(option, value);            // Set
     
     
-    this.onNameChangeEvent(function(e) {
-        GM_setValue("ontando.config-save.name", e.name);
-    });
-    var value = GM_getValue("ontando.config-save.name");
-    if (value !== undefined) {
-        this.game_config.name.set(value);
-    }
+    // ================
+    // Events handlering
+    // Lamda send to this functions will invoked at specifed event.
+    // ================
     
-    this.onNameChangeEvent(function(e) {
+    this.onNameChangeEvent(function(e) {                // Invoked before starting game, when name requested by original script
         var name = e.name;                              // Name, set by player
         e.name = "Cool name";                           // Name set to player, by you
     });
-    this.onOptionChangeEvent(function(e) {
+    this.onOptionChangeEvent(function(e) {              // Invoked when player changes option
         var option = e.option;                          // Option were changed (see ENUM Options below)
         var value = e.value;                            // Value, it was changed to (see ENUM again)
         // Soon will be ability to change player selection... Or not soon...
     });
-    this.onConnectingStartEvent(function(e) {
+    this.onConnectingStartEvent(function(e) {           // Invoked before connection to game server started
         var ip = e.ip;                                  // IP, this connection will be estabilished
         e.ip = "ws://127.0.0.1:443";                    // Your faworit server, this client will be connected to. 
     });
-    this.onRenderCompleteEvent(function(e) {
-        var 2d = e.canvasContext2D;                  // Render context. See this: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
+    this.onRenderCompleteEvent(function(e) {            // Invoked after each render loop
+        var 2d = e.canvasContext2D;                     // Render context. See this: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
     });
+    
+    // ================
+    // Entity structure
+    // ================
+    for (var i in this.entities.all) {
+        var ent = this.entities.all[i];
+        ent.id;                                         // Entity UUID
+        ent.x = 0;                                      // Entity X location
+        ent.y = 0;                                      // Entity Y location
+        ent.size = 0;                                   // Entity render size
+        ent.mass = 0;                                   // Entity mass
+        ent.color = "#FFFFFF";                          // Entity color, specified by server
+        ent.isVirus = false;                            // Is this entity virus
+        ent.isFood = false;                             // Is this entity food
+        ent.isMe = false;                               // Is this entity controled by current player
+        ent.name = name;                                // Player name of current entity
+    }
 }]);
