@@ -15,7 +15,7 @@ if (!unsafeWindow.install) {
 
 unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
     jQuery("body").prepend(
-        '<div style="position: absolute; left: 0px; right: 0px; top: 0px; z-index: 3; display: block;">'
+        '<div class="ontando_bonusTabs" style="height: 1px; position: absolute; left: 0px; right: 0px; top: 0px; z-index: 300; display: block;">'
         + '<div style="height: 50px; width: 500px; margin: 3px auto;">'
         + '<div style="height: 50px; width: 240px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
         + 'Ontando Blobster mod'
@@ -29,8 +29,8 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
         + '</div>'
         + '</div>'
     );
-    jQuery("#helloDialog").prepend(
-        '<div style="height: 1px; position: absolute; left: 0px; right: 0px; top: 0px; z-index: 1; display: block;">'
+    jQuery("body").prepend(
+        '<div class="ontando_bonusTabs" style="height: 1px; position: absolute; left: 0px; right: 0px; top: 0px; z-index: 300; display: block;">'
           + '<div style="height: 1px; width: 950px; margin: 100px auto;">'
             + '<div style="height: 500px; width: 250px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
               + 'Modules:'
@@ -39,7 +39,7 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
           + '</div>'
         + '</div>'
        
-        + '<div style="height: 1px; position: absolute; left: 0px; right: 0px; top: 0px; z-index: 1; display: block;">'
+        + '<div class="ontando_bonusTabs" style="height: 1px; position: absolute; left: 0px; right: 0px; top: 0px; z-index: 300; display: block;">'
           + '<div style="height: 1px; width: 950px; margin: 100px auto;">'
             + '<div style="height: 500px; width: 250px; float:right; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
               + 'Last servers: <br /> '
@@ -48,6 +48,14 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
           + '</div>'
         + '</div>'
     );
+    
+    this.onMenuHideEvent(function(e) {
+        jQuery(".ontando_bonusTabs").hide();
+    });
+    this.onMenuShowEvent(function(e) {
+        jQuery(".ontando_bonusTabs").fadeIn(3000);
+    });
+    
     var ip = "";
     var action = this.action;
     jQuery("#angal_server_copy").click(function() {
@@ -90,4 +98,6 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
         m.togleState();
         $("#ontando_bonusTabs_moduleList_e" + id).html(m.willEnabled == m.enabled ? (!m.willEnabled ? "Enable" : "Disable") : (m.willEnabled ? "Will Enabled" : "Will Disabled"));
     };
+    
+    this.on
 }]);

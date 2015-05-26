@@ -92,7 +92,10 @@ unsafeWindow.install.push(["ontando", "example", function() {
         var originalBorder = this.borderColor;          // Color, entity border should render with
         this.fillColor = "white";                       // Your awesome color
         this.borderColor = "blue";                      // Your awesome border color
-        
+    });
+    this.onMenuHideEvent(function(e) {                  // Invokes when main menu hiden
+    });
+    this.onMenuShowEvent(function(e) {                  // Invokes when main menu shown
     });
     
     // ================

@@ -61,9 +61,9 @@
         setInterval(G, 40);
         ma(r("#region").val());
         r("#overlays").show()
-        /* new */ f.ontando.script.connectDirect = pa;
-        /* new */ f.ontando.script.newDocument = Y;
-        /* new */ f.ontando.core.init();
+        /* new */ unsafeWindow.ontando.script.connectDirect = pa;
+        /* new */ unsafeWindow.ontando.script.newDocument = Y;
+        /* new */ unsafeWindow.ontando.core.init();
     }
 
     function za() {
@@ -109,6 +109,7 @@
     function na() {
         r("#adsBottom").hide();
         r("#overlays").hide()
+        /* new */ unsafeWindow.ontando.core.hideMenu();
     }
 
     function ma(a) {
@@ -301,6 +302,7 @@
         for (e = 0; e < k; e++) d = a.getUint32(c, !0), c += 4, w[d] && (w[d].updateCode = b);
         for (e = 0; e < q.length; e++) q[e].updateCode != b && q[e--].destroy();
         da && 0 == g.length && r("#overlays").fadeIn(3E3)
+        /* new */ if (da && 0 == g.length) { unsafeWindow.ontando.core.showMenu(); }
     }
 
     function G() {

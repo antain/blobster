@@ -82,22 +82,32 @@ Module.prototype = {
             set : function(option, value) {
                 data.gameConfig.options[option] = value;
                 switch (option) {
-                    case 0:
-                        $(jQuery("#settings input")[0]).prop("checked", value == ENUM.Options.data[ENUM.Options.SKINS].values.DISABLED);
+                    case 0: //SKINS
+                        value = (value == ENUM.Options.data[ENUM.Options.SKINS].values.DISABLED);
+                        $(jQuery("#settings input")[0]).prop("checked", value);
+                        unsafeWindow.setSkins(!value);
                         break;
-                    case 1:
-                        $(jQuery("#settings input")[1]).prop("checked", value == ENUM.Options.data[ENUM.Options.NAMES].values.DISABLED);
+                    case 1: //NAMES
+                        value = (value == ENUM.Options.data[ENUM.Options.NAMES].values.DISABLED);
+                        $(jQuery("#settings input")[1]).prop("checked", value);
+                        unsafeWindow.setNames(!value);
                         break;
-                    case 2:
-                        $(jQuery("#settings input")[2]).prop("checked", value == ENUM.Options.data[ENUM.Options.THEME].values.DARK);
+                    case 2: //THEME
+                        value = (value == ENUM.Options.data[ENUM.Options.THEME].values.DARK);
+                        $(jQuery("#settings input")[2]).prop("checked", value);
+                        unsafeWindow.setDarkTheme(value);
                         break;
-                    case 3:
-                        $(jQuery("#settings input")[3]).prop("checked", value == ENUM.Options.data[ENUM.Options.COLORS].values.DISABLED);
+                    case 3: //COLORS
+                        value = (value == ENUM.Options.data[ENUM.Options.COLORS].values.DISABLED);
+                        $(jQuery("#settings input")[3]).prop("checked", value);
+                        unsafeWindow.setColors(value);
                         break;
-                    case 4:
-                        $(jQuery("#settings input")[4]).prop("checked", value == ENUM.Options.data[ENUM.Options.MASS].values.ENABLED);
+                    case 4: //MASS
+                        value = (value == ENUM.Options.data[ENUM.Options.MASS].values.ENABLED);
+                        $(jQuery("#settings input")[4]).prop("checked", value);
+                        unsafeWindow.setShowMass(value);
                         break;
-                    case 5:
+                    case 5: //GAME_MODE
                         break;
                 }
             }
@@ -117,7 +127,13 @@ Module.prototype = {
     },
     onEntityRenderColorSelectedEvent : function(handler, priority) {
         events.onEntityRenderColorSelected.add(new EventHandler(handler, priority));
-    }
+    },
+    onMenuHideEvent : function(handler, priority) {
+        events.onMenuHide.add(new EventHandler(handler, priority));
+    },
+    onMenuShowEvent : function(handler, priority) {
+        events.onMenuShow.add(new EventHandler(handler, priority));
+    },
 };
 
 function Entity(id, x, y, size, color, isVirus, name) {
@@ -268,7 +284,9 @@ var events = {
     onOptionChange : new EventPool(),
     onConnectingStart : new EventPool(),
     onRenderComplete : new EventPool(),
-    onEntityRenderColorSelected : new EventPool()
+    onEntityRenderColorSelected : new EventPool(),
+    onMenuHide : new EventPool(),
+    onMenuShow : new EventPool()
 };
 unsafeWindow.dbg_e = events;
 
@@ -296,6 +314,12 @@ unsafeWindow.ontando.core = {
                 }
             }
         }
+    },
+    hideMenu : function() {
+        events.onMenuHide.apply({});
+    },
+    showMenu : function() {
+        events.onMenuShow.apply({});
     },
     connecting : function(ip) {
         var e = new ConnectingStartEvent(ip);
