@@ -15,7 +15,7 @@ function Module(author, name, initializer, type) {
     this.author = author;
     this.name = name;
     this.init = initializer;
-    this.enabled = treu;//GM_getValue("ontando.module." + this.author + "." + this.name + ".enabled");
+    this.enabled = GM_getValue("ontando.module." + this.author + "." + this.name + ".enabled");
     this.willEnabled = this.enabled;
     if (this.enabled === undefined) {
         this.enabled = true;
@@ -47,8 +47,8 @@ var renderData = {
 Module.prototype = {
     // Inner API
     togleState : function() {
-        var state = true;//!GM_getValue("ontando.module." + this.author + "." + this.name + ".enabled");
-        //GM_setValue("ontando.module." + this.author + "." + this.name + ".enabled", state)
+        var state = !GM_getValue("ontando.module." + this.author + "." + this.name + ".enabled");
+        GM_setValue("ontando.module." + this.author + "." + this.name + ".enabled", state)
         this.willEnabled = state;
     },
     // Public API
@@ -296,6 +296,14 @@ window.ontando.module = {
         this.list.push(new Module(author, name, initializer, type));
     }
 };
+var GM_setClipboard, GM_getValue, GM_setValue;
+window.ontando.gm_handler = {
+	init : function (_GM_setClipboard, _GM_getValue, _GM_setValue) {
+		GM_setClipboard = _GM_setClipboard;
+		GM_getValue = _GM_getValue;
+		GM_setValue = _GM_setValue;
+	}
+}
 window.ontando.core = {
     newEntity : Entity,
     init : function() {
