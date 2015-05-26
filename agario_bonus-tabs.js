@@ -42,7 +42,8 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
         + '<div class="ontando_bonusTabs" style="height: 1px; position: absolute; left: 0px; right: 0px; top: 0px; z-index: 300; display: block;">'
           + '<div style="height: 1px; width: 950px; margin: 100px auto;">'
             + '<div style="height: 500px; width: 250px; float:right; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
-              + 'Last servers: <br /> '
+              + 'Options: <br /> '
+              + 'Module: <select id="ontando_bonusTabs_module" class="form-control" onchange="ontando_bonusTabs_selectModule($(this).val());"><option selected value="-1">Global options</option></select>'
               + '<ol id="angal_serverList"></ol>'
             + '</div>'
           + '</div>'
@@ -92,6 +93,9 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
             + "</b>"
             + "<br />"
         );
+        $('#ontando_bonusTabs_moduleOptions').append(
+            '<option value="' + i + '">' + m.author + ":" + m.name +'</option>'
+        );
     }
     unsafeWindow.ontando_bonusTabs_togleModule = function(id) {
         var m = modules[id];
@@ -99,5 +103,8 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
         $("#ontando_bonusTabs_moduleList_e" + id).html(m.willEnabled == m.enabled ? (!m.willEnabled ? "Enable" : "Disable") : (m.willEnabled ? "Will Enabled" : "Will Disabled"));
     };
     
-    this.on
+    unsafeWindow.ontando_bonusTabs_selectModule = function(id) {
+        var m = modules[id];
+        //m.renderOptions(jQuery("#ontando_bonusTabs_moduleOptions" + id)
+    };
 }]);
