@@ -5,14 +5,8 @@
 // @description  Adar.io Modular Mods API
 // @author       ontando (angal)
 // @match        agar.io
-// @grant        GM_setClipboard
-// @grant        GM_setValue
-// @grant        GM_getValue
 // ==/UserScript==
 
-if (unsafeWindow === undefined) {
-    unsafeWindow = window;
-}
 
 var ENUM = {};
 var v = {main : "0.1", script : "502"};
@@ -21,7 +15,7 @@ function Module(author, name, initializer, type) {
     this.author = author;
     this.name = name;
     this.init = initializer;
-    this.enabled = GM_getValue("ontando.module." + this.author + "." + this.name + ".enabled");
+    this.enabled = treu;//GM_getValue("ontando.module." + this.author + "." + this.name + ".enabled");
     this.willEnabled = this.enabled;
     if (this.enabled === undefined) {
         this.enabled = true;
@@ -53,8 +47,8 @@ var renderData = {
 Module.prototype = {
     // Inner API
     togleState : function() {
-        var state = !GM_getValue("ontando.module." + this.author + "." + this.name + ".enabled");
-        GM_setValue("ontando.module." + this.author + "." + this.name + ".enabled", state)
+        var state = true;//!GM_getValue("ontando.module." + this.author + "." + this.name + ".enabled");
+        //GM_setValue("ontando.module." + this.author + "." + this.name + ".enabled", state)
         this.willEnabled = state;
     },
     // Public API
@@ -65,7 +59,7 @@ Module.prototype = {
     action : {
         connect : function (ip) {
             if (ip) {
-                unsafeWindow.ontando.script.connectDirect(ip);
+                window.ontando.script.connectDirect(ip);
             }
         }
     },
@@ -89,27 +83,27 @@ Module.prototype = {
                     case 0: //SKINS
                         value = (value == ENUM.Options.data[ENUM.Options.SKINS].values.DISABLED);
                         $(jQuery("#settings input")[0]).prop("checked", value);
-                        unsafeWindow.setSkins(!value);
+                        window.setSkins(!value);
                         break;
                     case 1: //NAMES
                         value = (value == ENUM.Options.data[ENUM.Options.NAMES].values.DISABLED);
                         $(jQuery("#settings input")[1]).prop("checked", value);
-                        unsafeWindow.setNames(!value);
+                        window.setNames(!value);
                         break;
                     case 2: //THEME
                         value = (value == ENUM.Options.data[ENUM.Options.THEME].values.DARK);
                         $(jQuery("#settings input")[2]).prop("checked", value);
-                        unsafeWindow.setDarkTheme(value);
+                        window.setDarkTheme(value);
                         break;
                     case 3: //COLORS
                         value = (value == ENUM.Options.data[ENUM.Options.COLORS].values.DISABLED);
                         $(jQuery("#settings input")[3]).prop("checked", value);
-                        unsafeWindow.setColors(value);
+                        window.setColors(value);
                         break;
                     case 4: //MASS
                         value = (value == ENUM.Options.data[ENUM.Options.MASS].values.ENABLED);
                         $(jQuery("#settings input")[4]).prop("checked", value);
-                        unsafeWindow.setShowMass(value);
+                        window.setShowMass(value);
                         break;
                     case 5: //GAME_MODE
                         break;
@@ -292,21 +286,21 @@ var events = {
     onMenuHide : new EventPool(),
     onMenuShow : new EventPool()
 };
-unsafeWindow.dbg_e = events;
+window.dbg_e = events;
 
-unsafeWindow.ontando = {
+window.ontando = {
 };
-unsafeWindow.ontando.module = {
+window.ontando.module = {
     list : [],
     register : function(author, name, initializer, type) {
         this.list.push(new Module(author, name, initializer, type));
     }
 };
-unsafeWindow.ontando.core = {
+window.ontando.core = {
     newEntity : Entity,
     init : function() {
-        var install = unsafeWindow.install;
-        var list = unsafeWindow.ontando.module.list;
+        var install = window.install;
+        var list = window.ontando.module.list;
         for (var j = 0; j < install.length; j++) {
             list.push(new Module(install[j][0], install[j][1], install[j][2], undefined));
         }
@@ -392,7 +386,7 @@ unsafeWindow.ontando.core = {
     }
 };
 
-unsafeWindow.ontando.script = {
+window.ontando.script = {
     connectDirect : "This function should connect to server send as first parameter",
     newDocument : "Creates document for text render"
 };
