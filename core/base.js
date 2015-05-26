@@ -1,12 +1,3 @@
-// ==UserScript==
-// @name         agario_base
-// @namespace    ontando.io.agar
-// @version      502.1
-// @description  Adar.io server script
-// @author       ontando (angal)
-// @match        agar.io
-// ==/UserScript==
- 
 (function(f, r) {
     function ya() {
         ia();
@@ -58,9 +49,9 @@
         setInterval(G, 40);
         ma(r("#region").val());
         r("#overlays").show()
-        /* new */ window.ontando.script.connectDirect = pa;
-        /* new */ window.ontando.script.newDocument = Y;
-        /* new */ window.ontando.core.init();
+        /*new*/ window.ontando.script.connectDirect = pa;
+        /*new*/ window.ontando.script.newDocument = Y;
+        /*new*/ window.ontando.core.init();
     }
 
     function za() {
@@ -106,7 +97,7 @@
     function na() {
         r("#adsBottom").hide();
         r("#overlays").hide()
-        /* new */ window.ontando.core.hideMenu();
+        /*new*/ window.ontando.core.hideMenu();
     }
 
     function ma(a) {
@@ -299,7 +290,7 @@
         for (e = 0; e < k; e++) d = a.getUint32(c, !0), c += 4, w[d] && (w[d].updateCode = b);
         for (e = 0; e < q.length; e++) q[e].updateCode != b && q[e--].destroy();
         da && 0 == g.length && r("#overlays").fadeIn(3E3)
-        /* new */ if (da && 0 == g.length) { window.ontando.core.showMenu(); }
+        /*new*/ if (da && 0 == g.length) { window.ontando.core.showMenu(); }
     }
 
     function G() {
@@ -366,8 +357,8 @@
             s = (s + b) / 2;
             t = (t + c) / 2
         } else s = (29 * s + K) / 30, t = (29 * t + L) / 30, h = (9 * h + M) / 10;
-        /* new */ var tmp_a = window.ontando.core.preRender(/*coords (center of creen): x, y |, scale*/ s, t, h);
-        /* new */ s = tmp_a[0], t = tmp_a[1], h = tmp_a[2];
+        /*new*/ var tmp_a = window.ontando.core.preRender(/*coords (center of creen): x, y |, scale*/ s, t, h);
+        /*new*/ s = tmp_a[0], t = tmp_a[1], h = tmp_a[2];
         za();
         aa();
         e.clearRect(0, 0, p, m);
@@ -399,7 +390,7 @@
         a = +new Date - a;
         a > 1E3 / 60 ? v -= .01 : a < 1E3 / 65 && (v += .01);.4 > v && (v = .4);
         1 < v && (v = 1);
-        /* new */ window.ontando.core.postRender(/*canvas context*/ e);
+        /*new*/ window.ontando.core.postRender(/*canvas context*/ e);
     }
 
     function Ha() {

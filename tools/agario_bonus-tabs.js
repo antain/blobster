@@ -43,7 +43,7 @@ unsafeWindow.install.push(["ontando", "bonus-tabs", function() {
           + '<div style="height: 1px; width: 950px; margin: 100px auto;">'
             + '<div style="height: 500px; width: 250px; float:right; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
               + 'Options: <br /> '
-              + 'Module: <select id="ontando_bonusTabs_module" class="form-control" onchange="ontando_bonusTabs_selectModule($(this).val());"><option selected value="-1">Global options</option></select>'
+              + '<select id="ontando_bonusTabs_module" class="form-control" onchange="ontando_bonusTabs_selectModule($(this).val());"><option selected value="-1">Global options</option></select>'
               + '<ol id="angal_serverList"></ol>'
             + '</div>'
           + '</div>'
