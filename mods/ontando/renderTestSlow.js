@@ -1,33 +1,26 @@
-// ==UserScript==
-// @name         agario_renderTest_slow
-// @namespace    ontando.io.agar
-// @version      0.1
-// @description  Adar.io Test rendering script... Might be werry slow...
-// @author       ontando (angal & DiaLight)
-// @match        agar.io
-// @grant        GM_setClipboard
-// @grant        GM_setValue
-// @grant        GM_getValue
-// ==/UserScript==
-
-// ==/UserScript==
-if (!unsafeWindow.install) {
-    unsafeWindow.install = [];
+if (!window.install) {
+    window.install = [];
 }
 
-unsafeWindow.install.push(["ontando", "renderTest", function() {
-    var Document = unsafeWindow.ontando.script.newDocument;
-    var doc = new Document();
-    var render = this.tmp_renderData;
-    var ent = this.entities;
-    this.onRenderCompleteEvent(function (e) {
-        var context = e.canvasContext2D;
-        var l = context.innerWidth;
-        var h = context.innerHeight;
-        renderMap(context, render.x, render.y, l, h, render.scale, doc);
-        renderInfo(context, render.x, render.y, l, h, render.scale, ent.all, ent.me, doc);
-    });
-}]);
+window.install.push({
+	script : document.currentScript,
+	author : "ontando", 
+	name : "renderTestSlow",
+	displayName : "Test Render Tools",
+	init : function() {
+		var Document = window.ontando.script.newDocument;
+		var doc = new Document();
+		var render = this.tmp_renderData;
+		var ent = this.entities;
+		this.onRenderCompleteEvent(function (e) {
+			var context = e.canvasContext2D;
+			var l = context.innerWidth;
+			var h = context.innerHeight;
+			renderMap(context, render.x, render.y, l, h, render.scale, doc);
+			renderInfo(context, render.x, render.y, l, h, render.scale, ent.all, ent.me, doc);
+		});
+	}
+});
 
 function renderMap(g, locX, locY, length, height, scale, doc) {
     //var ad = unsafeWindow.angal_data;
