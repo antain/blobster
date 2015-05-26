@@ -10,6 +10,10 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
+if (unsafeWindow === undefined) {
+    unsafeWindow = window;
+}
+
 var ENUM = {};
 var v = {main : "0.1", script : "502"};
 
