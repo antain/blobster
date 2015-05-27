@@ -9,7 +9,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             window.install = [];
         }
         var ENUM = {};
-        var v = {main : "0.1.1", script : "507"};
+        var v = {main : "0.1.1", script : "510"};
         var GM_setClipboard = function(){}, GM_getValue = function(){}, GM_setValue = function(){};
         var keybindings = {};
 
@@ -142,7 +142,6 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                         keybindings[keyCode].downHandler.push(new KeyBindingHandler(m, handler));
                     },
                     onPress : function(handler) {
-                        console.log(m);
                         if (keybindings[keyCode] === undefined) {
                             keybindings[keyCode] = new KeyBinding(keyCode);
                         }
