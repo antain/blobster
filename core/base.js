@@ -301,7 +301,12 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 n.ny = p;
                 n.nSize = f;
                 n.updateCode = b;
-                n.updateTime = G; - 1 != C.indexOf(d) && -1 == l.indexOf(n) && (document.getElementById("overlays").style.display = "none", l.push(n), 1 == l.length && (s = n.x, t = n.y))
+                n.updateTime = G; - 1 != C.indexOf(d) && -1 == l.indexOf(n) && (
+                        document.getElementById("overlays").style.display = "none", 
+                        l.push(n), 
+                        1 == l.length && (s = n.x, t = n.y)
+                        /*new*/, n.api.setMe()
+                )
             }
             a.getUint16(c, !0);
             c += 2;
@@ -849,6 +854,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     isAgitated: !1,
                     wasSimpleDrawing: !0,
                     destroy: function() {
+                        /*new*/ this.api.destroy();
                         var a;
                         for (a = 0; a < q.length; a++)
                             if (q[a] == this) {
