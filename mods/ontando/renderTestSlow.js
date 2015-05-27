@@ -101,7 +101,7 @@ function renderInfo(g, locX, locY, length, height, scale, entities, me, doc) {
 
         var r1 = curEnt.mass / minMe.mass;
         if (r1 < 0.27) { // 0.15
-            //continue;
+            continue;
         }
         doc.setValue(r1.toFixed(2));
         if(r1 < 0.375) {

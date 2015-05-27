@@ -176,6 +176,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             onRenderCompleteEvent : function(handler, priority) {
                 events.onRenderComplete.add(new EventHandler(this, handler, priority));
             },
+            onEntityShouldRenderEvent : function(handler, priority) {
+                events.onEntityShouldRender.add(new EventHandler(this, handler, priority));
+            },
             onEntityRenderColorSelectedEvent : function(handler, priority) {
                 events.onEntityRenderColorSelected.add(new EventHandler(this, handler, priority));
             },
@@ -187,6 +190,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             },
             onTargetLocationSelecionEvent : function(handler, priority) {
                 events.onTargetLocationSelecion.add(new EventHandler(this, handler, priority));
+            },
+            onUpdateCompleteEvent : function(handler, priority) {
+                events.onUpdateComplete.add(new EventHandler(this, handler, priority));
             }
         };
         
@@ -315,15 +321,20 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.canvasContext2D = canvasContext2D;
         }
 
-        function EntityRenderColorSelectedEvent(fillColor, borderColor) {
+        function EntityRenderColorSelectedEvent(entity, fillColor, borderColor) {
+            this.entity = entity;
             this.fillColor = fillColor;
             this.borderColor = borderColor;
+        }
+        
+        function EntitySholdRenderEvent(entity, defaultBehaviour) {
+            this.entity = entity;
+            this.render = defaultBehaviour;
         }
         
         function TargetLocationSelecionEvent(x, y) {
             this.x = x;
             this.y = y;
-            this.keepPrevious = false;
         }
 
         ENUM.Options = {
@@ -395,9 +406,11 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             onConnectingStart : new EventPool(),
             onRenderComplete : new EventPool(),
             onEntityRenderColorSelected : new EventPool(),
+            onEntitySholdRender : new EventPool(),
             onMenuHide : new EventPool(),
             onMenuShow : new EventPool(),
-            onTargetLocationSelecion : new EventPool()
+            onTargetLocationSelecion : new EventPool(),
+            onUpdateComplete : new EventPool()
         };
         window.dbg_e = events;
 
@@ -465,7 +478,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             targetLocation : function(x, y) {
                 var e = new TargetLocationSelecionEvent(x, y);
                 events.onTargetLocationSelecion.apply(e);
-                return [e.x, e.y, e.keepPrevious];
+                return [e.x, e.y];
                 
             },
             keybinding : {
@@ -505,11 +518,16 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 events.onRenderComplete.apply(new RenderCompleteEvent(canvasContext2D));
             },
             postUpdate : function () {
-            
+                events.onUpdateComplete.apply({});
             },
             entity : {
-                renderColor : function (fillColor, borderColor) {
-                    var e = new EntityRenderColorSelectedEvent(fillColor, borderColor);
+                shouldRender : function (entity, defaultBehaviour) {
+                    var e = new EntitySholdRenderEvent(entity.api, defaultBehaviour);
+                    events.onEntitySholdRender.apply(e);
+                    return e.render;
+                },
+                renderColor : function (entity, fillColor, borderColor) {
+                    var e = new EntityRenderColorSelectedEvent(entity.api, fillColor, borderColor);
                     events.onEntityRenderColorSelected.apply(e);
                     return [e.fillColor, e.borderColor];
                 }

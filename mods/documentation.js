@@ -103,7 +103,13 @@ window.install.push({
         this.onRenderCompleteEvent(function(e) {            // Invoked after each render loop
             var 2d = e.canvasContext2D;                     // Render context. See this: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D
         });
+        this.onEntityShouldRenderEvent(function (e) {       // Invokes when selecting if entity should be rendered.
+            var entity = e.entity;                          // Entity this color belong to
+            var render = this.render;                       // If entity should rendered
+            this.render = false;                            // Do not render them, if you wish
+        });
         this.onEntityRenderColorSelected(function(e) {      // Invokes in each render tick (soon should be better implementation)
+            var entity = e.entity;                          // Entity this color belong to
             var originalColor = this.fillColor;             // Color, entity should render with
             var originalBorder = this.borderColor;          // Color, entity border should render with
             this.fillColor = "white";                       // Your awesome color
@@ -118,7 +124,6 @@ window.install.push({
             var y = e.y;                                    // Current target y (set by mouse or other module)
             e.x = 0;                                        // Your smart target x
             e.y = ;                                         // Your smart target y
-            e.keepPrevious = true;                          // Set to true, to continue moving in location selected on previous event
         });
         
         // ================

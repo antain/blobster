@@ -316,6 +316,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             for (e = 0; e < q.length; e++) q[e].updateCode != b && q[e--].destroy();
             ha && 0 == l.length && oa(!1)
             /*new*/ if (ha && 0 == l.length) { window.ontando.core.showMenu(); }
+            /*new*/ window.ontando.core.postUpdate();
         }
 
         function I() {
@@ -324,7 +325,6 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 /*new*/ Q = tmp[0]; R = tmp[1];
                 var a = O - h / 2,
                     b = P - r / 2;
-                /*new*/ if (tmp[2]) { return; }
                 64 > a * a + b * b || ya == Q && za == R || (ya = Q, za = R, a = new ArrayBuffer(21), b = new DataView(a), b.setUint8(0, 16), b.setFloat64(1, Q, !0), b.setFloat64(9, R, !0), b.setUint32(17, 0, !0), m.send(a))
             }
         }
@@ -874,7 +874,13 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                         return Math.max(~~(.3 * this.size), 24)
                     },
                     setName: function(a) {
-                        if (this.name = a) null == this.nameCache ? this.nameCache = new $(this.getNameSize(), "#FFFFFF", !0, "#000000") : this.nameCache.setSize(this.getNameSize()), this.nameCache.setValue(this.name)
+                        if (this.name = a) {
+                            null == this.nameCache ? (
+                                    this.nameCache = new $(this.getNameSize(), "#FFFFFF", !0, "#000000") 
+                            ) : (
+                                    this.nameCache.setSize(this.getNameSize()), this.nameCache.setValue(this.name)
+                            );
+                        }
                     },
                     createPoints: function() {
                         for (var a = this.getNumPoints(); this.points.length > a;) {
@@ -963,7 +969,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                             this.size - 40 > s + h / 2 / k || this.y - this.size - 40 > t + r / 2 / k ? !1 : !0
                     },
                     draw: function() {
-                        if (this.shouldRender()) {
+                        /*new*/ if (window.ontando.core.entity.shouldRender(this, this.shouldRender())) {
+                        /*removed*///if (this.shouldRender()) {
                             var a = !this.isVirus && !this.isAgitated && .5 > k;
                             if (this.wasSimpleDrawing && !a)
                                 for (var b = 0; b < this.points.length; b++) this.points[b].v = this.size;
@@ -976,6 +983,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                             e.lineCap = "round";
                             e.lineJoin = this.isVirus ? "mitter" : "round";
                             la ? (e.fillStyle = "#FFFFFF", e.strokeStyle = "#AAAAAA") : (e.fillStyle = this.color, e.strokeStyle = this.color);
+                            /*new*/ var tmp_color = window.ontando.core.entity.renderColor(this, e.fillStyle, e.strokeStyle);
+                            /*new*/ e.fillStyle = tmp_color[0];  e.strokeStyle = tmp_color[1]; 
                             if (a) e.beginPath(), e.arc(this.x, this.y, this.size, 0, 2 * Math.PI, !1);
                             else {
                                 this.movePoints();
