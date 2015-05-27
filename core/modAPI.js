@@ -185,6 +185,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             onMenuShowEvent : function(handler, priority) {
                 events.onMenuShow.add(new EventHandler(this, handler, priority));
             },
+            onTargetLocationSelecionEvent : function(handler, priority) {
+                events.onTargetLocationSelecionEvent.add(new EventHandler(this, handler, priority));
+            }
         };
         
         function KeyBinding(keyCode) {
@@ -316,6 +319,12 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.fillColor = fillColor;
             this.borderColor = borderColor;
         }
+        
+        function TargetLocationSelecionEvent(x, y) {
+            this.x = x;
+            this.y = y;
+            this.keepPrevious = false;
+        }
 
         ENUM.Options = {
             SKINS : 0,
@@ -387,7 +396,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             onRenderComplete : new EventPool(),
             onEntityRenderColorSelected : new EventPool(),
             onMenuHide : new EventPool(),
-            onMenuShow : new EventPool()
+            onMenuShow : new EventPool(),
+            onTargetLocationSelecion : new EventPool()
         };
         window.dbg_e = events;
 
@@ -452,6 +462,12 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     }
                 }
             },
+            targetLocation : function(x, y) {
+                var e = new TargetLocationSelecionEvent(x, y);
+                events.onTargetLocationSelecion.apply(e);
+                return [e.x, e.y, e.keepPrevious];
+                
+            },
             keybinding : {
                 down : function(/*IHTMLEventObj*/ event) {
                     if (keybindings.hasOwnProperty(event.keyCode)) {
@@ -469,75 +485,75 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 }
             },
             hideMenu : function() {
-            events.onMenuHide.apply({});
+                events.onMenuHide.apply({});
             },
             showMenu : function() {
-            events.onMenuShow.apply({});
+                events.onMenuShow.apply({});
             },
             connecting : function(ip) {
-            var e = new ConnectingStartEvent(ip);
-            events.onConnectingStart.apply(e);
-            return e.ip;
+                var e = new ConnectingStartEvent(ip);
+                events.onConnectingStart.apply(e);
+                return e.ip;
             },
             preRender : function (xCenter, yCenter, scale) {
-            renderData.x = xCenter;
-            renderData.y = yCenter;
-            renderData.scale = scale;
-            return [xCenter, yCenter, scale];
+                renderData.x = xCenter;
+                renderData.y = yCenter;
+                renderData.scale = scale;
+                return [xCenter, yCenter, scale];
             },
             postRender : function (canvasContext2D) {
-            events.onRenderComplete.apply(new RenderCompleteEvent(canvasContext2D));
+                events.onRenderComplete.apply(new RenderCompleteEvent(canvasContext2D));
             },
             postUpdate : function () {
             
             },
             entity : {
-            renderColor : function (fillColor, borderColor) {
-                var e = new EntityRenderColorSelectedEvent(fillColor, borderColor);
-                events.onEntityRenderColorSelected.apply(e);
-                return [e.fillColor, e.borderColor];
-            }
+                renderColor : function (fillColor, borderColor) {
+                    var e = new EntityRenderColorSelectedEvent(fillColor, borderColor);
+                    events.onEntityRenderColorSelected.apply(e);
+                    return [e.fillColor, e.borderColor];
+                }
             },
             options : {
-            setNick : function(name) {
-                var e = new NameChangeEvent(name);
-                events.onNameChange.apply(e);
-                return e.name;
-            },
-            setSkins : function(showSkins) {
-                var value = showSkins ? ENUM.Options.data[ENUM.Options.SKINS].values.ENABLED : ENUM.Options.data[ENUM.Options.SKINS].values.DISABLED;
-                events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.SKINS, value));
-                data.gameConfig.options[ENUM.Options.SKINS] = value;
-            },
-            setNames : function(showNames) {
-                var value = showNames ? ENUM.Options.data[ENUM.Options.NAMES].values.ENABLED : ENUM.Options.data[ENUM.Options.NAMES].values.DISABLED;
-                events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.NAMES, value));
-                data.gameConfig.options[ENUM.Options.NAMES] = value;
-                
-            },
-            setDarkTheme : function(darkTheme) {
-                var value = darkTheme ? ENUM.Options.data[ENUM.Options.THEME].values.DARK : ENUM.Options.data[ENUM.Options.THEME].values.LIGHT;
-                events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.THEME, value));
-                data.gameConfig.options[ENUM.Options.THEME] = value;
-                
-            },
-            setColors : function(colorTheme) {
-                var value = colorTheme ? ENUM.Options.data[ENUM.Options.COLORS].values.DISABLED : ENUM.Options.data[ENUM.Options.COLORS].values.ENABLED;
-                events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.COLORS, value));
-                data.gameConfig.options[ENUM.Options.COLORS] = value;
-                
-            },
-            setShowMass : function(showMass) {
-                var value = showMass ? ENUM.Options.data[ENUM.Options.MASS].values.ENABLED : ENUM.Options.data[ENUM.Options.MASS].values.DISABLED;
-                events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.MASS, value));
-                data.gameConfig.options[ENUM.Options.MASS] = value;
-                
-            },
-            setGameMode : function(gameMode) {
-                var value = gameMode ? ENUM.Options.data[ENUM.Options.GAME_MODE].values.TEAMS : ENUM.Options.data[ENUM.Options.GAME_MODE].values.FFA;
-                events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.GAME_MODE, value));
-                data.gameConfig.options[ENUM.Options.GAME_MODE] = value;
-            }
+                setNick : function(name) {
+                    var e = new NameChangeEvent(name);
+                    events.onNameChange.apply(e);
+                    return e.name;
+                },
+                setSkins : function(showSkins) {
+                    var value = showSkins ? ENUM.Options.data[ENUM.Options.SKINS].values.ENABLED : ENUM.Options.data[ENUM.Options.SKINS].values.DISABLED;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.SKINS, value));
+                    data.gameConfig.options[ENUM.Options.SKINS] = value;
+                },
+                setNames : function(showNames) {
+                    var value = showNames ? ENUM.Options.data[ENUM.Options.NAMES].values.ENABLED : ENUM.Options.data[ENUM.Options.NAMES].values.DISABLED;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.NAMES, value));
+                    data.gameConfig.options[ENUM.Options.NAMES] = value;
+                    
+                },
+                setDarkTheme : function(darkTheme) {
+                    var value = darkTheme ? ENUM.Options.data[ENUM.Options.THEME].values.DARK : ENUM.Options.data[ENUM.Options.THEME].values.LIGHT;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.THEME, value));
+                    data.gameConfig.options[ENUM.Options.THEME] = value;
+                    
+                },
+                setColors : function(colorTheme) {
+                    var value = colorTheme ? ENUM.Options.data[ENUM.Options.COLORS].values.DISABLED : ENUM.Options.data[ENUM.Options.COLORS].values.ENABLED;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.COLORS, value));
+                    data.gameConfig.options[ENUM.Options.COLORS] = value;
+                    
+                },
+                setShowMass : function(showMass) {
+                    var value = showMass ? ENUM.Options.data[ENUM.Options.MASS].values.ENABLED : ENUM.Options.data[ENUM.Options.MASS].values.DISABLED;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.MASS, value));
+                    data.gameConfig.options[ENUM.Options.MASS] = value;
+                    
+                },
+                setGameMode : function(gameMode) {
+                    var value = gameMode ? ENUM.Options.data[ENUM.Options.GAME_MODE].values.TEAMS : ENUM.Options.data[ENUM.Options.GAME_MODE].values.FFA;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.GAME_MODE, value));
+                    data.gameConfig.options[ENUM.Options.GAME_MODE] = value;
+                }
             }
         };
 

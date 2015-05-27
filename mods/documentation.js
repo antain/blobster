@@ -113,6 +113,13 @@ window.install.push({
         });
         this.onMenuShowEvent(function(e) {                  // Invokes when main menu shown
         });
+        this.onTargetLocationSelecionEvent(function(e) {    // Invokes when location to move determines
+            var x = e.x;                                    // Current target x (set by mouse or other module)
+            var y = e.y;                                    // Current target y (set by mouse or other module)
+            e.x = 0;                                        // Your smart target x
+            e.y = ;                                         // Your smart target y
+            e.keepPrevious = true;                          // Set to true, to continue moving in location selected on previous event
+        });
         
         // ================
         // Entity structure
