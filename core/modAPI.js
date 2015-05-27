@@ -406,11 +406,11 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         window.ontando.core = {
             newEntity : Entity,
             init : function() {
-                var forceLoad = true;
+                var forceLoad = false;
                 if (GM_getValue("core.installed") != 1) {
                     console.log("Initial execution. All mods are force enabled");
                     GM_setValue("core.installed", 1);
-                    forceLoad;
+                    forceLoad = true;
                 }
                 var install = window.install;
                 var list = window.ontando.module.list;
