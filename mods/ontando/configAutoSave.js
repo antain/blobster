@@ -9,7 +9,7 @@ window.install.push({
 	displayName : "Config Saver",
 	init : function() {
 		this.onNameChangeEvent(function(e) {
-			e.module.moduleData.save("config.name", e.name);
+			this.module.moduleData.save("config.name", e.name);
 		});
 		var value = this.moduleData.load("config.name");
 		if (value !== undefined) {
@@ -17,7 +17,7 @@ window.install.push({
 		}
 	    
 		this.onOptionChangeEvent(function(e) {
-			e.module.moduleData.save("config.option." + e.option, e.value);
+			this.module.moduleData.save("config.option." + e.option, e.value);
 		});
 	    
 		for (var i = 0; i < this.constants.Options.size; i++) {

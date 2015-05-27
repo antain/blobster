@@ -1,7 +1,9 @@
 // ==UserScript==
 // @name         mainLoader
 // @namespace    ontando.io.agar
-// @version      0.1
+// @updateURL    https://rawgit.com/antain/blobster/master/gm/mainLoader.js
+// @downloadURL  https://rawgit.com/antain/blobster/master/gm/mainLoader.js
+// @version      0.1.1
 // @description  Arag.IO script group loader
 // @author       ontando (angal)
 // @match        agar.io
@@ -32,16 +34,13 @@
 		pushScript("http://" + localhost + "/" + name + "?_=" + new Date().getTime(), 1);
 	};
     
-	alert(0);
 	github("core/base.js");
 	github("core/modAPI.js");
 	github("mods/githubLoader.js");
-	alert(2);
 
 	local("blobster/core/base.js");
 	local("blobster/core/modAPI.js");
 	local("blobster/mods/modsLoader.js");
 	local("localLoader.js");
-	alert(4);
     
 }) (unsafeWindow, jQuery);

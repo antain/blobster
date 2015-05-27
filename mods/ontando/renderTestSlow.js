@@ -3,23 +3,24 @@ if (!window.install) {
 }
 
 window.install.push({
-	script : document.currentScript,
-	author : "ontando", 
-	name : "renderTestSlow",
-	displayName : "Test Render Tools",
-	init : function() {
-		var Document = window.ontando.script.newDocument;
-		var doc = new Document();
-		var render = this.tmp_renderData;
-		var ent = this.entities;
-		this.onRenderCompleteEvent(function (e) {
-			var context = e.canvasContext2D;
-			var l = context.innerWidth;
-			var h = context.innerHeight;
-			renderMap(context, render.x, render.y, l, h, render.scale, doc);
-			renderInfo(context, render.x, render.y, l, h, render.scale, ent.all, ent.me, doc);
-		});
-	}
+    script : document.currentScript,
+    author : "ontando", 
+    name : "renderTestSlow",
+    displayName : "Test Render Tools",
+    init : function() {
+        var Document = window.ontando.script.newDocument;
+        var doc = new Document();
+        this.onRenderCompleteEvent(function (e) {
+            var context = e.canvasContext2D;
+            var l = $(context.canvas).innerWidth();
+            var h = $(context.canvas).innerHeight();
+            renderMap(context, this.module.tmp_renderData.x, this.module.tmp_renderData.y, l, h, this.module.tmp_renderData.scale, doc);
+            if (this.module.entities.amount == 0 || this.module.entities.meAmount == 0) {
+                return;
+            }
+            renderInfo(context, this.module.tmp_renderData.x, this.module.tmp_renderData.y, l, h, this.module.tmp_renderData.scale, this.module.entities.all, this.module.entities.me, doc);
+        });
+    }
 });
 
 function renderMap(g, locX, locY, length, height, scale, doc) {
@@ -58,14 +59,15 @@ function renderMap(g, locX, locY, length, height, scale, doc) {
 }
 
 function renderInfo(g, locX, locY, length, height, scale, entities, me, doc) {
-    if(me.length == 0 || entities.length == 0) return;
+    console.log("render!");
     g.save(); //push matrix
     g.resetTransform();
     g.globalAlpha = 0.8;
    
     var curEnt, curMe, entSkipSize = 0, meSkipSize, curMin, dif, dx, dy, minMe;
+        
     var max = 0;
-    for(j = 0; j < me.length; j++) {
+    for(var j in me) {
         entSkipSize += me[j].mass;
         if (max < me[j].mass) {
             max = me[j].mass;
@@ -74,15 +76,16 @@ function renderInfo(g, locX, locY, length, height, scale, entities, me, doc) {
     //var ad = unsafeWindow.angal_data;
     //ad.entities.me.total = entSkipSize;
     //ad.entities.me.max = max;
-    meSkipSize = entSkipSize / me.length * 0.6; //30% from full
-    entSkipSize /= me.length * 10; //10% from middle
-    for(i = 0; i < entities.length; i++) {
+    //meSkipSize = entSkipSize / me.length * 0.6; //30% from full
+    //entSkipSize /= me.length * 10; //10% from middle
+    entSkipSize = 10;
+    for(var i in entities) {
         curEnt = entities[i];
-        if(curEnt.isMe || curEnt.isVirus || curEnt.mass < entSkipSize) continue;
+        if(curEnt.isFood || curEnt.isMe || curEnt.isVirus || curEnt.mass < entSkipSize) continue;
         curMin = 1000000000;
-        for(j = 0; j < me.length; j++) {
+        for(var j in me) {
             curMe = me[j];
-            if(curMe.mass < meSkipSize) continue;
+            //if(curMe.mass < meSkipSize) continue;
             dx = curMe.x - curEnt.x;
             dy = curMe.y - curEnt.y;
             dif = dx * dx + dy * dy;
@@ -126,15 +129,17 @@ function renderInfo(g, locX, locY, length, height, scale, entities, me, doc) {
     }
    
     g.restore(); //push matrix
+    
     function drawLine(from, to, color) {
+        console.log("(" + length + ", " + height + ") - (" + from.x + ", " + from.y + ")");
+        console.log("(" + to.x + ", " + to.y + ") - (" + locX + ", " + locY + ")");
         g.beginPath();
         g.strokeStyle = color;
-        var dx = (from.x - locX) * scale;
-        var dy = (from.y - locY) * scale;
-        var fx = length / 2 + dx;
-        var fy = height / 2 + dy;
-        var tx = length / 2 + (to.x - from.x) * scale + dx;
-        var ty = height / 2 + (to.y - from.y) * scale + dy;
+        var fx = length / 2 + (from.x - locX) * scale;
+        var fy = height / 2 + (from.y - locY) * scale;
+        var tx = length / 2 + (to.x - from.x) * scale + (from.x - locX) * scale;
+        var ty = height / 2 + (to.y - from.y) * scale + (from.y - locY) * scale;
+        console.log("(" + fx + ", " + fy + ") - (" + tx + ", " + ty + ")");
         g.moveTo(fx, fy);
         g.lineTo(tx - (tx - fx) / 20, ty - (ty - fy) / 20);
         g.stroke();
