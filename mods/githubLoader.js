@@ -18,5 +18,6 @@
 	github("mods/ontando/bonusTabs.js");
 	github("mods/ontando/configAutoSave.js");
 	github("mods/ontando/renderTestSlow.js");
+	github("mods/ontando/autoFire.js");
 	
 })(window.ontando_mainLoader_localhost);

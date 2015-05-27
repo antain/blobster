@@ -57,6 +57,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
             g("#overlays").show()
             /*new*/ window.ontando.script.connectDirect = ua;
             /*new*/ window.ontando.script.newDocument = $;
+            /*new*/ window.ontando.script.sendActionPacket = A;
             /*new*/ window.ontando.core.init();
         }
 

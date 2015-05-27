@@ -74,16 +74,24 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     if (ip) {
                         window.ontando.script.connectDirect(ip);
                     }
+                },
+                game : {
+                    shootForward : function () {
+                        window.ontando.script.sendActionPacket(21);
+                    },
+                    splitForward : function () {
+                        window.ontando.script.sendActionPacket(17);
+                    },
                 }
             },
             gameConfig : {
                 name : {
                     get : function() {
-                    return data.gameConfig.name;
+                        return data.gameConfig.name;
                     },
                     set : function(name) {
-                    data.gameConfig.name = name;
-                    jQuery("#nick").val(name);
+                        data.gameConfig.name = name;
+                        jQuery("#nick").val(name);
                     }
                 },
                 options : {
@@ -125,33 +133,35 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 }
             },
             bindKey : function(keyCode) {
+                var m = this;
                 return {
                     onDown : function(handler) {
-                        if (keybindings[key] === undifined) {
-                            keybindings[key] = new KeyBinding(keyCode);
+                        if (keybindings[keyCode] === undefined) {
+                            keybindings[keyCode] = new KeyBinding(keyCode);
                         }
-                        keybindings[key].down.push(handler);
+                        keybindings[keyCode].downHandler.push(new KeyBindingHandler(m, handler));
                     },
                     onPress : function(handler) {
-                        if (keybindings[key] === undifined) {
-                            keybindings[key] = new KeyBinding(keyCode);
+                        console.log(m);
+                        if (keybindings[keyCode] === undefined) {
+                            keybindings[keyCode] = new KeyBinding(keyCode);
                         }
-                        keybindings[key].down.push(handler);
-                        keybindings[key].pressed.push(handler);
+                        keybindings[keyCode].downHandler.push(new KeyBindingHandler(m, handler));
+                        keybindings[keyCode].pressedHandler.push(new KeyBindingHandler(m, handler));
                     },
                     onUp : function(handler) {
-                        if (keybindings[key] === undifined) {
-                            keybindings[key] = new KeyBinding(keyCode);
+                        if (keybindings[keyCode] === undefined) {
+                            keybindings[keyCode] = new KeyBinding(keyCode);
                         }
-                        keybindings[key].up.push(handler);
+                        keybindings[keyCode].upHandler.push(new KeyBindingHandler(m, handler));
                     },
                     custom : function(handlerDown, handlerPressed, handlerUp) {
-                        if (keybindings[key] === undifined) {
-                            keybindings[key] = new KeyBinding(keyCode);
+                        if (keybindings[keyCode] === undefined) {
+                            keybindings[keyCode] = new KeyBinding(keyCode);
                         }
-                        keybindings[key].down.push(handlerDown);
-                        keybindings[key].pressed.push(handlerPressed);
-                        keybindings[key].up.push(handlerUp);
+                        keybindings[keyCode].downHandler.push(new KeyBindingHandler(m, handlerDown));
+                        keybindings[keyCode].pressedHandler.push(new KeyBindingHandler(m, handlerPressed));
+                        keybindings[keyCode].upHandler.push(new KeyBindingHandler(m, handlerUp));
                     },
                 };
             },
@@ -180,9 +190,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         
         function KeyBinding(keyCode) {
             this.keyCode = keyCode;
-            this.down = [];
-            this.pressed = [];
-            this.up = [];
+            this.downHandler = [];
+            this.pressedHandler = [];
+            this.upHandler = [];
             this.state = false;
         }
         
@@ -190,28 +200,33 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             down : function(/*IHTMLEventObj*/ event) {
                 var suppress = false;
                 if (this.state) {
-                    for (var i = 0; i < this.pressed.length; i++) {
-                        var f = this.pressed[i];
-                        suppress |= f(event);
+                    for (var i = 0; i < this.pressedHandler.length; i++) {
+                        var f = this.pressedHandler[i];
+                        suppress |= f.handle(event);
                     }
                 } else {
-                    for (var i = 0; i < this.down.length; i++) {
-                        var f = this.down[i];
-                        suppress |= f(event);
+                    for (var i = 0; i < this.downHandler.length; i++) {
+                        var f = this.downHandler[i];
+                        suppress |= f.handle(event);
                     }
                     this.state = true;
                 }
-                return supress;
+                return suppress;
             },
             up : function(/*IHTMLEventObj*/ event) {
                 var suppress = false;
-                for (var i = 0; i < this.up.length; i++) {
-                    var f = this.up[i];
-                    suppress |= f(event);
+                for (var i = 0; i < this.upHandler.length; i++) {
+                    var f = this.upHandler[i];
+                    suppress |= f.handle(event);
                 }
                 this.state = false;
-                return supress;
+                return suppress;
             }
+        }
+        
+        function KeyBindingHandler(module, handler) {
+            this.module = module;
+            this.handle = handler;
         }
 
         function Entity(id, x, y, size, color, isVirus, name) {
@@ -529,7 +544,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
 
         window.ontando.script = {
             connectDirect : "This function should connect to server send as first parameter",
-            newDocument : "Creates document for text render"
+            newDocument : "Creates document for text render",
+            sendActionPacket : "Sends packet with id given as first parameter: 17 = split, 18 = keepApart (unused), 21 = shoot"
         };
 
         window.ontando_mainLoader_load();

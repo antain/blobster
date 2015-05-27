@@ -48,6 +48,8 @@ window.install.push({
         
         this.action;                                        // Functions, to invoke original script.
         this.action.connect("ip");                          // Connects to specified ip, or to random one, with no arguments.
+        this.action.game.shootForward();                    // Shoots projectile in looking direction
+        this.action.game.splitForward();                    // Splits in looking direction
         
         this.gameConfig;                                    // Game configs.
         this.gameConfig.name;                               // Player name.
