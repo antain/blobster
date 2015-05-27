@@ -18,5 +18,6 @@
 	local("blobster/mods/ontando/configAutoSave.js");
 	local("blobster/mods/ontando/renderTestSlow.js");
 	local("blobster/mods/ontando/autoFire.js");
+	local("blobster/mods/DiaLight/testBot.js");
 	
 })(window.ontando_mainLoader_localhost);

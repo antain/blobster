@@ -954,6 +954,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                         this.x = a * (this.nx - this.ox) + this.ox;
                         this.y = a * (this.ny - this.oy) + this.oy;
                         this.size = b * (this.nSize - this.oSize) + this.oSize;
+                        /*new*/ this.api.renderX = this.x;
+                        /*new*/ this.api.renderY = this.y;
                         return b
                     },
                     shouldRender: function() {

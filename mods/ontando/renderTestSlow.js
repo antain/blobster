@@ -132,10 +132,10 @@ function renderInfo(g, locX, locY, length, height, scale, entities, me, doc) {
     function drawLine(from, to, color) {
         g.beginPath();
         g.strokeStyle = color;
-        var fx = length / 2 + (from.x - locX) * scale;
-        var fy = height / 2 + (from.y - locY) * scale;
-        var tx = length / 2 + (to.x - from.x) * scale + (from.x - locX) * scale;
-        var ty = height / 2 + (to.y - from.y) * scale + (from.y - locY) * scale;
+        var fx = length / 2 + (from.renderX - locX) * scale;
+        var fy = height / 2 + (from.renderY - locY) * scale;
+        var tx = length / 2 + (to.renderX - locX) * scale;
+        var ty = height / 2 + (to.renderY - locY) * scale;
         g.moveTo(fx, fy);
         g.lineTo(tx - (tx - fx) / 20, ty - (ty - fy) / 20);
         g.stroke();

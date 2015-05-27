@@ -19,5 +19,6 @@
 	github("mods/ontando/configAutoSave.js");
 	github("mods/ontando/renderTestSlow.js");
 	github("mods/ontando/autoFire.js");
+	github("mods/DiaLight/testBot.js");
 	
 })(window.ontando_mainLoader_localhost);
