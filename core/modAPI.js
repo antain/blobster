@@ -392,6 +392,12 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         window.ontando.core = {
             newEntity : Entity,
             init : function() {
+                var forceLoad = true;
+                if (GM_getValue("core.installed") != 1) {
+                    console.log("Initial execution. All mods are force enabled");
+                    GM_setValue("core.installed", 1);
+                    forceLoad;
+                }
                 var install = window.install;
                 var list = window.ontando.module.list;
                 var mmap = {}
@@ -413,6 +419,11 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     for (var name in mmap[author]) {
                         var m = mmap[author][name];
                         console.log("Installed module '" + m.displayName + "' (" + m.author + ":" + m.name + ") src: " + m.script.src);
+                        if (forceLoad && !m.enabled) {
+                            console.log("Forsed enabling '" + m.displayName + "' (" + m.author + ":" + m.name + ")");
+                            m.togleState();
+                            m.enabled = true;
+                        }
                         list.push(m);
                     }
                 }

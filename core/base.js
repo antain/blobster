@@ -292,7 +292,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                 }
                 n = null;
                 w.hasOwnProperty(d) ? (n = w[d], n.updatePos(), n.ox = n.x, n.oy = n.y, n.oSize = n.size, n.color = g) : (n = new xa(d, e, p, f, g, h), n.pX = e, n.pY = p);
-                /*new*/ n.api == null ? n.api = new Entity(d, e, k, f, h, l, m) : n.api.update(e, k, f, h, l, m);/*x, y, size, color, isVirus, name*/
+                /*new*/ n.api == null ? n.api = new Entity(d, e, p, f, g, k, h) : n.api.update(e, p, f, g, k, h);/*x, y, size, color, isVirus, name*/
                 n.isVirus = k;
                 n.isAgitated = m;
                 n.nx = e;

@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         mainLoader
 // @namespace    ontando.io.agar
-// @updateURL    https://rawgit.com/antain/blobster/master/gm/mainLoader.js
-// @downloadURL  https://rawgit.com/antain/blobster/master/gm/mainLoader.js
+// @updateURL    https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
+// @downloadURL  https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
 // @version      0.1.1
 // @description  Arag.IO script group loader
 // @author       ontando (angal)

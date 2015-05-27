@@ -59,7 +59,6 @@ function renderMap(g, locX, locY, length, height, scale, doc) {
 }
 
 function renderInfo(g, locX, locY, length, height, scale, entities, me, doc) {
-    console.log("render!");
     g.save(); //push matrix
     g.resetTransform();
     g.globalAlpha = 0.8;
@@ -81,7 +80,7 @@ function renderInfo(g, locX, locY, length, height, scale, entities, me, doc) {
     entSkipSize = 10;
     for(var i in entities) {
         curEnt = entities[i];
-        if(curEnt.isFood || curEnt.isMe || curEnt.isVirus || curEnt.mass < entSkipSize) continue;
+        if(curEnt.isFood || curEnt.isMe || curEnt.isVirus /*|| curEnt.mass < entSkipSize*/) continue;
         curMin = 1000000000;
         for(var j in me) {
             curMe = me[j];
@@ -131,15 +130,12 @@ function renderInfo(g, locX, locY, length, height, scale, entities, me, doc) {
     g.restore(); //push matrix
     
     function drawLine(from, to, color) {
-        console.log("(" + length + ", " + height + ") - (" + from.x + ", " + from.y + ")");
-        console.log("(" + to.x + ", " + to.y + ") - (" + locX + ", " + locY + ")");
         g.beginPath();
         g.strokeStyle = color;
         var fx = length / 2 + (from.x - locX) * scale;
         var fy = height / 2 + (from.y - locY) * scale;
         var tx = length / 2 + (to.x - from.x) * scale + (from.x - locX) * scale;
         var ty = height / 2 + (to.y - from.y) * scale + (from.y - locY) * scale;
-        console.log("(" + fx + ", " + fy + ") - (" + tx + ", " + ty + ")");
         g.moveTo(fx, fy);
         g.lineTo(tx - (tx - fx) / 20, ty - (ty - fy) / 20);
         g.stroke();
