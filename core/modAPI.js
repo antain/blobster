@@ -186,7 +186,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 events.onMenuShow.add(new EventHandler(this, handler, priority));
             },
             onTargetLocationSelecionEvent : function(handler, priority) {
-                events.onTargetLocationSelecionEvent.add(new EventHandler(this, handler, priority));
+                events.onTargetLocationSelecion.add(new EventHandler(this, handler, priority));
             }
         };
         
