@@ -319,8 +319,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
 
         function I() {
             if (ia()) {
-                /*new*/ var tmp = window.ontando.core.targetLocation(Q, R);
-                /*new*/ Q = tmp[0]; R = tmp[1];
+                /*new*/ var tmp = window.ontando.core.targetLocation(U, V);
+                /*new*/ U = tmp[0]; V = tmp[1];
                 var a = Q - h / 2,
                     b = R - r / 2;
                 64 > a * a + b * b || za == U && Aa == V || (za = U, Aa = V, a = new ArrayBuffer(21), b = new DataView(a), b.setUint8(0, 16), b.setFloat64(1, U, !0), b.setFloat64(9, V, !0), b.setUint32(17, 0, !0), m.send(a))

@@ -5,6 +5,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
     window.ontando_core_modAPI_override = document.currentScript.override;
 
     (function() {
+        function doNothig() { return false; }
+        
         if (window.install === undefined) {
             window.install = [];
         }
@@ -61,12 +63,28 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             constants : ENUM,
             entities : ent,
             tmp_renderData : renderData,
+            moduleConfig : {
+                register : function (type, name, opt_handler, opt_default) {
+                    var handler, defaultValue;
+                    if (typeof(opt_handler) == "function") {
+                        handler = opt_handler;
+                        defaultValue = opt_defult;
+                    } else {
+                        handler = doNothig;
+                        defaultValue = opt_handler;
+                    }
+                    
+                    con
+                },
+                config : {},
+                data : {}
+            },
             moduleData : {
                 save : function(key, value) {
-                    GM_setValue("module:" + this.author + ":" + this.name + ":" + key, value); 
+                    GM_setValue("module:" + this.author + ":" + this.name + ":data:" + key, value); 
                 },
                 load : function(key, value) {
-                    return GM_getValue("module:" + this.author + ":" + this.name + ":" + key, value); 
+                    return GM_getValue("module:" + this.author + ":" + this.name + ":data:" + key, value); 
                 }
             },
             action : {
@@ -337,6 +355,14 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.y = y;
         }
 
+        ENUM.ConfigType = {
+            STRING : 0,
+            NUMBER : 1,
+            KEY : 2,
+            size : 3,
+            data : [{}, {}, {}]
+        };
+
         ENUM.Options = {
             SKINS : 0,
             NAMES : 1,
@@ -345,44 +371,44 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             MASS : 4,
             GAME_MODE : 5,
             size : 6,
-            data : {
-            0 : {
-                values : {
-                DISABLED : 0, 
-                ENABLED : 1
+            data : [
+                {
+                    values : {
+                    DISABLED : 0, 
+                    ENABLED : 1
+                    }
+                },
+                {
+                    values : {
+                    DISABLED : 0,
+                    ENABLED : 1
+                    }
+                },
+                {
+                    values : {
+                    LIGHT : 0, 
+                    DARK : 1
+                    }
+                },
+                { 
+                    values : {
+                    DISABLED : 0,
+                    ENABLED : 1
+                    }
+                },
+                { 
+                    values : {
+                    DISABLED : 0,
+                    ENABLED : 1
+                    }
+                },
+                { 
+                    values : {
+                    FFA : 0,
+                    TEAMS : 1
+                    }
                 }
-            },
-            1 : {
-                values : {
-                DISABLED : 0,
-                ENABLED : 1
-                }
-            },
-            2 : {
-                values : {
-                LIGHT : 0, 
-                DARK : 1
-                }
-            },
-            3 : { 
-                values : {
-                DISABLED : 0,
-                ENABLED : 1
-                }
-            },
-            4 : { 
-                values : {
-                DISABLED : 0,
-                ENABLED : 1
-                }
-            },
-            5 : { 
-                values : {
-                FFA : 0,
-                TEAMS : 1
-                }
-            }
-            }
+            ]
         }
 
 
