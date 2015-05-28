@@ -9,7 +9,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             window.install = [];
         }
         var ENUM = {};
-        var v = {main : "0.1.1", script : "510"};
+        var v = {main : "0.1.1", script : "514"};
         var GM_setClipboard = function(){}, GM_getValue = function(){}, GM_setValue = function(){};
         var keybindings = {};
 
