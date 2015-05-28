@@ -27,18 +27,44 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.enabled = GM_getValue("ontando.module." + this.author + "." + this.name + ".enabled") == true;
             this.willEnabled = this.enabled;
             if (data.priority == "core") {
-            this.type = -2;
+                this.type = -2;
             } else if (data.priority == "api") {
-            this.type = -1;
+                this.type = -1;
             } else {
-            this.type = parseInt(data.priority);
-            if (this.type !== this.type) {
-                this.type = 0;
+                this.type = parseInt(data.priority);
+                if (this.type !== this.type) {
+                    this.type = 0;
+                }
+                if (this.type > 1000 || this.type < 0) {
+                    this.type = 1000;
+                }
             }
-            if (this.type > 1000 || this.type < 0) {
-                this.type = 1000;
-            }
-            }
+            var m = this;
+            var moduleConfigHandlers = {};
+            this.moduleConfig = {
+                register : function (type, name, opt_handler, opt_default) {
+                    var handler, defaultValue;
+                    if (typeof(opt_handler) == "function") {
+                        handler = opt_handler;
+                        defaultValue = opt_defult;
+                    } else {
+                        handler = doNothig;
+                        defaultValue = opt_handler;
+                    }
+                    
+                    moduleConfigHandlers[name] = new ConfigHandler(m, type, name, handler, defaultValue);
+                    this.data[name] = moduleConfigHandlers[name].getValue();
+                },
+                data : {}
+            };
+            this.moduleData = {
+                save : function(key, value) {
+                    GM_setValue("module:" + m.author + ":" + m.name + ":data:" + key, value); 
+                },
+                load : function(key, value) {
+                    return GM_getValue("module:" + m.author + ":" + m.name + ":data:" + key, value); 
+                }
+            };
         }
         var ent = {
             amount : 0,
@@ -63,30 +89,6 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             constants : ENUM,
             entities : ent,
             tmp_renderData : renderData,
-            moduleConfig : {
-                register : function (type, name, opt_handler, opt_default) {
-                    var handler, defaultValue;
-                    if (typeof(opt_handler) == "function") {
-                        handler = opt_handler;
-                        defaultValue = opt_defult;
-                    } else {
-                        handler = doNothig;
-                        defaultValue = opt_handler;
-                    }
-                    
-                    con
-                },
-                config : {},
-                data : {}
-            },
-            moduleData : {
-                save : function(key, value) {
-                    GM_setValue("module:" + this.author + ":" + this.name + ":data:" + key, value); 
-                },
-                load : function(key, value) {
-                    return GM_getValue("module:" + this.author + ":" + this.name + ":data:" + key, value); 
-                }
-            },
             action : {
                 connect : function (ip) {
                     if (ip) {
@@ -94,6 +96,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     }
                 },
                 game : {
+                    spawn : function () {
+                        window.setNick();
+                    },
                     shootForward : function () {
                         window.ontando.script.sendActionPacket(21);
                     },
@@ -213,6 +218,14 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 events.onUpdateComplete.add(new EventHandler(this, handler, priority));
             }
         };
+        
+        function ConfigHandler(module, type, name, handler, defaultValue) {
+            this.module = module;
+            this.type = type;
+            this.name = name;
+            this.handler = handler;
+            this.defaultValue = defaultValue;
+        }
         
         function KeyBinding(keyCode) {
             this.keyCode = keyCode;
@@ -604,7 +617,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         window.ontando.script = {
             connectDirect : "This function should connect to server send as first parameter",
             newDocument : "Creates document for text render",
-            sendActionPacket : "Sends packet with id given as first parameter: 17 = split, 18 = keepApart (unused), 21 = shoot"
+            sendActionPacket : "Sends packet with id given as first parameter: 17 = split, 18 = keepApart (unused), 21 = shoot",
+            spawn : "Spawns the player"
         };
 
         window.ontando_mainLoader_load();

@@ -6,8 +6,10 @@ window.install.push({
     script : document.currentScript,
     author : "yourName", 
     name : "scriptName",
-    displayName : "<u style='font-color:#FF0000'>Fancy</u> Script name",
+    displayName : "Auto respawn",
     init : function() {
-        console.log("Я сделяль!");
+        this.onMenuShowEvent(function(e) {
+            setTimeout(this.module.action.game.spawn, 3000);
+        });
     }
 });

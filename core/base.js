@@ -63,6 +63,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             /*new*/ window.ontando.script.connectDirect = va;
             /*new*/ window.ontando.script.newDocument = ca;
             /*new*/ window.ontando.script.sendActionPacket = B;
+            /*new*/ window.ontando.script.spawn = wa;
             /*new*/ window.ontando.core.init();
         }
 
@@ -531,6 +532,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             else {
                 var W = null;
                 f.setNick = function(a) {
+                    /* new */ if (a == undefined) a = document.getElementById('nick').value;
                     /* new */ a = window.ontando.core.options.setNick(a);
                     ta();
                     C = a;
