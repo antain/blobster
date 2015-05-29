@@ -114,28 +114,31 @@ window.install.push({
         // You can access current module in all handler lamdas through: 'this.module'
         // ================
         
-        this.bindKey(69).onDown(function(e) {               // Bind '69' key press to this action
-            return true;                                    // Supress defult behaviout
+        this.bindKey({
+            key : 69,                                       // Bind '69' key to specified action
+            onDown : function(e) {                          // Bind key initial press
+                return true;                                // Suppress default action
+            },
+            onPress : function(e) {                         // Bind continious button pressing
+                return false;                               // Keep default action
+            },
+            onUp : function(e) {                            // Bind button release action
+                                                            // Keep default action
+            }
         });
-        this.bindKey(70).onPress(function(e) {              // Bind '70' key continious pressing to this action
-            return false;                                   // Keep defult behaviout
-            
-        });
-        this.bindKey(71).onUp(function(e) {                 // Bind '71' key release to this action
-            return false;                                   // Keep defult behaviout
-        });
-        this.bindKey(71).custom(                            // Bind '71' key press, continious pressing and release to this actions
-                function(e) {
-                    return false;                           // Keep defult behaviout
-                },
-                function(e) {
-                    return false;                           // Keep defult behaviout
-                },
-                function(e) {                               // This action would be called in pair with 'this.bindKey(71).onUp', so you can bind few actions on same button
-                    return false;                           // Keep defult behaviout
-                }
-        );
         
+        this.bindKey({
+            config : "key",                                 // Bind key decribed by module config 'key' to specified action. This bind will be synchronised to changes of binded key
+            onDown : function(e) {                          // Bind key initial press
+                return true;                                // Suppress default action
+            },
+            onPress : function(e) {                         // Bind continious button pressing
+                return false;                               // Keep default action
+            },
+            onUp : function(e) {                            // Bind button release action
+                                                            // Keep default action
+            }
+        });
         
         // ================
         // Events handlering

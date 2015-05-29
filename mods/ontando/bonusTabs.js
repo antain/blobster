@@ -123,12 +123,24 @@ window.install.push({
                             
                             switch (h.type) {
                                 case ConfigType.STRING:
-                                case ConfigType.COLOR:
                                     str += "<input "
                                                 + "id='ontando_bonusTabs_moduleOptions_e" + i + "_c" + j + "' "
                                                 + "style='height: 25px; width: 110px;' "
                                                 + "class='form-control' "
                                                 + "onblur='window.ontando_bonusTabs_changeOption(" + i + ", " + j + ", jQuery(\"#ontando_bonusTabs_moduleOptions_e" + i + "_c" + j + "\").val())' "
+                                                + "value='" + h.getValue() + "' "
+                                        + "/>";
+                                break;
+                                case ConfigType.COLOR:
+                                    str += "<input type='color' "
+                                                + "id='ontando_bonusTabs_moduleOptions_e" + i + "_c" + j + "' "
+                                                + "style='height: 25px; width: 110px;' "
+                                                + "onchange='setTimeout("
+                                                    + "function () {"
+                                                        + "window.ontando_bonusTabs_changeOption(" + i + ", " + j + ", jQuery(\"#ontando_bonusTabs_moduleOptions_e" + i + "_c" + j + "\").val());"
+                                                    + "}, "
+                                                    + "100"
+                                                + ")' "
                                                 + "value='" + h.getValue() + "' "
                                         + "/>";
                                 break;
@@ -171,7 +183,7 @@ window.install.push({
                                                 + "onblur='window.ontando_bonusTabs_changeOption(" + i + ", " + j + ", jQuery(\"#ontando_bonusTabs_moduleOptions_e" + i + "_c" + j + "\").val())' "
                                                 + "value='" + h.getValue() + "' "
                                         + "/>";
-                                    str += "<button style='height: 25px; width: 50px; float: right; padding: 0px;' onclick='return false;window.ontando_bonusTabs_changeOption(" + i + ", " + j + ")' class='btn btn-info'>"
+                                    str += "<button style='height: 25px; width: 50px; float: right; padding: 0px;' onclick='window.ontando_bonusTabs_changeOption(" + i + ", " + j + ")' class='btn btn-info'>"
                                             + "change"
                                         + "</bitton>";
                                 break;
@@ -200,19 +212,26 @@ window.install.push({
             var h = m.moduleConfig.handlers[oid];
             switch (h.type) {
                 case ConfigType.STRING:
+                case ConfigType.COLOR:
                     h.setValue(value);
                     jQuery("#ontando_bonusTabs_moduleOptions_e" + mid + "_c" + oid).val(h.getValue());
                 break;
                 case ConfigType.INTEGER:
-                    h.setValue(value);
+                    h.setValue(parseInt(value));
                     jQuery("#ontando_bonusTabs_moduleOptions_e" + mid + "_c" + oid).val(h.getValue());
-                break;
                 case ConfigType.BOOLEAN:
                     h.setValue(!h.getValue());
                     jQuery("#ontando_bonusTabs_moduleOptions_e" + mid + "_c" + oid).html(h.getValue() ? "enabled" : "disabled");
                 break;
                 case ConfigType.KEY:
-                    h.setValue(value);
+                    if (value == undefined) {
+                        value = prompt("Write key here");
+                        if (value.length == 0) {
+                            return;
+                        }
+                        value = value.toUpperCase().codePointAt(0);
+                    }
+                    h.setValue(parseInt(value));
                     jQuery("#ontando_bonusTabs_moduleOptions_e" + mid + "_c" + oid).val(h.getValue());
                 break;
             }

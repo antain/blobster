@@ -15,6 +15,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         var v = {main : "0.1.1", script : "514"};
         var GM_setClipboard = function(){}, GM_getValue = function(){}, GM_setValue = function(){};
         var keybindings = {};
+        var keyBindingUUID = 0;
 
         function Module(data) {
             this.script = data.script;
@@ -164,39 +165,124 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 }
             },
             bindKey : function(keyCode) {
+                console.log(keyCode);
                 var m = this;
+                if (typeof(keyCode) == "object") {
+                    var code = keyCode.keyCode;
+                    var option = keyCode.config;
+                    var onDown = keyCode.onDown;
+                    var onPress = keyCode.onPress;
+                    var onUp = keyCode.onUp;
+                    var uuid = keyBindingUUID++;
+                    console.log(option);
+                    
+                    if (option != undefined) {
+                        code = this.moduleConfig.data[option].getValue();
+                        this.moduleConfig.data[option].bindChangeHandler.push(function(oldCode, newCode) {
+                            if (oldCode == newCode) {
+                                return;
+                            }
+                            var b = keybindings[oldCode];
+                            var newB = keybindings[newCode];
+                            if (b == undefined) {
+                                return;
+                            }
+                            if (newB === undefined) {
+                                newB = new KeyBinding(code);
+                            }
+                            var tmp_i = 0;
+                            for (var i = 0; i < b.downHandler.length; i++) {
+                                tmp_i++;
+                                if (tmp_i > 10000) {
+                                    return;
+                                }
+                                if (b.downHandler[i].module == m) {
+                                    if (uuid == b.downHandler[i].uuid) {
+                                        console.log(uuid, i, "d");
+                                        console.log(b);
+                                        console.log(newB);
+                                        newB.downHandler.push(b.downHandler[i]);
+                                        b.downHandler.splice(i, 1);
+                                        i--;
+                                    }
+                                }
+                            }
+                            for (var i = 0; i < b.pressedHandler.length; i++) {
+                                tmp_i++;
+                                if (tmp_i > 10000) {
+                                    return;
+                                }
+                                if (b.pressedHandler[i].module == m) {
+                                    if (uuid == b.pressedHandler[i].uuid) {
+                                        console.log(uuid, i, "p");
+                                        console.log(b);
+                                        console.log(newB);
+                                        newB.pressedHandler.push(b.pressedHandler[i]);
+                                        b.pressedHandler.splice(i, 1);
+                                        console.log(b);
+                                        console.log(newB);
+                                        i--;
+                                    }
+                                }
+                            }
+                            for (var i = 0; i < b.upHandler.length; i++) {
+                                tmp_i++;
+                                if (tmp_i > 10000) {
+                                    return;
+                                }
+                                if (b.upHandler[i].module == m) {
+                                    if (uuid == b.upHandler[i].uuid) {
+                                        console.log(uuid, i, "u");
+                                        console.log(b);
+                                        console.log(newB);
+                                        newB.upHandler.push(b.upHandler[i]);
+                                        b.upHandler.splice(i, 1);
+                                        i--;
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    console.log(code);
+                    
+                    if (keybindings[code] === undefined) {
+                        keybindings[code] = new KeyBinding(code);
+                    }
+                    onDown === undefined || keybindings[code].downHandler.push(new KeyBindingHandler(m, uuid, onDown));
+                    onPress === undefined || keybindings[code].pressedHandler.push(new KeyBindingHandler(m, uuid, onPress));
+                    onUp === undefined || keybindings[code].upHandler.push(new KeyBindingHandler(m, uuid, onUp));
+                    
+                    return uuid;
+                }
                 return {
                     onDown : function(handler) {
                         if (keybindings[keyCode] === undefined) {
                             keybindings[keyCode] = new KeyBinding(keyCode);
                         }
-                        keybindings[keyCode].downHandler.push(new KeyBindingHandler(m, handler));
+                        keybindings[keyCode].downHandler.push(new KeyBindingHandler(m, -1, handler));
                     },
                     onPress : function(handler) {
                         if (keybindings[keyCode] === undefined) {
                             keybindings[keyCode] = new KeyBinding(keyCode);
                         }
-                        keybindings[keyCode].downHandler.push(new KeyBindingHandler(m, handler));
-                        keybindings[keyCode].pressedHandler.push(new KeyBindingHandler(m, handler));
+                        keybindings[keyCode].downHandler.push(new KeyBindingHandler(m, -1, handler));
+                        keybindings[keyCode].pressedHandler.push(new KeyBindingHandler(m, -1, handler));
                     },
                     onUp : function(handler) {
                         if (keybindings[keyCode] === undefined) {
                             keybindings[keyCode] = new KeyBinding(keyCode);
                         }
-                        keybindings[keyCode].upHandler.push(new KeyBindingHandler(m, handler));
+                        keybindings[keyCode].upHandler.push(new KeyBindingHandler(m, -1, handler));
                     },
                     custom : function(handlerDown, handlerPressed, handlerUp) {
                         if (keybindings[keyCode] === undefined) {
                             keybindings[keyCode] = new KeyBinding(keyCode);
                         }
-                        keybindings[keyCode].downHandler.push(new KeyBindingHandler(m, handlerDown));
-                        keybindings[keyCode].pressedHandler.push(new KeyBindingHandler(m, handlerPressed));
-                        keybindings[keyCode].upHandler.push(new KeyBindingHandler(m, handlerUp));
+                        keybindings[keyCode].downHandler.push(new KeyBindingHandler(m, -1, handlerDown));
+                        keybindings[keyCode].pressedHandler.push(new KeyBindingHandler(m, -1, handlerPressed));
+                        keybindings[keyCode].upHandler.push(new KeyBindingHandler(m, -1, handlerUp));
                     },
                 };
-            },
-            resetKey : function(keyCode) {
-                
             },
             onNameChangeEvent : function(handler, priority) {
                 events.onNameChange.add(new EventHandler(this, handler, priority));
@@ -236,6 +322,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.name = name;
             this.handler = handler;
             this.defaultValue = defaultValue;
+            this.value = this.getValue();
+            this.bindChangeHandler = [];
         }
         
         ConfigHandler.prototype = {
@@ -247,7 +335,20 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 return value;
             },
             setValue : function(value) {
+                switch (this.type) {
+                    case ENUM.ConfigType.INTEGER:
+                    case ENUM.ConfigType.KEY:
+                        value = parseInt(value);
+                    break;
+                    case ENUM.ConfigType.BOOLEAN:
+                        value = (value == true);
+                    break;
+                }
                 value = this.handler(value);
+                for( var i = 0; i < this.bindChangeHandler.length; i++) {
+                    this.bindChangeHandler[i](this.value, value);
+                }
+                this.value = value;
                 GM_setValue("module:" + this.module.author + ":" + this.module.name + ":config:" + this.name, value);
             }
         };
@@ -288,8 +389,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             }
         }
         
-        function KeyBindingHandler(module, handler) {
+        function KeyBindingHandler(module, uuid, handler) {
             this.module = module;
+            this.uuid = uuid;
             this.handle = handler;
         }
 
@@ -345,6 +447,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         EventPool.prototype = {
             add : function(eh) {
                 this.pool.push(eh);
+                this.pool.sort(function (a, b) { return b.priority - a.priority; });
             },
             apply : function(e) {
                 for (var i = 0; i < this.pool.length; i++) {
@@ -357,7 +460,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         function EventHandler(module, handler, priority) {
             this.module = module;
             this.handle = handler;
-            this.priority = priority;
+            this.priority = priority === undefined ? 0 : priority;
         }
 
         function NameChangeEvent(name) {
@@ -466,7 +569,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             ]
             }
         };
-
+        
         var events = {
             onNameChange : new EventPool(),
             onOptionChange : new EventPool(),
@@ -480,6 +583,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             onUpdateComplete : new EventPool()
         };
         window.dbg_e = events;
+        window.dbg_k = keybindings;
 
         window.ontando = {
         };
