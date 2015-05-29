@@ -32,6 +32,14 @@ window.install.push({
         this.constants;                                     // ENUMs used in events. 
                                                             // 'this.constants.<name>.size' - amount of entries;
                                                             // 'this.constants.<name>.data[<constant>]' - data of entry <constant> 
+        
+        this.constants.ConfigType;                          // Config data type
+        this.constants.ConfigType.STRING;                   // Text data
+        this.constants.ConfigType.NUMBER;                   // Number data
+        this.constants.ConfigType.BOOLEAN;                  // true or false
+        this.constants.ConfigType.KEY;                      // keyCode (number)
+        this.constants.ConfigType.COLOR;                    // color (RGB text with hash at front)
+        
         this.constants.Options;                             // Game options
                                                             // 'this.constants.Options.data[<constant>].values' - ENUM: values, this option can switch to.
         this.constants.Options.SKINS;                       // Shouuld be skins shown? values: {DISABLED, ENABLED}. Default ENABLED.
@@ -62,6 +70,50 @@ window.install.push({
         var value = this.gameConfig.name.get(option);       // Get
         this.gameConfig.name.set(option, value);            // Set
         
+        this.loadCompleteHandler = function () {            // Invokes, when all modules loaded
+            console.log("Îé, âñ¸!");
+        };
+        
+        
+        // ================
+        // Config manager
+        // Config values stay same betwin page reloaded, if registered. Default value used only onse, when module loaded first time.
+        // Handlers invokes on each value update (via gui or from code) and may modify value as they like.
+        // You can access current module in all handler lamdas through: 'this.module'
+        // ================
+        
+        this.moduleConfig.register(this.constants.ConfigType.STRING, "TestString");
+                                                            // Registers string option with name "TestString", without update handler and default value
+        
+        this.moduleConfig.register(this.constants.ConfigType.INTEGER, "int", 0);
+                                                            // Registers integer option with name "int", without update handler and with default value '0'
+        
+        this.moduleConfig.register(this.constants.ConfigType.BOOLEAN, "boolean", function (a) {console.log(a); return a;});
+                                                            // Registers boolean option with name "boolean", with update handler and default value
+        
+        this.moduleConfig.register(this.constants.ConfigType.KEY, "key", function (a) {console.log(a); return a;}, 69);
+                                                            // Registers key option with name "key", with update handler and default value '69'
+        
+        this.moduleConfig.register(this.constants.ConfigType.COLOR, "color", function (a) {return "#FF0000";}, "#FF0000");
+                                                            // Registers color option with name "color", with update handler and default value
+        
+        this.moduleConfig.data["int"].getValue();           // Get value of option
+        this.moduleConfig.data["boolean"].setValue(true);   // Set value to option (this will invoke set handler);
+        
+        // ================
+        // Module data manager
+        // Provides tools to save numbers, strings and booleans in module storage
+        // ================
+        
+        this.moduleData.save("key", "value");               // Saves "value" under name "key"
+        this.moduleData.load("key");                        // Loads value by name "key"
+        
+        // ================
+        // Key binding tools
+        // Provides tools to bind key actions.
+        // You can access current module in all handler lamdas through: 'this.module'
+        // ================
+        
         this.bindKey(69).onDown(function(e) {               // Bind '69' key press to this action
             return true;                                    // Supress defult behaviout
         });
@@ -72,20 +124,23 @@ window.install.push({
         this.bindKey(71).onUp(function(e) {                 // Bind '71' key release to this action
             return false;                                   // Keep defult behaviout
         });
-        this.bindKey(71).custom(function(e) {               // Bind '71' key press, continious pressing and release to this actions
-            return false;                                   // Keep defult behaviout
-        },
-        function(e) {
-            return false;                                   // Keep defult behaviout
-        },
-        function(e) {                                       // This action would be called in pair with 'this.bindKey(71).onUp', so you can bind few actions on same button
-            return false;                                   // Keep defult behaviout
-        });
+        this.bindKey(71).custom(                            // Bind '71' key press, continious pressing and release to this actions
+                function(e) {
+                    return false;                           // Keep defult behaviout
+                },
+                function(e) {
+                    return false;                           // Keep defult behaviout
+                },
+                function(e) {                               // This action would be called in pair with 'this.bindKey(71).onUp', so you can bind few actions on same button
+                    return false;                           // Keep defult behaviout
+                }
+        );
         
         
         // ================
         // Events handlering
         // Lamda send to this functions will invoked at specifed event.
+        // You can access current module in all event lamdas through: 'this.module'
         // ================
         
         this.onNameChangeEvent(function(e) {                // Invoked before starting game, when name requested by original script

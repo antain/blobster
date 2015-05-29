@@ -3,7 +3,7 @@
 // @namespace    ontando.io.agar
 // @updateURL    https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
 // @downloadURL  https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
-// @version      0.1.2
+// @version      0.1.3
 // @description  Arag.IO script group loader
 // @author       ontando (angal)
 // @include     http://agar.io/
@@ -17,7 +17,7 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-(function(w, $) {
+(function(w) {
     var localhost = "localhost:8000";
     w.ontando_mainLoader_localhost = localhost;
     w.ontando_mainLoader_load = function() {
@@ -48,4 +48,4 @@
     local("blobster/mods/modsLoader.js");
     local("localLoader.js");
     
-}) (unsafeWindow, jQuery);
+}) (unsafeWindow);

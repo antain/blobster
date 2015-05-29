@@ -16,7 +16,7 @@ window.install.push({
         var modules = window.ontando.module.list;
         
         this.moduleConfig.register(this.constants.ConfigType.STRING, "STRING", function(a) { console.log(a); return a; }, "Hi!");
-        this.moduleConfig.register(this.constants.ConfigType.NUMBER, "NUMBER", function(a) { console.log(a); return a; }, 1);
+        this.moduleConfig.register(this.constants.ConfigType.INTEGER, "INTEGER", function(a) { console.log(a); return a; }, 1);
         this.moduleConfig.register(this.constants.ConfigType.BOOLEAN, "BOOLEAN", function(a) { console.log(a); return a; }, true);
         this.moduleConfig.register(this.constants.ConfigType.KEY, "KEY", function(a) { console.log(a); return a; }, 69);
         this.moduleConfig.register(this.constants.ConfigType.COLOR, "COLOR", function(a) { console.log(a); return a; }, "#FF0000");
@@ -132,7 +132,7 @@ window.install.push({
                                                 + "value='" + h.getValue() + "' "
                                         + "/>";
                                 break;
-                                case ConfigType.NUMBER:
+                                case ConfigType.INTEGER:
                                     str += "<button "
                                                 + "style='height: 25px; width: 25px; float: left; padding: 0px;'"
                                                 + "onclick='window.ontando_bonusTabs_changeOption(" + i + ", " + j + ", jQuery(\"#ontando_bonusTabs_moduleOptions_e" + i + "_c" + j + "\").val() - 1)' "
@@ -203,7 +203,7 @@ window.install.push({
                     h.setValue(value);
                     jQuery("#ontando_bonusTabs_moduleOptions_e" + mid + "_c" + oid).val(h.getValue());
                 break;
-                case ConfigType.NUMBER:
+                case ConfigType.INTEGER:
                     h.setValue(value);
                     jQuery("#ontando_bonusTabs_moduleOptions_e" + mid + "_c" + oid).val(h.getValue());
                 break;

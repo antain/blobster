@@ -57,10 +57,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     
                     moduleConfigHandlers[name] = new ConfigHandler(m, type, name, handler, defaultValue);
                     this.handlers.push(moduleConfigHandlers[name]);
-                    this.data[name] = moduleConfigHandlers[name].getValue();
                 },
                 handlers : [],
-                data : new Object()
+                data : moduleConfigHandlers
             };
             this.moduleData = {
                 save : function(key, value) {
@@ -195,6 +194,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                         keybindings[keyCode].upHandler.push(new KeyBindingHandler(m, handlerUp));
                     },
                 };
+            },
+            resetKey : function(keyCode) {
+                
             },
             onNameChangeEvent : function(handler, priority) {
                 events.onNameChange.add(new EventHandler(this, handler, priority));
@@ -394,7 +396,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
 
         ENUM.ConfigType = {
             STRING : 0,
-            NUMBER : 1,
+            INTEGER : 1,
             BOOLEAN : 2,
             KEY : 3,
             COLOR : 4,
