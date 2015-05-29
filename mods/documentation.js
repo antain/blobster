@@ -49,6 +49,7 @@ window.install.push({
         this.action;                                        // Functions, to invoke original script.
         this.action.connect("ip");                          // Connects to specified ip, or to random one, with no arguments.
         this.action.game.shootForward();                    // Shoots projectile in looking direction
+        this.action.game.changeDirectionTo(0, 0);           // Change look/move/shoot location to specified
         this.action.game.splitForward();                    // Splits in looking direction
         
         this.gameConfig;                                    // Game configs.
@@ -123,7 +124,8 @@ window.install.push({
             var x = e.x;                                    // Current target x (set by mouse or other module)
             var y = e.y;                                    // Current target y (set by mouse or other module)
             e.x = 0;                                        // Your smart target x
-            e.y = ;                                         // Your smart target y
+            e.y = 0;                                        // Your smart target y
+            e.suppress = e.suppress | true;                 // Suppress this update
         });
         
         // ================

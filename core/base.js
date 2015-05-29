@@ -64,6 +64,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             /*new*/ window.ontando.script.newDocument = ca;
             /*new*/ window.ontando.script.sendActionPacket = B;
             /*new*/ window.ontando.script.spawn = wa;
+            /*new*/ window.ontando.script.changeDirectionTo = changeDirectionTo;
             /*new*/ window.ontando.core.init();
         }
 
@@ -317,10 +318,26 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             /*new*/ if (ha && 0 == l.length) { window.ontando.core.showMenu(); }
             /*new*/ window.ontando.core.postUpdate();
         }
+        
+        /*new*/ function changeDirectionTo(x, y) {
+        /*new*/     var tmp = [za, Aa];
+        /*new*/     var a, b;
+        /*new*/     za = x;
+        /*new*/     Aa = y;
+        /*new*/     a = new ArrayBuffer(21);
+        /*new*/     b = new DataView(a);
+        /*new*/     b.setUint8(0, 16);
+        /*new*/     b.setFloat64(1, x, !0);
+        /*new*/     b.setFloat64(9, y, !0);
+        /*new*/     b.setUint32(17, 0, !0);
+        /*new*/     m.send(a);
+        /*new*/     return tmp;
+        /*new*/ }
 
         function I() {
             if (ia()) {
                 /*new*/ var tmp = window.ontando.core.targetLocation(U, V);
+                /*new*/ if (tmp[2]) { return; }
                 /*new*/ U = tmp[0]; V = tmp[1];
                 var a = Q - h / 2,
                     b = R - r / 2;

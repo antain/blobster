@@ -9,7 +9,7 @@ window.install.push({
     displayName : "Auto respawn",
     init : function() {
         this.onMenuShowEvent(function(e) {
-            setTimeout(this.module.action.game.spawn, 3000);
+            setTimeout(this.module.action.game.spawn, 1000);
         });
     }
 });

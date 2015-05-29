@@ -6,6 +6,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
 
     (function() {
         function doNothig() { return false; }
+        function returnParam(a) { return a; }
         
         if (window.install === undefined) {
             window.install = [];
@@ -39,32 +40,37 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     this.type = 1000;
                 }
             }
+            this.loadCompleteHandler = doNothig;
+            
             var m = this;
-            var moduleConfigHandlers = {};
+            var moduleConfigHandlers = new Object();
             this.moduleConfig = {
                 register : function (type, name, opt_handler, opt_default) {
                     var handler, defaultValue;
                     if (typeof(opt_handler) == "function") {
                         handler = opt_handler;
-                        defaultValue = opt_defult;
+                        defaultValue = opt_default;
                     } else {
-                        handler = doNothig;
+                        handler = returnParam;
                         defaultValue = opt_handler;
                     }
                     
                     moduleConfigHandlers[name] = new ConfigHandler(m, type, name, handler, defaultValue);
+                    this.handlers.push(moduleConfigHandlers[name]);
                     this.data[name] = moduleConfigHandlers[name].getValue();
                 },
-                data : {}
+                handlers : [],
+                data : new Object()
             };
             this.moduleData = {
                 save : function(key, value) {
                     GM_setValue("module:" + m.author + ":" + m.name + ":data:" + key, value); 
                 },
-                load : function(key, value) {
-                    return GM_getValue("module:" + m.author + ":" + m.name + ":data:" + key, value); 
+                load : function(key) {
+                    return GM_getValue("module:" + m.author + ":" + m.name + ":data:" + key); 
                 }
             };
+            
         }
         var ent = {
             amount : 0,
@@ -102,9 +108,12 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     shootForward : function () {
                         window.ontando.script.sendActionPacket(21);
                     },
+                    changeDirectionTo : function (x, y) {
+                        return window.ontando.script.changeDirectionTo(x, y);
+                    },
                     splitForward : function () {
                         window.ontando.script.sendActionPacket(17);
-                    },
+                    }
                 }
             },
             gameConfig : {
@@ -226,6 +235,20 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.handler = handler;
             this.defaultValue = defaultValue;
         }
+        
+        ConfigHandler.prototype = {
+            getValue : function() {
+                var value = GM_getValue("module:" + this.module.author + ":" + this.module.name + ":config:" + this.name);
+                if (value === undefined) {
+                    return this.defaultValue;
+                }
+                return value;
+            },
+            setValue : function(value) {
+                value = this.handler(value);
+                GM_setValue("module:" + this.module.author + ":" + this.module.name + ":config:" + this.name, value);
+            }
+        };
         
         function KeyBinding(keyCode) {
             this.keyCode = keyCode;
@@ -366,14 +389,17 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         function TargetLocationSelecionEvent(x, y) {
             this.x = x;
             this.y = y;
+            this.suppress = false;
         }
 
         ENUM.ConfigType = {
             STRING : 0,
             NUMBER : 1,
-            KEY : 2,
-            size : 3,
-            data : [{}, {}, {}]
+            BOOLEAN : 2,
+            KEY : 3,
+            COLOR : 4,
+            size : 5,
+            data : [{}, {}, {}, {}, {}]
         };
 
         ENUM.Options = {
@@ -503,21 +529,25 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                         list.push(m);
                     }
                 }
-
+                var tmp = [];
                 for (var lvl = -2; lvl <= 1000; lvl++) {
                     for (var i = 0; i < list.length; i++) {
                         var m = list[i];
                         if (m.type == lvl && m.enabled == true) {
                             console.log("Loaded module '" + m.displayName + "' (" + m.author + ":" + m.name + ") type: " + m.type);
                             m.init();
+                            tmp.push(m);
                         }
                     }
+                }
+                for (var i = 0; i < tmp.length; i++) {
+                    tmp[i].loadCompleteHandler();
                 }
             },
             targetLocation : function(x, y) {
                 var e = new TargetLocationSelecionEvent(x, y);
                 events.onTargetLocationSelecion.apply(e);
-                return [e.x, e.y];
+                return [e.x, e.y, e.suppress];
                 
             },
             keybinding : {
