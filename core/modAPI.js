@@ -393,12 +393,18 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.isFood = false;
             this.isMe = false;
             this.name = name;
-            this.text = [Module.prototype.renderTools.newText({text : name}), Module.prototype.renderTools.newText({text : "0", sizeModifier : 0.5})];
+            var that = this;
+            this.text = []
             
             this.update(x, y, size, color, isVirus, name);
             this.list.all[id] = this;
             this.list.amount++;
             this.list.allAmount++;
+            
+            if (!this.isVirus && !this.isFood) {
+                this.text.push(Module.prototype.renderTools.newText({text : name}));
+                this.text.push(Module.prototype.renderTools.newText({text : function() {return that.mass.toFixed()}, sizeModifier : 0.5}));
+            }
         }
         Entity.prototype = {
             list : ent,
@@ -433,7 +439,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 var y = this.renderY;
                 for (var i = 0; i < this.text.length; i++) {
                     var text = this.text[i];
-                    if (text != undefined && text.enabled) {
+                    if (text != undefined && text.visible) {
                         y += Module.prototype.renderTools.renderText(this.renderX, y, text, size);
                     }
                 }

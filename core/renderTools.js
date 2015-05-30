@@ -11,14 +11,15 @@ if (document.currentScript.override < window.ontando_core_renderTools_override) 
             sizeModifier && (this.sizeModifier = sizeModifier);
             color && (this.color = color);
             borderColor && (this.borderColor = borderColor);
-            
+            this.cache = undefined;
         }
         Text.prototype = {
             text : "",
             size : -1,
             sizeModifier : 1,
             color : "#FFFFFF",
-            borderColor : "#000000"
+            borderColor : "#000000",
+            visible : true
         };
         
         window.ontando.RenderTools = function(canvas, canvasContext2D, docCreator) {
@@ -31,18 +32,30 @@ if (document.currentScript.override < window.ontando_core_renderTools_override) 
         }
         window.ontando.RenderTools.prototype = {
             newText : function(options) {
-                return new Text(options.text, options.size, options.sizeModifier, options.color, options.borderColor);
+                var text = typeof(options.text) == "function" ? options.text : function() { return options.text };
+                return new Text(text, options.size, options.sizeModifier, options.color, options.borderColor);
             },
             renderText : function(centerX, centerY, text, size) {
-                var doc = this.docCreator();
-                doc.setValue(text.text);
+                if (text.cache == undefined) {
+                    text.cache = new this.docCreator();
+                }
+                var doc = text.cache;
+                
+                    //setStroke: function(a) {
+                    //    this._stroke != a && (this._stroke = a, this._dirty = !0)
+                    //},
+                
+                doc.setValue(text.text());
+                doc.setColor(text.color);
+                doc.setStrokeColor(text.borderColor);
+                
                 doc.setSize(text.size < 0 ? size * text.sizeModifier : text.size);
                 c = Math.ceil(10 * this.scale) / 10;
                 doc.setScale(c);
                 var d = doc.render(),
                     f = ~~(d.width / c),
                     g = ~~(d.height / c);
-                e.drawImage(d, ~~centerX - ~~(f / 2), centerY - ~~(g / 2), f, g);
+                this.canvasContext2D.drawImage(d, ~~centerX - ~~(f / 2), centerY - ~~(g / 2), f, g);
                 return d.height / 2 / c + 4
             }
         }
