@@ -73,7 +73,7 @@ window.install.push({
         this.gameConfig.name.set(option, value);            // Set
         
         this.loadCompleteHandler = function () {            // Invokes, when all modules loaded
-            console.log("ŒÈ, ‚Ò∏!");
+            console.log("–û–π, –≤—Å—ë!");
         };
         
         

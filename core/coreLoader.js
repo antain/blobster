@@ -1,3 +1,5 @@
+window.ontando = {};
+
 (function(localhost, core_name) {
     
     var pushScript = function(src, override) {

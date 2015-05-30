@@ -166,7 +166,6 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 }
             },
             bindKey : function(keyCode) {
-                console.log(keyCode);
                 var m = this;
                 if (typeof(keyCode) == "object") {
                     var code = keyCode.keyCode;
@@ -394,7 +393,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.isFood = false;
             this.isMe = false;
             this.name = name;
-            this.text = [];
+            this.text = [Module.prototype.renderTools.newText({text : name}), Module.prototype.renderTools.newText({text : "0", sizeModifier : 0.5})];
             
             this.update(x, y, size, color, isVirus, name);
             this.list.all[id] = this;
@@ -428,6 +427,16 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     this.list.meAmount--;
                 }
                 this.id = undefined;
+            },
+            // Inner API
+            renderText : function(size) {
+                var y = this.renderY;
+                for (var i = 0; i < this.text.length; i++) {
+                    var text = this.text[i];
+                    if (text != undefined && text.enabled) {
+                        y += Module.prototype.renderTools.renderText(this.renderX, y, text, size);
+                    }
+                }
             }
         }
 
@@ -577,8 +586,6 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         window.dbg_e = events;
         window.dbg_k = keybindings;
 
-        window.ontando = {
-        };
         window.ontando.module = {
             list : []
         };
@@ -592,7 +599,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         window.ontando.core = {
             newEntity : Entity,
             init : function(canvas, canvasContext2D) {
-                Module.prototype.renderTools = new window.ontando.RenderTools(canvas, canvasContext2D);
+                Module.prototype.renderTools = new window.ontando.RenderTools(canvas, canvasContext2D, window.ontando.script.newDocument);
                 var forceLoad = false;
                 if (GM_getValue("core.installed") != 1) {
                     console.log("Initial execution. All mods are force enabled");
@@ -692,6 +699,12 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 return e.ip;
             },
             preRender : function (xCenter, yCenter, scale) {
+                if (Module.prototype.renderTools === undefined) {
+                    return [xCenter, yCenter, scale];
+                }
+                Module.prototype.renderTools.x = xCenter;
+                Module.prototype.renderTools.y = yCenter;
+                Module.prototype.renderTools.scale = scale;
                 renderData.x = xCenter;
                 renderData.y = yCenter;
                 renderData.scale = scale;

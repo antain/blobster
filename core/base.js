@@ -1,8 +1,9 @@
-if (document.currentScript.override < window.ontando_core_modAPI_override) {
-    console.log("Ignoring modAPI from " + document.currentScript.src);
+if (document.currentScript.override < window.ontando_core_base_override) {
+    console.log("Ignoring base from " + document.currentScript.src);
 } else {
-    console.log("Loading modAPI from " + document.currentScript.src);
-    window.ontando_core_modAPI_override = document.currentScript.override;
+    console.log("Loading base from " + document.currentScript.src);
+    window.ontando_core_base_override = document.currentScript.override;
+    
     (function(f, g) {
         function Ea() {
             ma = !0;
@@ -1075,6 +1076,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                             (la || 15 < this.size) && !a && (e.strokeStyle = "#000000", e.globalAlpha *= .1, e.stroke());
                             e.globalAlpha = 1;
                             null != d && b && e.drawImage(d, this.x - 2 * this.size, this.y - 2 * this.size, 4 * this.size, 4 * this.size);
+                            /*new*/ this.api.renderText(this.getNameSize()); // Rendering text by ourself
+                            /*new*/ e.restore();
+                            /*new*/ return; // And skipping default text
                             b = -1 != l.indexOf(this);
                             a = ~~this.y;
                             if ((da || b) && this.name && this.nameCache && (null == d || -1 == Pa.indexOf(c))) {

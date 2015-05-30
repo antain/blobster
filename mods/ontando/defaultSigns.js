@@ -5,11 +5,11 @@
 
     window.install.push({
         script : document.currentScript,
-        author : "yourName", 
-        name : "scriptName",
-        displayName : "<u style='font-color:#FF0000'>Fancy</u> Script name",
+        author : "ontando", 
+        name : "defaultSigns",
+        displayName : "Default signs on blobs",
         init : function() {
-            console.log("Я сделяль!");
+            
         }
     });
 })();

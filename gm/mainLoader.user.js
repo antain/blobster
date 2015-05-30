@@ -3,15 +3,12 @@
 // @namespace    ontando.io.agar
 // @updateURL    https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
 // @downloadURL  https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
-// @version      0.2.1
+// @version      0.2.2
 // @description  Arag.IO script group loader
 // @author       ontando (angal)
 // @include      http://agar.io/
 // @include      http://agar.io/*
 // @include      http://*.agar.io/*
-// @include      https://agar.io/
-// @include      https://agar.io/*
-// @include      https://*.agar.io/*
 // @grant        GM_setClipboard
 // @grant        GM_setValue
 // @grant        GM_getValue
