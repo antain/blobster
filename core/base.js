@@ -65,7 +65,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             /*new*/ window.ontando.script.sendActionPacket = B;
             /*new*/ window.ontando.script.spawn = wa;
             /*new*/ window.ontando.script.changeDirectionTo = changeDirectionTo;
-            /*new*/ window.ontando.core.init();
+            /*new*/ window.ontando.core.init(ea, e);
         }
 
         function Fa() {
@@ -154,7 +154,6 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         }
 
         function va(a) {
-            /*new*/ a = f.ontando.core.connecting(a);
             if (m) {
                 m.onopen = null;
                 m.onmessage = null;
@@ -164,6 +163,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 } catch (b) {}
                 m = null
             }
+            /*new*/ a = f.ontando.core.connecting(a);
             D = [];
             l = [];
             y = {};

@@ -1,4 +1,3 @@
-
 if (!window.install) {
     window.install = [];
 }

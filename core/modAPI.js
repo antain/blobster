@@ -91,6 +91,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 this.willEnabled = state;
             },
             // Public API
+            renderTools : undefined, 
             version : v,
             constants : ENUM,
             entities : ent,
@@ -174,7 +175,6 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     var onPress = keyCode.onPress;
                     var onUp = keyCode.onUp;
                     var uuid = keyBindingUUID++;
-                    console.log(option);
                     
                     if (option != undefined) {
                         code = this.moduleConfig.data[option].getValue();
@@ -198,9 +198,6 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                                 }
                                 if (b.downHandler[i].module == m) {
                                     if (uuid == b.downHandler[i].uuid) {
-                                        console.log(uuid, i, "d");
-                                        console.log(b);
-                                        console.log(newB);
                                         newB.downHandler.push(b.downHandler[i]);
                                         b.downHandler.splice(i, 1);
                                         i--;
@@ -214,13 +211,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                                 }
                                 if (b.pressedHandler[i].module == m) {
                                     if (uuid == b.pressedHandler[i].uuid) {
-                                        console.log(uuid, i, "p");
-                                        console.log(b);
-                                        console.log(newB);
                                         newB.pressedHandler.push(b.pressedHandler[i]);
                                         b.pressedHandler.splice(i, 1);
-                                        console.log(b);
-                                        console.log(newB);
                                         i--;
                                     }
                                 }
@@ -232,9 +224,6 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                                 }
                                 if (b.upHandler[i].module == m) {
                                     if (uuid == b.upHandler[i].uuid) {
-                                        console.log(uuid, i, "u");
-                                        console.log(b);
-                                        console.log(newB);
                                         newB.upHandler.push(b.upHandler[i]);
                                         b.upHandler.splice(i, 1);
                                         i--;
@@ -243,7 +232,6 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                             }
                         });
                     }
-                    console.log(code);
                     
                     if (keybindings[code] === undefined) {
                         keybindings[code] = new KeyBinding(code);
@@ -406,9 +394,12 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.isFood = false;
             this.isMe = false;
             this.name = name;
+            this.text = [];
+            
             this.update(x, y, size, color, isVirus, name);
             this.list.all[id] = this;
             this.list.amount++;
+            this.list.allAmount++;
         }
         Entity.prototype = {
             list : ent,
@@ -430,6 +421,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             destroy : function() {
                 delete this.list.all[this.id];
                 this.list.amount--;
+                this.list.allAmount++;
                 
                 if (this.isMe) {
                     delete this.list.me[this.id];
@@ -599,7 +591,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         }
         window.ontando.core = {
             newEntity : Entity,
-            init : function() {
+            init : function(canvas, canvasContext2D) {
+                Module.prototype.renderTools = new window.ontando.RenderTools(canvas, canvasContext2D);
                 var forceLoad = false;
                 if (GM_getValue("core.installed") != 1) {
                     console.log("Initial execution. All mods are force enabled");
@@ -679,6 +672,21 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 events.onMenuShow.apply({});
             },
             connecting : function(ip) {
+                ent.amount = 0,
+                ent.allAmount = 0,
+                ent.meAmount = 0;
+                for (var i in ent.all) {
+                    if (ent.all.hasOwnProperty(i)) {
+                        delete ent.all[i];
+                    }
+                }
+                
+                for (var i in ent.me) {
+                    if (ent.me.hasOwnProperty(i)) {
+                        delete ent.me[i];
+                    }
+                }
+                
                 var e = new ConnectingStartEvent(ip);
                 events.onConnectingStart.apply(e);
                 return e.ip;

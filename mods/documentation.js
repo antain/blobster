@@ -49,6 +49,8 @@ window.install.push({
         this.constants.Options.MASS;                        // Shom mass? values: {DISABLED, ENABLED}. Default DISABLED.
         this.constants.Options.GAME_MODE;                   // Game mode? values: {FFA, TEAMS}. Default FFA.
         
+        this.entities.allAmount;                            // Amount of all entities
+        this.entities.meAmount;                             // Amount of current player entities
         this.entities.all;                                  // List of all entities (Entity description at the bottom)
         this.entities.me;                                   // List of current player entities
         
