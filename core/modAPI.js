@@ -11,7 +11,10 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         if (window.install === undefined) {
             window.install = [];
         }
-        var ENUM = {};
+        if (window.ontando.ENUM == undefined) {
+            window.ontando.ENUM = {};
+        }
+        var ENUM = window.ontando.ENUM;
         var v = {main : "0.1.1", script : "514"};
         var GM_setClipboard = function(){}, GM_getValue = function(){}, GM_setValue = function(){};
         var keybindings = {};
@@ -91,11 +94,11 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 this.willEnabled = state;
             },
             // Public API
-            renderTools : undefined, 
+            renderTools : undefined,
             version : v,
             constants : ENUM,
             entities : ent,
-            tmp_renderData : renderData,
+            tmp_renderData : renderData, // Deprecated. Use Module::renderTools
             action : {
                 connect : function (ip) {
                     if (ip) {
@@ -271,6 +274,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     },
                 };
             },
+            
+            // Event handler redistrators
+            
             onNameChangeEvent : function(handler, priority) {
                 events.onNameChange.add(new EventHandler(this, handler, priority));
             },
@@ -302,7 +308,12 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 events.onUpdateComplete.add(new EventHandler(this, handler, priority));
             }
         };
-        
+
+
+//=================================================
+//          Module config management
+//=================================================
+
         function ConfigHandler(module, type, name, handler, defaultValue) {
             this.module = module;
             this.type = type;
@@ -312,7 +323,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.value = this.getValue();
             this.bindChangeHandler = [];
         }
-        
+
         ConfigHandler.prototype = {
             getValue : function() {
                 var value = GM_getValue("module:" + this.module.author + ":" + this.module.name + ":config:" + this.name);
@@ -339,7 +350,13 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 GM_setValue("module:" + this.module.author + ":" + this.module.name + ":config:" + this.name, value);
             }
         };
-        
+
+
+//=================================================
+//          Key Binding management
+//=================================================
+
+
         function KeyBinding(keyCode) {
             this.keyCode = keyCode;
             this.downHandler = [];
@@ -381,6 +398,11 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.uuid = uuid;
             this.handle = handler;
         }
+
+//=================================================
+//          Entity management
+//=================================================
+
 
         function Entity(id, x, y, size, color, isVirus, name) {
             this.id = id;
@@ -446,6 +468,10 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             }
         }
 
+//=================================================
+//          Events management
+//=================================================
+
 
         function EventPool() {
             this.pool = [];
@@ -469,6 +495,11 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.handle = handler;
             this.priority = priority === undefined ? 0 : priority;
         }
+
+//=================================================
+//          Events constructors
+//=================================================
+
 
         function NameChangeEvent(name) {
             this.name = name;
@@ -497,86 +528,35 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.entity = entity;
             this.render = defaultBehaviour;
         }
-        
+
         function TargetLocationSelecionEvent(x, y) {
             this.x = x;
             this.y = y;
             this.suppress = false;
         }
 
-        ENUM.ConfigType = {
-            STRING : 0,
-            INTEGER : 1,
-            BOOLEAN : 2,
-            KEY : 3,
-            COLOR : 4,
-            size : 5,
-            data : [{}, {}, {}, {}, {}]
-        };
 
-        ENUM.Options = {
-            SKINS : 0,
-            NAMES : 1,
-            THEME : 2,
-            COLORS : 3,
-            MASS : 4,
-            GAME_MODE : 5,
-            size : 6,
-            data : [
-                {
-                    values : {
-                    DISABLED : 0, 
-                    ENABLED : 1
-                    }
-                },
-                {
-                    values : {
-                    DISABLED : 0,
-                    ENABLED : 1
-                    }
-                },
-                {
-                    values : {
-                    LIGHT : 0, 
-                    DARK : 1
-                    }
-                },
-                { 
-                    values : {
-                    DISABLED : 0,
-                    ENABLED : 1
-                    }
-                },
-                { 
-                    values : {
-                    DISABLED : 0,
-                    ENABLED : 1
-                    }
-                },
-                { 
-                    values : {
-                    FFA : 0,
-                    TEAMS : 1
-                    }
-                }
-            ]
-        }
-
-
+//=================================================
+//          Game configs
+//=================================================
 
         var data = {
             gameConfig : {
-            name : "",
-            options : [
-                ENUM.Options.data[ENUM.Options.SKINS].values.ENABLED, 
-                ENUM.Options.data[ENUM.Options.NAMES].values.ENABLED, 
-                ENUM.Options.data[ENUM.Options.THEME].values.LIGHT,
-                ENUM.Options.data[ENUM.Options.COLORS].values.ENABLED,
-                ENUM.Options.data[ENUM.Options.MASS].values.DISABLED
-            ]
+                name : "",
+                options : [
+                    ENUM.Options.data[ENUM.Options.SKINS].values.ENABLED, 
+                    ENUM.Options.data[ENUM.Options.NAMES].values.ENABLED, 
+                    ENUM.Options.data[ENUM.Options.THEME].values.LIGHT,
+                    ENUM.Options.data[ENUM.Options.COLORS].values.ENABLED,
+                    ENUM.Options.data[ENUM.Options.MASS].values.DISABLED
+                ]
             }
         };
-        
+
+//=================================================
+//          Events pools
+//=================================================
+
         var events = {
             onNameChange : new EventPool(),
             onOptionChange : new EventPool(),
@@ -589,12 +569,28 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             onTargetLocationSelecion : new EventPool(),
             onUpdateComplete : new EventPool()
         };
+
+//=================================================
+//          Debug data
+//=================================================
+
         window.dbg_e = events;
         window.dbg_k = keybindings;
+
+
+//=================================================
+//          Enabled modules data
+//=================================================
 
         window.ontando.module = {
             list : []
         };
+        
+
+//=================================================
+//          GreaseMonkeys scripts event handlers
+//=================================================
+
         window.ontando.gm_handler = {
             init : function (_GM_setClipboard, _GM_getValue, _GM_setValue) {
                 GM_setClipboard = _GM_setClipboard;
@@ -602,6 +598,13 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 GM_setValue = _GM_setValue;
             }
         }
+
+
+//=================================================
+//          Core game event handlers
+//=================================================
+
+        
         window.ontando.core = {
             newEntity : Entity,
             init : function(canvas, canvasContext2D) {
@@ -777,12 +780,22 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             }
         };
 
+
+//=================================================
+//          Script functions accessors
+//=================================================
+
         window.ontando.script = {
             connectDirect : "This function should connect to server send as first parameter",
             newDocument : "Creates document for text render",
             sendActionPacket : "Sends packet with id given as first parameter: 17 = split, 18 = keepApart (unused), 21 = shoot",
             spawn : "Spawns the player"
         };
+
+
+//=================================================
+//          Saying mainLoader, that we are ready, to receive access to GreaseMonkey storage
+//=================================================
 
         window.ontando_mainLoader_load();
     })();
