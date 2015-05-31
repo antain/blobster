@@ -31,13 +31,13 @@ window.ontando = {};
     function loadDefault(name, async) {
         if (async === true) {
             window.ontando_scriptLoader.github(name);
-            if (ontando_mainLoader_loadLocals) {
+            if (window.ontando_mainLoader_loadLocals) {
                 window.ontando_scriptLoader.localDefault(name);
             }
             
         } else {
             githubSync(name);
-            if (ontando_mainLoader_loadLocals) {
+            if (window.ontando_mainLoader_loadLocals) {
                 localDefaultSync(name);
             }
         }
@@ -51,7 +51,7 @@ window.ontando = {};
     
     // Loading module providers
     window.ontando_scriptLoader.github("mods/githubLoader.js");
-    if (ontando_mainLoader_loadLocals) {
+    if (window.ontando_mainLoader_loadLocals) {
         window.ontando_scriptLoader.localDefault("mods/modsLoader.js");
         window.ontando_scriptLoader.local("localLoader.js");
     }

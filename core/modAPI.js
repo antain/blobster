@@ -15,8 +15,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             window.ontando.ENUM = {};
         }
         var ENUM = window.ontando.ENUM;
-        var v = {main : "0.1.1", script : "514"};
-        var GM_setClipboard = function(){}, GM_getValue = function(){}, GM_setValue = function(){};
+        var v = {main : "0.1.1", script : "519"};
+        var GM_getValue = function(){}, GM_setValue = function(){};
         var keybindings = {};
         var keyBindingUUID = 0;
 
@@ -277,34 +277,94 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             
             // Event handler redistrators
             
-            onNameChangeEvent : function(handler, priority) {
+            onNameChangeEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
                 events.onNameChange.add(new EventHandler(this, handler, priority));
             },
-            onOptionChangeEvent : function(handler, priority) {
+            onOptionChangeEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
                 events.onOptionChange.add(new EventHandler(this, handler, priority));
             },
-            onConnectingStartEvent : function(handler, priority) {
+            onConnectingStartEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
                 events.onConnectingStart.add(new EventHandler(this, handler, priority));
             },
-            onRenderCompleteEvent : function(handler, priority) {
+            onRenderCompleteEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
                 events.onRenderComplete.add(new EventHandler(this, handler, priority));
             },
-            onEntityShouldRenderEvent : function(handler, priority) {
+            onEntityShouldRenderEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
                 events.onEntityShouldRender.add(new EventHandler(this, handler, priority));
             },
-            onEntityRenderColorSelectedEvent : function(handler, priority) {
+            onEntityRenderColorSelectedEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
                 events.onEntityRenderColorSelected.add(new EventHandler(this, handler, priority));
             },
-            onMenuHideEvent : function(handler, priority) {
+            onMenuHideEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
                 events.onMenuHide.add(new EventHandler(this, handler, priority));
             },
-            onMenuShowEvent : function(handler, priority) {
+            onMenuShowEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
                 events.onMenuShow.add(new EventHandler(this, handler, priority));
             },
-            onTargetLocationSelecionEvent : function(handler, priority) {
+            onTargetLocationSelecionEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
                 events.onTargetLocationSelecion.add(new EventHandler(this, handler, priority));
             },
-            onUpdateCompleteEvent : function(handler, priority) {
+            onUpdateCompleteEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
                 events.onUpdateComplete.add(new EventHandler(this, handler, priority));
             }
         };
@@ -480,7 +540,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         EventPool.prototype = {
             add : function(eh) {
                 this.pool.push(eh);
-                this.pool.sort(function (a, b) { return b.priority - a.priority; });
+                this.pool.sort(function (a, b) { return a.priority - b.priority; });
             },
             apply : function(e) {
                 for (var i = 0; i < this.pool.length; i++) {
@@ -491,6 +551,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         };
 
         function EventHandler(module, handler, priority) {
+            if (typeof(handler) != "function") {
+                throw "Handler should be function";
+            }
             this.module = module;
             this.handle = handler;
             this.priority = priority === undefined ? 0 : priority;
@@ -592,8 +655,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
 //=================================================
 
         window.ontando.gm_handler = {
-            init : function (_GM_setClipboard, _GM_getValue, _GM_setValue) {
-                GM_setClipboard = _GM_setClipboard;
+            init : function (_GM_getValue, _GM_setValue) {
                 GM_getValue = _GM_getValue;
                 GM_setValue = _GM_setValue;
             }
