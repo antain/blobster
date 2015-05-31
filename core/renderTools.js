@@ -19,7 +19,10 @@ if (document.currentScript.override < window.ontando_core_renderTools_override) 
             sizeModifier : 1,
             color : "#FFFFFF",
             borderColor : "#000000",
-            visible : true
+            visible : true,
+            getText : function() {
+                return this.text;
+            }
         };
         
         window.ontando.RenderTools = function(canvas, canvasContext2D, docCreator) {
@@ -32,8 +35,11 @@ if (document.currentScript.override < window.ontando_core_renderTools_override) 
         }
         window.ontando.RenderTools.prototype = {
             newText : function(options) {
-                var text = typeof(options.text) == "function" ? options.text : function() { return options.text };
-                return new Text(text, options.size, options.sizeModifier, options.color, options.borderColor);
+                var text = new Text(options.text, options.size, options.sizeModifier, options.color, options.borderColor);
+                if (options.textProvider !== undefined) {
+                    text.getText = options.textProvider;
+                }
+                return text;
             },
             renderText : function(centerX, centerY, text, size) {
                 if (text.cache == undefined) {
@@ -45,7 +51,7 @@ if (document.currentScript.override < window.ontando_core_renderTools_override) 
                     //    this._stroke != a && (this._stroke = a, this._dirty = !0)
                     //},
                 
-                doc.setValue(text.text());
+                doc.setValue(text.getText());
                 doc.setColor(text.color);
                 doc.setStrokeColor(text.borderColor);
                 

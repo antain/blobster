@@ -115,7 +115,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
             g("#adsBottom").hide();
             g("#overlays").hide();
             sa()
-            /*new*/ window.ontando.core.hideMenu();
+            /*new*/ window.ontando.core.spawn();
         }
 
         function S(a) {
@@ -323,7 +323,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
             c += 4;
             for (e = 0; e < b; e++) d = a.getUint32(c, !0), c += 4, k = y[d], null != k && k.destroy();
             ia && 0 == l.length && pa(!1)
-            /*new*/ if (ia && 0 == l.length) { window.ontando.core.showMenu(); }
+            /*new*/ if (ia && 0 == l.length) { window.ontando.core.death(); }
             /*new*/ window.ontando.core.postUpdate();
         }
 

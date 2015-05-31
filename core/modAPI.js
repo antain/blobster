@@ -366,6 +366,24 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     priority = opt_priority;
                 }
                 events.onUpdateComplete.add(new EventHandler(this, handler, priority));
+            },
+            onPlayerDeathEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
+                events.onPlayerDeath.add(new EventHandler(this, handler, priority));
+            },
+            onPlayerSpawnEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
+                events.onPlayerSpawn.add(new EventHandler(this, handler, priority));
             }
         };
 
@@ -474,6 +492,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.isVirus = false;
             this.isFood = false;
             this.isMe = false;
+            this.isAlive = true;
             this.name = name;
             var that = this;
             this.text = []
@@ -484,8 +503,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.list.allAmount++;
             
             if (!this.isVirus && !this.isFood) {
-                this.text.push(Module.prototype.renderTools.newText({text : name}));
-                this.text.push(Module.prototype.renderTools.newText({text : function() {return that.mass.toFixed()}, sizeModifier : 0.5}));
+                this.text.push(Module.prototype.renderTools.newText({text : name, sizeModifier : 2}));
+                this.text.push(Module.prototype.renderTools.newText({textProvider : function() {return that.mass.toFixed()}, sizeModifier : 1}));
             }
         }
         Entity.prototype = {
@@ -506,6 +525,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 this.list.meAmount++;
             },
             destroy : function() {
+                this.isAlive = false;
                 delete this.list.all[this.id];
                 this.list.amount--;
                 this.list.allAmount++;
@@ -630,7 +650,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             onMenuHide : new EventPool(),
             onMenuShow : new EventPool(),
             onTargetLocationSelecion : new EventPool(),
-            onUpdateComplete : new EventPool()
+            onUpdateComplete : new EventPool(),
+            onPlayerDeath : new EventPool(),
+            onPlayerSpawn : new EventPool()
         };
 
 //=================================================
@@ -743,11 +765,13 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     return false;
                 }
             },
-            hideMenu : function() {
+            spawn : function() {
                 events.onMenuHide.apply({});
+                events.onPlayerSpawn.apply({});
             },
-            showMenu : function() {
+            death : function() {
                 events.onMenuShow.apply({});
+                events.onPlayerDeath.apply({});
             },
             connecting : function(ip) {
                 ent.amount = 0,

@@ -176,9 +176,9 @@ window.install.push({
             this.fillColor = "white";                       // Your awesome color
             this.borderColor = "blue";                      // Your awesome border color
         });
-        this.onMenuHideEvent(function(e) {                  // Invokes when main menu hiden
+        this.onPlayerSpawnEvent(function(e) {                  // Invokes when main menu hiden
         });
-        this.onMenuShowEvent(function(e) {                  // Invokes when main menu shown
+        this.onPlayerDeathEvent(function(e) {                  // Invokes when main menu shown
         });
         this.onTargetLocationSelecionEvent(function(e) {    // Invokes when location to move determines
             var x = e.x;                                    // Current target x (set by mouse or other module)
@@ -186,6 +186,9 @@ window.install.push({
             e.x = 0;                                        // Your smart target x
             e.y = 0;                                        // Your smart target y
             e.suppress = e.suppress | true;                 // Suppress this update
+        });
+        this.onUpdateCompleteEvent(function(e) {            // Invokes, when data received from server and hndlered
+            
         });
         
         // ================

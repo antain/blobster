@@ -24,7 +24,7 @@ window.install.push({
         jQuery("body").prepend(
         '<div class="ontando_bonusTabs" style="height: 1px; position: absolute; left: 0px; right: 0px; top: 0px; z-index: 300; display: block;">'
             + '<div style="height: 50px; width: 500px; margin: 3px auto;">'
-                + '<div style="height: 50px; width: 240px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
+                + '<div id="ontando_blobster_name" style="height: 50px; width: 240px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
                     + 'Ontando Blobster mod'
                     + '<br /> '
                     + 'Version : ' + this.version.main + ' (' + this.version.script + ')'
