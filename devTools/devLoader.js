@@ -8,9 +8,6 @@ window.ontando = {};
         
         // Loading tools
         loadDefault("devTools/loaderConfig.js");
-        
-        // Loading module providers
-        loadLocal("localLoader.js");
     
     });
     

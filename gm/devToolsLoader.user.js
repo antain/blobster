@@ -3,7 +3,7 @@
 // @namespace    ontando.io.agar.devTools
 // @updateURL    https://rawgit.com/antain/blobster/master/gm/devToolsLoader.user.js
 // @downloadURL  https://rawgit.com/antain/blobster/master/gm/devToolsLoader.user.js
-// @version      0.1.0
+// @version      0.1.1
 // @description  Arag.IO script group loader
 // @author       ontando (angal)
 // @include      http://agar.io/

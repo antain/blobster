@@ -3,7 +3,7 @@
 // @namespace    ontando.io.agar
 // @updateURL    https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
 // @downloadURL  https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
-// @version      0.2.6
+// @version      0.2.7
 // @description  Arag.IO script group loader
 // @author       ontando (angal)
 // @include      http://agar.io/
@@ -18,10 +18,12 @@
     w.ontando_mainLoader_loadLocals = GM_getValue("mainLoader:loadLocals");
     w.ontando_mainLoader_localhost = GM_getValue("mainLoader:localhost");
     w.ontando_mainLoader_core_name = GM_getValue("mainLoader:core_name");
+    w.ontando_mainLoader_brunch = GM_getValue("mainLoader:brunch");
     
     (w.ontando_mainLoader_loadLocals === undefined) && (w.ontando_mainLoader_loadLocals = false);
     (w.ontando_mainLoader_localhost === undefined) && (w.ontando_mainLoader_localhost = "localhost:8000");
     (w.ontando_mainLoader_core_name === undefined) && (w.ontando_mainLoader_core_name = "blobster");
+    (w.ontando_mainLoader_brunch === undefined) && (w.ontando_mainLoader_brunch = "master");
     
     w.ontando_mainLoader_updateOptions = function(loadLocals, localhost, core_name) {
         (loadLocals === undefined) || GM_setValue("mainLoader:loadLocals", loadLocals);

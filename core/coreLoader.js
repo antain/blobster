@@ -1,6 +1,10 @@
 window.ontando = {};
 
-(function(loadLocals, localhost, core_name) {
+(function() {
+    var loadLocals = window.ontando_mainLoader_loadLocals;
+    var localhost = window.ontando_mainLoader_localhost;
+    var core_name = window.ontando_mainLoader_core_name;
+    var brunch = window.ontando_mainLoader_brunch;
     
     function pushScript(src, override) {
         var script = document.createElement('script');
@@ -11,7 +15,7 @@ window.ontando = {};
         document.head.appendChild(script);
     }
     function getGitHubLocation(name) {
-        return "https://rawgit.com/antain/blobster/master/" + name;
+        return "https://rawgit.com/antain/blobster/" + brunch + "/" + name;
     }
     function getLocalLocation(name) {
         return "http://" + localhost + "/" + core_name + "/" + name;
@@ -43,8 +47,9 @@ window.ontando = {};
         if (loadLocals) {
             function T() {
                 this.error = function(jqXHR, textStatus, errorThrown) {
-                    console.error("DevTools: Failed to load locally '" + content + "': " + textStatus);
-                    console.error("DevTools: Error: " + errorThrown);
+                    console.error("CoreLoader: Failed to load content locally '" + content + "': " + textStatus);
+                    console.error("CoreLoader: Error: " + errorThrown);
+                    console.error("CoreLoader: Trying to load from GitHub");
                     delete this.error;
                     $.ajax(getGitHubLocation(content), this);
                 }
@@ -70,4 +75,4 @@ window.ontando = {};
         window.ontando_scriptLoader.local("localLoader.js");
     }
     
-}) (window.ontando_mainLoader_loadLocals, window.ontando_mainLoader_localhost, window.ontando_mainLoader_core_name);
+}) ();
