@@ -1,4 +1,5 @@
 window.ontando = {};
+window.ontando_scriptLoader = {};
 
 (function() {
     var loadLocals = window.ontando_mainLoader_loadLocals;
@@ -23,7 +24,6 @@ window.ontando = {};
     function getLocalCustomLocation(name) {
         return "http://" + localhost + "/" + "/" + name;
     }
-    window.ontando_scriptLoader = {};
     window.ontando_scriptLoader.github = function (name) { 
         pushScript(getGitHubLocation(name) + "?_=" + new Date().getTime(), 0);
     };
@@ -45,17 +45,14 @@ window.ontando = {};
     window.ontando_scriptLoader.loadLocal = window.ontando_scriptLoader.local;
     window.ontando_scriptLoader.loadContent = function(content, options) {
         if (loadLocals) {
-            function T() {
-                this.error = function(jqXHR, textStatus, errorThrown) {
-                    console.error("CoreLoader: Failed to load content locally '" + content + "': " + textStatus);
-                    console.error("CoreLoader: Error: " + errorThrown);
-                    console.error("CoreLoader: Trying to load from GitHub");
-                    delete this.error;
-                    $.ajax(getGitHubLocation(content), this);
-                }
+            var error = options.error;
+            options.error = function(jqXHR, textStatus, errorThrown) {
+                console.error("CoreLoader: Failed to load content locally '" + content + "': " + textStatus);
+                console.error("CoreLoader: Error: " + errorThrown);
+                console.error("CoreLoader: Trying to load from GitHub");
+                options.error = error;
+                $.ajax(getGitHubLocation(content), this);
             }
-            T.prototype = options;
-            options = new T();
             $.ajax(getLocalLocation(content), options);
         } else {
             $.ajax(getGitHubLocation(content), options);
