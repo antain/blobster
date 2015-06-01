@@ -3,7 +3,7 @@
 // @namespace    ontando.io.agar
 // @updateURL    https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
 // @downloadURL  https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
-// @version      0.2.7
+// @version      0.2.9
 // @description  Arag.IO script group loader
 // @author       ontando (angal)
 // @include      http://agar.io/
@@ -18,18 +18,33 @@
     w.ontando_mainLoader_loadLocals = GM_getValue("mainLoader:loadLocals");
     w.ontando_mainLoader_localhost = GM_getValue("mainLoader:localhost");
     w.ontando_mainLoader_core_name = GM_getValue("mainLoader:core_name");
-    w.ontando_mainLoader_brunch = GM_getValue("mainLoader:brunch");
+    w.ontando_mainLoader_branch = GM_getValue("mainLoader:branch");
+    var customScripts = GM_getValue("mainLoader:customScripts");
+    w.ontando_mainLoader_customScripts = [];
+    for (var i = 0; i < customScripts; i++) {
+        w.ontando_mainLoader_customScripts.push(GM_getValue("mainLoader:customScripts:" + i));
+    }
     
     (w.ontando_mainLoader_loadLocals === undefined) && (w.ontando_mainLoader_loadLocals = false);
     (w.ontando_mainLoader_localhost === undefined) && (w.ontando_mainLoader_localhost = "localhost:8000");
     (w.ontando_mainLoader_core_name === undefined) && (w.ontando_mainLoader_core_name = "blobster");
-    (w.ontando_mainLoader_brunch === undefined) && (w.ontando_mainLoader_brunch = "master");
+    (w.ontando_mainLoader_branch === undefined) && (w.ontando_mainLoader_branch = "master");
     
-    w.ontando_mainLoader_updateOptions = function(loadLocals, localhost, core_name) {
-        (loadLocals === undefined) || GM_setValue("mainLoader:loadLocals", loadLocals);
-        (localhost === undefined) || GM_setValue("mainLoader:localhost", localhost);
-        (core_name === undefined) || GM_setValue("mainLoader:core_name", core_name);
-    }
+    w.ontando_mainLoader_updateOptions = function() {
+        GM_setValue("mainLoader:loadLocals", w.ontando_mainLoader_loadLocals);
+        GM_setValue("mainLoader:localhost", w.ontando_mainLoader_localhost);
+        GM_setValue("mainLoader:core_name", w.ontando_mainLoader_core_name);
+        GM_setValue("mainLoader:branch", w.ontando_mainLoader_branch);
+        GM_setValue("mainLoader:customScripts", w.ontando_mainLoader_customScripts.length);
+        for (var i = 0; i < w.ontando_mainLoader_customScripts.length; i++) {
+            var src = w.ontando_mainLoader_customScripts[i];
+            if (!src || src === null || src === undefined || src == "") {
+                continue;
+            }
+            GM_getValue("mainLoader:customScripts:" + i, src);
+        }
+    };
+
     w.ontando_mainLoader_load = function() {
         w.ontando.gm_handler.init(
                 function (key) { return GM_getValue("blobster:" + key); },

@@ -1,7 +1,38 @@
-<div id="ontando_devTools_loaderConfig" style="height: 0px; position: absolute; left: 5px; top: 5px; z-index: 300; display: block;">
-    <div style="height: 50px; width: 50px; margin: 3px auto;">
-        <div id="ontando_devTools_loaderConfig_button" style="height: 50px; width: 50px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
-            ???
+<div id="ontando_devTools_loaderConfig" style="height: 0px; width: 300px; position: absolute; left: 5px; top: 5px; z-index: 300; display: block;">
+    <div id="ontando_devTools_loaderConfig_config" style="height: 500px; width: 200px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 15px;">
+
+        <div style="height: 30px; width: 200px; ">
+            <label for="ontando_devTools_loaderConfig_config_branch">Brunch</label>
+            <input id="ontando_devTools_loaderConfig_config_branch" value="master" style="width: 100px; float:right;">
         </div>
+        <hr>
+        Local repository:
+
+        <div style="height: 30px; width: 200px; ">
+            <label for="ontando_devTools_loaderConfig_config_localRepo_enabled">Enabled: </label>
+            <input id="ontando_devTools_loaderConfig_config_localRepo_enabled" type="checkbox" style="width: 100px; float:right;">
+        </div>
+        <div style="height: 30px; width: 200px; ">
+            <label for="ontando_devTools_loaderConfig_config_localRepo_host">Host: </label>
+            <input id="ontando_devTools_loaderConfig_config_localRepo_host" value="localhost:8000" style="width: 100px; float:right;">
+        </div>
+        <div style="height: 30px; width: 200px; ">
+            <label for="ontando_devTools_loaderConfig_config_localRepo_home">Home: </label>
+            <input id="ontando_devTools_loaderConfig_config_localRepo_home" value="blobster" style="width: 100px; float:right;">
+        </div>
+        <hr>
+
+        Custom scripts:
+        <button id="ontando_devTools_loaderConfig_config_customScripts_add" style="float:right;">add</button>
+        <div id="ontando_devTools_loaderConfig_config_customScripts">
+
+        </div>
+        <hr>
+        <button id="ontando_devTools_loaderConfig_config_save">Save all</button>
+
+    </div>
+    <div id="ontando_devTools_loaderConfig_button" style="height: 16px; width: 16px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 5px 5px 5px;">
+        X
     </div>
 </div>
+
