@@ -3,13 +3,12 @@
 // @namespace    ontando.io.agar
 // @updateURL    https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
 // @downloadURL  https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
-// @version      0.2.5
+// @version      0.2.6
 // @description  Arag.IO script group loader
 // @author       ontando (angal)
 // @include      http://agar.io/
 // @include      http://agar.io/*
 // @include      http://*.agar.io/*
-// @grant        GM_setClipboard
 // @grant        GM_setValue
 // @grant        GM_getValue
 // ==/UserScript==
@@ -32,7 +31,7 @@
     w.ontando_mainLoader_load = function() {
         w.ontando.gm_handler.init(
                 function (key) { return GM_getValue("blobster:" + key); },
-                function (key, value) {GM_setValue("blobster:" + key, value); }
+                function (key, value) { GM_setValue("blobster:" + key, value); }
         );
     };
     

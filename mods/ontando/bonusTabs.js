@@ -19,9 +19,10 @@ window.install.push({
         this.moduleConfig.register(this.constants.ConfigType.BOOLEAN, "BOOLEAN", function(a) { console.log(a); return a; }, true);
         this.moduleConfig.register(this.constants.ConfigType.KEY, "KEY", function(a) { console.log(a); return a; }, 69);
         this.moduleConfig.register(this.constants.ConfigType.COLOR, "COLOR", function(a) { console.log(a); return a; }, "#FF0000");
-        
-        
-        jQuery("body").prepend(
+
+
+        var body = jQuery("body");
+        body.prepend(
         '<div class="ontando_bonusTabs" style="height: 1px; position: absolute; left: 0px; right: 0px; top: 0px; z-index: 300; display: block;">'
             + '<div style="height: 50px; width: 500px; margin: 3px auto;">'
                 + '<div id="ontando_blobster_name" style="height: 50px; width: 240px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
@@ -36,7 +37,7 @@ window.install.push({
             + '</div>'
         + '</div>'
         );
-        jQuery("body").prepend(
+        body.prepend(
         '<div class="ontando_bonusTabs" style="height: 1px; position: absolute; left: 0px; right: 0px; top: 0px; z-index: 300; display: block;">'
             + '<div style="height: 1px; width: 950px; margin: 100px auto;">'
                 + '<div style="height: 500px; width: 250px; float:left; background-color: #FFFFFF; margin: 0px 5px; border-radius: 15px; padding: 5px 15px 5px 15px;">'
