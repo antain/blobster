@@ -7,57 +7,46 @@ window.ontando_scriptLoader = {};
     var core_name = window.ontando_mainLoader_core_name;
     var branch = window.ontando_mainLoader_branch;
     
-    function pushScript(src, override) {
+    function pushScript(src, override, async) {
         var script = document.createElement('script');
         script.type = "text/javascript";
         script.override = override;
         script.src = src;
-        script.async = false;
+        script.async = async;
         document.head.appendChild(script);
     }
     function getGitHubLocation(name) {
         return "https://rawgit.com/antain/blobster/" + branch + "/" + name;
     }
     function getLocalLocation(name) {
-        return "http://" + localhost + "/" + core_name + "/" + name;
+        return localhost + "/" + name;
     }
-    function getLocalCustomLocation(name) {
-        return "http://" + localhost + "/" + "/" + name;
+    var github = function (name) {
+        pushScript(getGitHubLocation(name) + "?_=" + new Date().getTime(), 0, false);
+    };
+    var local = function (name) {
+        pushScript(getLocalLocation(name) + "?_=" + new Date().getTime(), 10, false);
+    };
+
+    function loadRemoteAsync(name) {
+        pushScript(getGitHubLocation(name) + "?_=" + new Date().getTime(), 0, true);
     }
-    window.ontando_scriptLoader.github = function (name) { 
-        pushScript(getGitHubLocation(name) + "?_=" + new Date().getTime(), 0);
-    };
-    window.ontando_scriptLoader.localDefault = function (name) {
-        pushScript(getLocalLocation(name) + "?_=" + new Date().getTime(), 10);
-    };
-    window.ontando_scriptLoader.local = function (name) {
-        pushScript(getLocalCustomLocation(name) + "?_=" + new Date().getTime(), 20);
-    };
-    
     
     function loadDefault(name) {
-        window.ontando_scriptLoader.github(name);
         if (loadLocals) {
-            window.ontando_scriptLoader.localDefault(name);
+            local(name);
+        } else {
+            github(name);
         }
     }
-    window.ontando_scriptLoader.loadDefault = loadDefault;
-    window.ontando_scriptLoader.loadLocal = window.ontando_scriptLoader.local;
-    window.ontando_scriptLoader.loadContent = function(content, options) {
-        if (loadLocals) {
-            var error = options.error;
-            options.error = function(jqXHR, textStatus, errorThrown) {
-                console.error("CoreLoader: Failed to load content locally '" + content + "': " + textStatus);
-                console.error("CoreLoader: Error: " + errorThrown);
-                console.error("CoreLoader: Trying to load from GitHub");
-                options.error = error;
-                $.ajax(getGitHubLocation(content), options);
-            }
-            $.ajax(getLocalLocation(content), options);
-        } else {
-            $.ajax(getGitHubLocation(content), options);
-        }
-    };
+
+    function loadContent(content, options) {
+        $.ajax(getGitHubLocation(content), options);
+    }
+
+    window.ontando_scriptLoader.load = loadDefault;
+    window.ontando_scriptLoader.loadRemoteAsync = loadRemoteAsync;
+    window.ontando_scriptLoader.loadContent = loadContent;
     
     // Loading core
     loadDefault("core/base.js");
@@ -66,10 +55,11 @@ window.ontando_scriptLoader = {};
     loadDefault("core/modAPI.js");
     
     // Loading module providers
-    window.ontando_scriptLoader.github("mods/githubLoader.js");
-    if (window.loadLocals) {
-        window.ontando_scriptLoader.localDefault("mods/modsLoader.js");
-        //window.ontando_scriptLoader.local("localLoader.js");
+    loadDefault("mods/modsLoader.js");
+
+    for (var i = 0; i < window.ontando_mainLoader_customScripts.length; i++) {
+        var src = window.ontando_mainLoader_customScripts[i];
+        pushScript(src, 20, true);
     }
     
 }) ();

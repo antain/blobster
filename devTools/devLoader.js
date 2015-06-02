@@ -1,15 +1,17 @@
-window.ontando = {};
 
-(function() {
-    
-    $(document).ready(function() {
-        var loadDefault = window.ontando_scriptLoader.loadDefault;
-        var loadLocal = window.ontando_scriptLoader.loadLocal;
-        
-        // Loading tools
-        loadDefault("devTools/loaderConfig.js");
-    
-    });
-    
-    
-}) ();
+(function () {
+
+    function load() {
+        if (!window.ontando_scriptLoader) {
+            setTimeout(load, 500);
+        } else {
+            var loadRemoteAsync = window.ontando_scriptLoader.loadRemoteAsync;
+
+            // Loading tools
+            loadRemoteAsync("devTools/loaderConfig.js");
+        }
+    }
+
+    $(document).ready(load);
+
+})();

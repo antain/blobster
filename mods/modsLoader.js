@@ -8,4 +8,4 @@
     
     load("mods/DiaLight/testBot.js");
     
-})(window.ontando_scriptLoader.localDefault);
+})(window.ontando_scriptLoader.load);

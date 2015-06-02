@@ -3,7 +3,7 @@
 // @namespace    ontando.io.agar
 // @updateURL    https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
 // @downloadURL  https://rawgit.com/antain/blobster/master/gm/mainLoader.user.js
-// @version      0.2.9
+// @version      0.2.11
 // @description  Arag.IO script group loader
 // @author       ontando (angal)
 // @include      http://agar.io/
@@ -17,7 +17,6 @@
     
     w.ontando_mainLoader_loadLocals = GM_getValue("mainLoader:loadLocals");
     w.ontando_mainLoader_localhost = GM_getValue("mainLoader:localhost");
-    w.ontando_mainLoader_core_name = GM_getValue("mainLoader:core_name");
     w.ontando_mainLoader_branch = GM_getValue("mainLoader:branch");
     var customScripts = GM_getValue("mainLoader:customScripts");
     w.ontando_mainLoader_customScripts = [];
@@ -26,23 +25,22 @@
     }
     
     (w.ontando_mainLoader_loadLocals === undefined) && (w.ontando_mainLoader_loadLocals = false);
-    (w.ontando_mainLoader_localhost === undefined) && (w.ontando_mainLoader_localhost = "localhost:8000");
-    (w.ontando_mainLoader_core_name === undefined) && (w.ontando_mainLoader_core_name = "blobster");
+    (w.ontando_mainLoader_localhost === undefined) && (w.ontando_mainLoader_localhost = "http://localhost:8000/blobster");
     (w.ontando_mainLoader_branch === undefined) && (w.ontando_mainLoader_branch = "master");
     
     w.ontando_mainLoader_updateOptions = function() {
         GM_setValue("mainLoader:loadLocals", w.ontando_mainLoader_loadLocals);
         GM_setValue("mainLoader:localhost", w.ontando_mainLoader_localhost);
-        GM_setValue("mainLoader:core_name", w.ontando_mainLoader_core_name);
         GM_setValue("mainLoader:branch", w.ontando_mainLoader_branch);
-        GM_setValue("mainLoader:customScripts", w.ontando_mainLoader_customScripts.length);
+        var j = 0;
         for (var i = 0; i < w.ontando_mainLoader_customScripts.length; i++) {
             var src = w.ontando_mainLoader_customScripts[i];
             if (!src || src === null || src === undefined || src == "") {
                 continue;
             }
-            GM_getValue("mainLoader:customScripts:" + i, src);
+            GM_setValue("mainLoader:customScripts:" + (j++), src);
         }
+        GM_setValue("mainLoader:customScripts", j);
     };
 
     w.ontando_mainLoader_load = function() {
