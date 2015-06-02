@@ -495,7 +495,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.isAlive = true;
             this.name = name;
             var that = this;
-            this.text = []
+            this.text = [];
+            this.lines = {};
             
             this.update(x, y, size, color, isVirus, name);
             this.list.all[id] = this;
@@ -537,16 +538,25 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 this.id = undefined;
             },
             // Inner API
-            renderText : function(size) {
-                var y = this.renderY;
-                for (var i = 0; i < this.text.length; i++) {
-                    var text = this.text[i];
-                    if (text != undefined && text.visible) {
-                        y += Module.prototype.renderTools.renderText(this.renderX, y, text, size);
+            renderLines : function(size) {
+                for (var i in this.lines) {
+                    if (!this.lines.hasOwnProperty(i)) {
+                        continue;
+                    }
+                    var line = this.lines[i];
+                    if (line != undefined) {
+                        if (!line.check()) {
+                            delete this.lines[i];
+                            continue;
+                        }
+                        Module.prototype.renderTools.renderLine(this.renderX, this.renderY, line, size);
                     }
                 }
+            },
+            renderText : function(size) {
+                Module.prototype.renderTools.renderTexts(this.renderX, this.renderY, this.text, size);
             }
-        }
+        };
 
 //=================================================
 //          Events management

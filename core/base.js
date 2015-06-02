@@ -429,8 +429,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                 return a.size == b.size ? a.id - b.id : a.size - b.size
             });
             e.save();
-            e.translate(q /
-                2, r / 2);
+            e.translate(q / 2, r / 2);
             e.scale(h, h);
             e.translate(-s, -t);
             for (d = 0; d < E.length; d++) E[d].draw();
@@ -1084,6 +1083,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                             (ma || 15 < this.size) && !a && (e.strokeStyle = "#000000", e.globalAlpha *= .1, e.stroke());
                             e.globalAlpha = 1;
                             null != d && b && e.drawImage(d, this.x - 2 * this.size, this.y - 2 * this.size, 4 * this.size, 4 * this.size);
+                            /*new*/ this.api.renderLines(this.getNameSize()); // Rendering lines from this entity
                             /*new*/ this.api.renderText(this.getNameSize()); // Rendering text by ourself
                             /*new*/ e.restore();
                             /*new*/ return; // And skipping default text

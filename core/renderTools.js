@@ -24,6 +24,27 @@ if (document.currentScript.override < window.ontando_core_renderTools_override) 
                 return this.text;
             }
         };
+        function Line(x, y, size, color, check) {
+            x &&(this.x = x);
+            y &&(this.y = y);
+            size &&(this.size = size);
+            color &&(this.color = color);
+            check &&(this.check = check);
+            this.text = [];
+        }
+
+        Line.prototype = {
+            x : 0,
+            y : 0,
+            size : 1,
+            color : "#0000FF",
+            getX : function() {
+                return this.x;
+            },
+            getY : function() {
+                return this.y;
+            }
+        };
         
         window.ontando.RenderTools = function(canvas, canvasContext2D, docCreator) {
             this.canvas = canvas;
@@ -40,6 +61,44 @@ if (document.currentScript.override < window.ontando_core_renderTools_override) 
                     text.getText = options.textProvider;
                 }
                 return text;
+            },
+            newLine : function(options) {
+                var line = new Line(options.x, options.y, options.size, options.color, options.check);
+                if (options.entity !== undefined) {
+                    line.getX = function() { return options.entity.x; };
+                    line.getY = function() { return options.entity.y; };
+
+                    if (options.check !== undefined) {
+                        line.check = function() {
+                            return options.entity.isAlive && options.check();
+                        }
+                    } else {
+                        line.check = function() {
+                            return options.entity.isAlive;
+                        }
+                    }
+                }
+                return line;
+            },
+            renderLine : function(sourceX, sourceY, line, size) {
+                this.canvasContext2D.beginPath();
+                this.canvasContext2D.strokeStyle = line.color;
+                this.canvasContext2D.lineWidth = line.size;
+                var targetX = line.getX();
+                var targetY = line.getY();
+                this.canvasContext2D.moveTo(sourceX, sourceY);
+                this.canvasContext2D.lineTo(targetX, targetY);
+                this.canvasContext2D.stroke();
+
+                this.renderTexts(sourceX + (targetX - sourceX) / 5, sourceY + (targetY - sourceY) / 5, line.text, size);
+            },
+            renderTexts : function(x, y, texts, size) {
+                for (var i = 0; i < texts.length; i++) {
+                    var text = texts[i];
+                    if (text != undefined && text.visible) {
+                        y += this.renderText(x, y, text, size);
+                    }
+                }
             },
             renderText : function(centerX, centerY, text, size) {
                 if (text.cache == undefined) {
