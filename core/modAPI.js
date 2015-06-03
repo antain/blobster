@@ -332,6 +332,24 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 }
                 events.onEntityRenderColorSelected.add(new EventHandler(this, handler, priority));
             },
+            onEntitySkinRenderEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
+                events.onEntityRenderColorSelected.add(new EventHandler(this, handler, priority));
+            },
+            onSkinURLCreatedEvent : function(opt_priority, handler) {
+                var priority;
+                if (typeof(opt_priority) == "function") {
+                    handler = opt_priority;
+                } else {
+                    priority = opt_priority;
+                }
+                events.onSkinURLCreated.add(new EventHandler(this, handler, priority));
+            },
             onMenuHideEvent : function(opt_priority, handler) {
                 var priority;
                 if (typeof(opt_priority) == "function") {
@@ -696,6 +714,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             onConnectingStart : new EventPool(),
             onRenderComplete : new EventPool(),
             onEntityRenderColorSelected : new EventPool(),
+            onEntitySkinRender : new EventPool(),
+            onSkinURLCreated : new EventPool(),
             onEntitySholdRender : new EventPool(),
             onMenuHide : new EventPool(),
             onMenuShow : new EventPool(),
@@ -877,6 +897,16 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     var e = new EntityRenderColorSelectedEvent(entity.api, fillColor, borderColor);
                     events.onEntityRenderColorSelected.apply(e);
                     return [e.fillColor, e.borderColor];
+                },
+                getSkinId : function(entity, skinId, shouldRender) {
+                    var e = {entity : entity, skinId : skinId, shouldRender : shouldRender};
+                    events.onEntitySkinRender.apply(e);
+                    return [e.skinId, e.shouldRender];
+                },
+                getSkinURL : function(skinId, original) {
+                    var e = {skinId : skinId, originalURL : original};
+                    events.onSkinURLCreated.apply(e);
+                    return e.originalURL;
                 }
             },
             options : {

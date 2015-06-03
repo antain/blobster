@@ -1107,7 +1107,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                     },
                     draw: function() {
                         /*new*/ if (window.ontando.core.entity.shouldRender(this, this.shouldRender())) {
-                        /*removed*///if (this.shouldRender()) {
+                        /*removed*/// if (this.shouldRender()) {
                             var a = !this.isVirus && !this.isAgitated && .35 > h;
                             if (this.wasSimpleDrawing && !a)
                                 for (var b = 0; b < this.points.length; b++) this.points[b].v = this.size;
@@ -1135,7 +1135,18 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                             }
                             e.closePath();
                             c = this.name.toLowerCase();
-                            !this.isAgitated && Ka && "" == L ? -1 != ta.indexOf(c) ? (I.hasOwnProperty(c) || (I[c] = new Image, I[c].src = "skins/" + c + ".png"), b = 0 != I[c].width && I[c].complete ? I[c] : null) : b = null : b = null;
+                            /*new*/ var tmp_skin = window.ontando.core.entity.getSkinId(this.api, c, !this.isAgitated && Ka && "" == L);
+                            /*new*/ c = tmp_skin[0];
+                            /*new*/ var tmp_s = window.ontando.core.entity.getSkinURL(name, -1 != ta.indexOf(c) ? "skins/" + c + ".png" : undefined);
+                            /*removed*/// !this.isAgitated && Ka && "" == L ? -1 != ta.indexOf(c) ? (
+                            /*new*/ tmp_skin[1] ? tmp_s !== undefined ? (
+                                I.hasOwnProperty(c) || (
+                                        I[c] = new Image,
+                                        /*new*/ I[c].src = tmp_s
+                                        /*removed*/// I[c].src = "skins/" + c + ".png"
+                                ),
+                                b = 0 != I[c].width && I[c].complete ? I[c] : null
+                            ) : b = null : b = null;
                             b = (d = b) ? -1 != Ya.indexOf(c) : !1;
                             a || e.stroke();
                             e.fill();
