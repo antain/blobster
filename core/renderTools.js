@@ -43,6 +43,9 @@ if (document.currentScript.override < window.ontando_core_renderTools_override) 
             },
             getY : function() {
                 return this.y;
+            },
+            check : function() {
+                return true;
             }
         };
         
@@ -65,8 +68,8 @@ if (document.currentScript.override < window.ontando_core_renderTools_override) 
             newLine : function(options) {
                 var line = new Line(options.x, options.y, options.size, options.color, options.check);
                 if (options.entity !== undefined) {
-                    line.getX = function() { return options.entity.x; };
-                    line.getY = function() { return options.entity.y; };
+                    line.getX = function() { return options.entity.renderX; };
+                    line.getY = function() { return options.entity.renderY; };
 
                     if (options.check !== undefined) {
                         line.check = function() {
@@ -93,14 +96,29 @@ if (document.currentScript.override < window.ontando_core_renderTools_override) 
                 this.renderTexts(sourceX + (targetX - sourceX) / 5, sourceY + (targetY - sourceY) / 5, line.text, size);
             },
             renderTexts : function(x, y, texts, size) {
-                for (var i = 0; i < texts.length; i++) {
+                if (texts.length <= 0) {
+                    return;
+                }
+                var t = 0;
+                if (texts[0] != undefined && texts[0].visible) {
+                    t = this.renderText(x, y, texts[0], size, -0.5, -0.5)[1];
+                }
+                var upY = y - t / 2 - 4;
+                var downY = y + t / 2 + 4;
+                var up = false;
+                for (var i = 1; i < texts.length; i++) {
                     var text = texts[i];
                     if (text != undefined && text.visible) {
-                        y += this.renderText(x, y, text, size);
+                        if (up) {
+                            upY = upY - this.renderText(x, upY, text, size, -0.5, -1)[1] - 4;
+                        } else {
+                            downY = downY + this.renderText(x, downY, text, size, -0.5, 0)[1] + 4;
+                        }
                     }
+                    up = !up;
                 }
             },
-            renderText : function(centerX, centerY, text, size) {
+            renderText : function(centerX, centerY, text, size, moveX, moveY) {
                 if (text.cache == undefined) {
                     text.cache = new this.docCreator();
                 }
@@ -120,8 +138,8 @@ if (document.currentScript.override < window.ontando_core_renderTools_override) 
                 var d = doc.render(),
                     f = ~~(d.width / c),
                     g = ~~(d.height / c);
-                this.canvasContext2D.drawImage(d, ~~centerX - ~~(f / 2), centerY - ~~(g / 2), f, g);
-                return d.height / 2 / c + 4
+                this.canvasContext2D.drawImage(d, ~~centerX + ~~(moveX * f), centerY + ~~(moveY * g), f, g);
+                return [f, g];
             }
         }
     })();

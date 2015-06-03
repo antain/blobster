@@ -78,10 +78,11 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         var ent = {
             amount : 0,
             meAmount : 0,
-            all : {
-            },
-            me : {
-            }
+            all : {},
+            enemies : {},
+            me : {},
+            viruses : {},
+            food : {}
         };
         var renderData = {
             x : 0, y : 0, scale : 1
@@ -497,15 +498,27 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             var that = this;
             this.text = [];
             this.lines = {};
-            
+
             this.update(x, y, size, color, isVirus, name);
             this.list.all[id] = this;
             this.list.amount++;
             this.list.allAmount++;
             
             if (!this.isVirus && !this.isFood) {
-                this.text.push(Module.prototype.renderTools.newText({text : name, sizeModifier : 2}));
-                this.text.push(Module.prototype.renderTools.newText({textProvider : function() {return that.mass.toFixed()}, sizeModifier : 1}));
+                this.text.push(Module.prototype.renderTools.newText(
+                    {
+                        text : name,
+                        sizeModifier : 1.0,
+                        borderColor : "#000000"
+                    }
+                ));
+                this.text.push(Module.prototype.renderTools.newText(
+                    {
+                        textProvider : function() {return that.mass.toFixed()},
+                        sizeModifier : 0.5,
+                        borderColor : this.color
+                    }
+                ));
             }
         }
         Entity.prototype = {
@@ -519,8 +532,26 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 this.isVirus = isVirus;
                 this.isFood = this.mass < 9;
                 this.name = name;
+
+                if (this.isVirus) {
+                    this.list.viruses[this.id] = this;
+                } else {
+                    delete this.list.viruses[this.id];
+                }
+                if (this.isVirus) {
+                    this.list.food[this.id] = this;
+                } else {
+                    delete this.list.food[this.id];
+                }
+
+                if (this.isFood || this.isVirus || this.isMe) {
+                    delete this.list.enemies[this.id];
+                } else {
+                    this.list.enemies[this.id] = this;
+                }
             },
             setMe : function () {
+                delete this.list.enemies[this.id];
                 this.isMe = true;
                 this.list.me[this.id] = this;
                 this.list.meAmount++;
@@ -535,6 +566,14 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     delete this.list.me[this.id];
                     this.list.meAmount--;
                 }
+
+                if (this.isVirus) {
+                    delete this.list.viruses[this.id];
+                }
+                if (this.isVirus) {
+                    delete this.list.food[this.id];
+                }
+
                 this.id = undefined;
             },
             // Inner API
@@ -784,21 +823,27 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 events.onPlayerDeath.apply({});
             },
             connecting : function(ip) {
-                ent.amount = 0,
-                ent.allAmount = 0,
+                var i;
+                ent.amount = 0;
+                ent.allAmount = 0;
                 ent.meAmount = 0;
-                for (var i in ent.all) {
+                for (i in ent.all) {
                     if (ent.all.hasOwnProperty(i)) {
                         delete ent.all[i];
                     }
-                }
-                
-                for (var i in ent.me) {
+                    if (ent.enemies.hasOwnProperty(i)) {
+                        delete ent.enemies[i];
+                    }
                     if (ent.me.hasOwnProperty(i)) {
                         delete ent.me[i];
                     }
+                    if (ent.viruses.hasOwnProperty(i)) {
+                        delete ent.viruses[i];
+                    }
+                    if (ent.food.hasOwnProperty(i)) {
+                        delete ent.food[i];
+                    }
                 }
-                
                 var e = new ConnectingStartEvent(ip);
                 events.onConnectingStart.apply(e);
                 return e.ip;

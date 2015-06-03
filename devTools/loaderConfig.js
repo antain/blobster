@@ -11,15 +11,24 @@
                 console.log("DevTools: Loaded '" + "html/loaderConfig.html" + "': " + textStatus);
                 $("body").append(data);
 
-                $("#ontando_devTools_loaderConfig_config").fadeOut(100);
+
+                var configWindow = $("#ontando_devTools_loaderConfig_config");
+                var configButton = $("#ontando_devTools_loaderConfig_button");
+
+
+                configWindow.fadeOut(100);
                 var state = false;
-                $("#ontando_devTools_loaderConfig_button").click(function() {
+                configButton.click(function() {
                     state = !state;
                     if (state) {
-                        $("#ontando_devTools_loaderConfig_config").fadeIn(100);
+                        configWindow.fadeIn(100);
                     } else {
-                        $("#ontando_devTools_loaderConfig_config").fadeOut(100);
+                        configWindow.fadeOut(100);
                     }
+                });
+                $("#ontando_devTools_loaderConfig_config_close").click(function() {
+                    configWindow.fadeOut(100);
+                    configButton.fadeOut(100);
                 });
 
                 function addLine(value) {
