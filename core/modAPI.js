@@ -15,7 +15,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             window.ontando.ENUM = {};
         }
         var ENUM = window.ontando.ENUM;
-        var v = {main : "0.1.1", script : "519"};
+        var v = {main : "0.1.2", script : "???"};
         var GM_getValue = function(){}, GM_setValue = function(){};
         var keybindings = {};
         var keyBindingUUID = 0;

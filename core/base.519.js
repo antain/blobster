@@ -3,9 +3,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
 } else {
     console.log("Loading base from " + document.currentScript.src);
     window.ontando_core_base_override = document.currentScript.override;
-
-    window.ontando_agario_original_version = 526;
-
+    
     (function(f, g) {
         /*new {*/
         var ontando_variables = {
@@ -16,43 +14,42 @@ if (document.currentScript.override < window.ontando_core_base_override) {
             changeDirectionTo : "connectDirect"
         };
         /*} new*/
-        function Ma() {
-            ha = !0;
-            ua();
-            setInterval(ua, 18E4);
-            A = ia = document.getElementById("canvas");
+        function Ea() {
+            ea = !0;
+            na();
+            setInterval(na, 18E4);
+            A = fa = document.getElementById("canvas");
             e = A.getContext("2d");
             A.onmousedown = function(a) {
-                if (va) {
+                if (oa) {
                     var b = a.clientX - (5 + q / 5 / 2),
                         c = a.clientY - (5 + q / 5 / 2);
                     if (Math.sqrt(b * b + c * c) <= q / 5 / 2) {
-                        J();
+                        I();
                         B(17);
                         return
                     }
                 }
-                R = a.clientX;
-                S = a.clientY;
-                ja();
-                J()
+                Q = a.clientX;
+                R = a.clientY;
+                ga();
+                I()
             };
             A.onmousemove = function(a) {
-                R = a.clientX;
-                S = a.clientY;
-                ja()
+                Q = a.clientX;
+                R = a.clientY;
+                ga()
             };
             A.onmouseup = function(a) {};
-            /firefox/i.test(navigator.userAgent) ? document.addEventListener("DOMMouseScroll", wa, !1) : document.body.onmousewheel = wa;
             var a = !1,
                 b = !1,
                 c = !1;
             f.onkeydown = function(d) {
                 /*new*/ if (window.ontando.core.keybinding.down(d)) { return; }
-                32 != d.keyCode || a || (J(), B(17), a = !0);
+                32 != d.keyCode || a || (I(), B(17), a = !0);
                 81 != d.keyCode || b || (B(18), b = !0);
-                87 != d.keyCode || c || (J(), B(21), c = !0);
-                27 == d.keyCode && xa(!0)
+                87 != d.keyCode || c || (I(), B(21), c = !0);
+                27 == d.keyCode && pa(!0)
             };
             f.onkeyup = function(d) {
                 /*new*/ if (window.ontando.core.keybinding.up(d)) { return; }
@@ -64,37 +61,30 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                 B(19);
                 c = b = a = !1
             };
-            f.onresize = ya;
-            ya();
-            f.requestAnimationFrame ? f.requestAnimationFrame(za) : setInterval(ka, 1E3 / 60);
-            setInterval(J, 40);
+            f.onresize = qa;
+            qa();
+            f.requestAnimationFrame ? f.requestAnimationFrame(ra) : setInterval(ha, 1E3 / 60);
+            setInterval(I, 40);
             u && g("#region").val(u);
-            Aa();
-            T(g("#region").val());
-            null == m && u && U();
+            sa();
+            S(g("#region").val());
+            null == m && u && T();
             g("#overlays").show()
-
-            /*new*/ window.ontando.script.connectDirect = ontando_variables.connectDirect;
-            /*new*/ window.ontando.script.spawn = ontando_variables.spawn;
-            /*new*/ window.ontando.script.sendActionPacket = ontando_variables.sendActionPacket;
-            /*new*/ window.ontando.script.newDocument = ontando_variables.newDocument;
-
-            /*new*/ window.ontando.script.changeDirectionTo = ontando_variables.changeDirectionTo;
+            
+            /*new*/ window.ontando.script.connectDirect = va;
+            /*new*/ window.ontando.script.spawn = wa;
+            /*new*/ window.ontando.script.sendActionPacket = B;
+            /*new*/ window.ontando.script.newDocument = ca;
+            
+            /*new*/ window.ontando.script.changeDirectionTo = changeDirectionTo;
             /*new*/ window.ontando.core.init(fa, e);
-
         }
 
-        function wa(a) {
-            C *= Math.pow(.9, a.wheelDelta / -120 || a.detail || 0);
-            1 > C && (C = 1);
-            C > 4 / h && (C = 4 / h)
-        }
-
-        function Na() {
-            if (.35 > h) K = null;
+        function Fa() {
+            if (.5 > h) J = null;
             else {
                 for (var a = Number.POSITIVE_INFINITY, b = Number.POSITIVE_INFINITY, c = Number.NEGATIVE_INFINITY, d = Number.NEGATIVE_INFINITY, e = 0, p = 0; p < n.length; p++) n[p].shouldRender() && (e = Math.max(n[p].size, e), a = Math.min(n[p].x, a), b = Math.min(n[p].y, b), c = Math.max(n[p].x, c), d = Math.max(n[p].y, d));
-                K = QUAD.init({
+                J = QUAD.init({
                     minX: a - (e + 100),
                     minY: b - (e + 100),
                     maxX: c + (e + 100),
@@ -102,80 +92,80 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                 });
                 for (p = 0; p < n.length; p++)
                     if (a = n[p], a.shouldRender())
-                        for (b = 0; b < a.points.length; ++b) K.insert(a.points[b])
+                        for (b = 0; b < a.points.length; ++b) J.insert(a.points[b])
             }
         }
 
-        function ja() {
-            V = (R - q / 2) / h + s;
-            W = (S - r / 2) / h + t
+        function ga() {
+            U = (Q - q / 2) / h + s;
+            V = (R - r / 2) / h + t
         }
 
-        function ua() {
-            null == X && (X = {}, g("#region").children().each(function() {
+        function na() {
+            null == W && (W = {}, g("#region").children().each(function() {
                 var a = g(this),
                     b = a.val();
-                b && (X[b] = a.text())
+                b && (W[b] = a.text())
             }));
-            g.get("http://m.agar.io/info", function(a) {
-                var b = {},
-                    c;
-                for (c in a.regions) {
-                    var d = c.split(":")[0];
-                    b[d] = b[d] || 0;
-                    b[d] += a.regions[c].numPlayers
-                }
-                for (c in b) g('#region option[value="' + c + '"]').text(X[c] + " (" + b[c] + " players)")
-            }, "json")
+            g.get("http://m.agar.io/info",
+                function(a) {
+                    var b = {},
+                        c;
+                    for (c in a.regions) {
+                        var d = c.split(":")[0];
+                        b[d] = b[d] || 0;
+                        b[d] += a.regions[c].numPlayers
+                    }
+                    for (c in b) g('#region option[value="' + c + '"]').text(W[c] + " (" + b[c] + " players)")
+                }, "json")
         }
 
-        function Ba() {
+        function ta() {
             g("#adsBottom").hide();
             g("#overlays").hide();
-            Aa()
+            sa()
             /*new*/ window.ontando.core.spawn();
         }
 
-        function T(a) {
-            a && a != u && (g("#region").val() != a && g("#region").val(a),
-                u = f.localStorage.location = a, g(".region-message").hide(), g(".region-message." + a).show(), g(".btn-needs-server").prop("disabled", !1), ha && U())
+        function S(a) {
+            a && a != u && (g("#region").val() != a && g("#region").val(a), u = f.localStorage.location = a, g(".region-message").hide(), g(".region-message." + a).show(), g(".btn-needs-server").prop("disabled", !1), ea && T())
         }
 
-        function xa(a) {
-            D = null;
+        function pa(a) {
+            C = null;
             g("#overlays").fadeIn(a ? 200 : 3E3);
             a || g("#adsBottom").fadeIn(3E3)
         }
 
-        function Aa() {
+        function sa() {
             g("#region").val() ? f.localStorage.location = g("#region").val() : f.localStorage.location && g("#region").val(f.localStorage.location);
             g("#region").val() ? g("#locationKnown").append(g("#region")) : g("#locationUnknown").append(g("#region"))
         }
 
-        function Ca() {
-            console.log("Find " +
-                u + L);
+        function ua() {
+            console.log("Find " + u + K);
             g.ajax("http://m.agar.io/", {
                 error: function() {
-                    setTimeout(Ca, 1E3)
+                    setTimeout(ua, 1E3)
                 },
                 success: function(a) {
                     a = a.split("\n");
-                    Da("ws://" + a[0])
+                    va("ws://" + a[0])
                 },
                 dataType: "text",
                 method: "POST",
                 cache: !1,
                 crossDomain: !0,
-                data: u + L || "?"
+                data: u +
+                    K || "?"
             })
         }
 
-        function U() {
-            ha && u && (g("#connecting").show(), Ca())
+        function T() {
+            ea && u && (g("#connecting").show(), ua())
         }
 
-        function Da(a) {
+        function va(a) {
             if (m) {
                 m.onopen = null;
                 m.onmessage = null;
@@ -186,32 +176,27 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                 m = null
             }
             /*new*/ a = f.ontando.core.connecting(a);
-            var c = f.location.search.slice(1);
-            /^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+:[0-9]+$/.test(c) && (a = "ws://" + c);
-            E = [];
+            D = [];
             l = [];
             y = {};
             n = [];
-            F = [];
+            E = [];
             z = [];
             v = w = null;
-            G = 0;
-            console.log("Connecting to " +
-                a);
+            F = 0;
+            console.log("Connecting to " + a);
             m = new WebSocket(a);
             m.binaryType = "arraybuffer";
-            m.onopen = Oa;
-            m.onmessage = Pa;
-            m.onclose = Qa;
+            m.onopen = Ga;
+            m.onmessage = Ha;
+            m.onclose = Ia;
             m.onerror = function() {
                 console.log("socket error")
             }
         }
 
-        /*new*/ ontando_variables.connectDirect = Da;
-
-        function Oa(a) {
-            Y = 500;
+        function Ga(a) {
+            X = 500;
             g("#connecting").hide();
             console.log("socket open");
             a = new ArrayBuffer(5);
@@ -224,16 +209,16 @@ if (document.currentScript.override < window.ontando_core_base_override) {
             b.setUint8(0, 255);
             b.setUint32(1, 1, !0);
             m.send(a);
-            Ea()
+            wa()
         }
 
-        function Qa(a) {
+        function Ia(a) {
             console.log("socket close");
-            setTimeout(U, Y);
-            Y *= 1.5
+            setTimeout(T, X);
+            X *= 1.5
         }
 
-        function Pa(a) {
+        function Ha(a) {
             function b() {
                 for (var a = "";;) {
                     var b = d.getUint16(c, !0);
@@ -247,24 +232,19 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                 d = new DataView(a.data);
             switch (d.getUint8(0)) {
                 case 16:
-                    Ra(d);
+                    Ja(d);
                     break;
                 case 17:
-                    M = d.getFloat32(1, !0);
-                    N = d.getFloat32(5, !0);
-                    O = d.getFloat32(9, !0);
+                    L = d.getFloat32(1, !0);
+                    M = d.getFloat32(5, !0);
+                    N = d.getFloat32(9, !0);
                     break;
                 case 20:
                     l = [];
-                    E = [];
-                    break;
-                case 21:
-                    la = d.getInt16(1, !0);
-                    ma = d.getInt16(3, !0);
-                    na || (na = !0, Z = la, $ = ma);
+                    D = [];
                     break;
                 case 32:
-                    E.push(d.getUint32(1, !0));
+                    D.push(d.getUint32(1, !0));
                     break;
                 case 49:
                     if (null != w) break;
@@ -279,32 +259,32 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                             name: b()
                         })
                     }
-                    Fa();
+                    xa();
                     break;
                 case 50:
                     w = [];
                     a = d.getUint32(c, !0);
                     c += 4;
                     for (e = 0; e < a; ++e) w.push(d.getFloat32(c, !0)), c += 4;
-                    Fa();
+                    xa();
                     break;
                 case 64:
-                    aa = d.getFloat64(1, !0), ba = d.getFloat64(9, !0), ca = d.getFloat64(17, !0), da = d.getFloat64(25, !0), M = (ca + aa) / 2, N = (da + ba) / 2, O = 1, 0 == l.length && (s = M, t = N, h = O)
+                    Y = d.getFloat64(1, !0), Z = d.getFloat64(9, !0), $ = d.getFloat64(17, !0), aa = d.getFloat64(25, !0), L = ($ + Y) / 2, M = (aa + Z) / 2, N = 1, 0 == l.length && (s = L, t = M, h = N)
             }
         }
 
-        function Ra(a) {
+        function Ja(a) {
             /*new*/ var Entity = window.ontando.core.newEntity;
-            H = +new Date;
+            G = +new Date;
             var b = Math.random(),
                 c = 1;
-            oa = !1;
+            ia = !1;
             for (var d = a.getUint16(c, !0), c = c + 2, e = 0; e < d; ++e) {
-                var p = y[a.getUint32(c, !0)],
+                var p =
+                    y[a.getUint32(c, !0)],
                     f = y[a.getUint32(c + 4, !0)],
                     c = c + 8;
-                p && f && (f.destroy(), f.ox = f.x, f.oy = f.y, f.oSize = f.size, f.nx = p.x, f.ny = p.y, f.nSize = f.size, f.updateTime =
-                    H)
+                p && f && (f.destroy(), f.ox = f.x, f.oy = f.y, f.oSize = f.size, f.nx = p.x, f.ny = p.y, f.nSize = f.size, f.updateTime = G)
             }
             for (e = 0;;) {
                 d = a.getUint32(c, !0);
@@ -332,7 +312,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                 }
                 n = k;
                 k = null;
-                y.hasOwnProperty(d) ? (k = y[d], k.updatePos(), k.ox = k.x, k.oy = k.y, k.oSize = k.size, k.color = h) : (k = new Ga(d, p, f, g, h, n), k.pX = p, k.pY = f);
+                y.hasOwnProperty(d) ? (k = y[d], k.updatePos(), k.ox = k.x, k.oy = k.y, k.oSize = k.size, k.color = h) : (k = new ya(d, p, f, g, h, n), k.pX = p, k.pY = f);
                 /*new*/ k.api == null ? k.api = new Entity(d, p, f, g, h, m, n) : k.api.update(p, f, g, h, m, n);/*x, y, size, color, isVirus, name*/
                 k.isVirus = m;
                 k.isAgitated = q;
@@ -340,28 +320,27 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                 k.ny = f;
                 k.nSize = g;
                 k.updateCode = b;
-                k.updateTime = H;
-                n && k.setName(n);
-                - 1 != E.indexOf(d) && -1 == l.indexOf(k) && (
-                    document.getElementById("overlays").style.display = "none",
-                    l.push(k),
-                    1 == l.length && (s = k.x, t = k.y)
-                    /*new*/, k.api.setMe()
+                k.updateTime = G;
+                - 1 != D.indexOf(d) && -1 == l.indexOf(k) && (
+                        document.getElementById("overlays").style.display = "none", 
+                        l.push(k),
+                        1 == l.length && (s = k.x, t = k.y)
+                        /*new*/, k.api.setMe()
                 )
             }
             b = a.getUint32(c, !0);
             c += 4;
             for (e = 0; e < b; e++) d = a.getUint32(c, !0), c += 4, k = y[d], null != k && k.destroy();
-            oa && 0 == l.length && xa(!1)
-            /*new*/ if (oa && 0 == l.length) { window.ontando.core.death(); }
+            ia && 0 == l.length && pa(!1)
+            /*new*/ if (ia && 0 == l.length) { window.ontando.core.death(); }
             /*new*/ window.ontando.core.postUpdate();
         }
 
-        /*new*/ ontando_variables.changeDirectionTo = function(x, y) {
-        /*new*/     var tmp = [Ha, Ia];
+        /*new*/ function changeDirectionTo(x, y) {
+        /*new*/     var tmp = [za, Aa];
         /*new*/     var a, b;
-        /*new*/     Ha = x;
-        /*new*/     Ia = y;
+        /*new*/     za = x;
+        /*new*/     Aa = y;
         /*new*/     a = new ArrayBuffer(21);
         /*new*/     b = new DataView(a);
         /*new*/     b.setUint8(0, 16);
@@ -370,98 +349,90 @@ if (document.currentScript.override < window.ontando_core_base_override) {
         /*new*/     b.setUint32(17, 0, !0);
         /*new*/     m.send(a);
         /*new*/     return tmp;
-        /*new*/ };
+        /*new*/ }
 
-        function J() {
-            if (pa()) {
-                /*new*/ var tmp = window.ontando.core.targetLocation(V, W);
+        function I() {
+            if (ja()) {
+                /*new*/ var tmp = window.ontando.core.targetLocation(U, V);
                 /*new*/ if (tmp[2]) { return; }
-                /*new*/ V = tmp[0]; W = tmp[1];
-                var a = R - q / 2,
-                    b = S - r / 2;
-                64 > a * a + b * b || Ha == V && Ia == W || (Ha = V, Ia = W, a = new ArrayBuffer(21), b = new DataView(a), b.setUint8(0, 16), b.setFloat64(1, V, !0), b.setFloat64(9, W, !0), b.setUint32(17, 0, !0), m.send(a))
+                /*new*/ U = tmp[0]; V = tmp[1];
+                var a = Q - q / 2,
+                    b = R - r / 2;
+                64 > a * a + b * b || za == U && Aa == V || (za = U, Aa = V, a = new ArrayBuffer(21), b = new DataView(a), b.setUint8(0, 16), b.setFloat64(1, U, !0), b.setFloat64(9, V, !0), b.setUint32(17, 0, !0), m.send(a))
             }
         }
 
-        function Ea() {
-            if (pa() && null != D) {
-                var a = new ArrayBuffer(1 + 2 * D.length),
+        function wa() {
+            if (ja() && null != C) {
+                var a = new ArrayBuffer(1 + 2 * C.length),
                     b = new DataView(a);
                 b.setUint8(0, 0);
-                for (var c = 0; c < D.length; ++c) b.setUint16(1 + 2 * c, D.charCodeAt(c), !0);
+                for (var c = 0; c < C.length; ++c) b.setUint16(1 + 2 * c, C.charCodeAt(c), !0);
                 m.send(a)
             }
         }
 
-        /*new*/ ontando_variables.sendActionPacket = Ea;
-
-        function pa() {
+        function ja() {
             return null != m && m.readyState == m.OPEN
         }
 
         function B(a) {
-            if (pa()) {
+            if (ja()) {
                 var b = new ArrayBuffer(1);
                 (new DataView(b)).setUint8(0, a);
                 m.send(b)
             }
         }
 
-        function za() {
-            ka();
-            f.requestAnimationFrame(za)
+        function ra() {
+            ha();
+            f.requestAnimationFrame(ra)
         }
 
-        function ya() {
+        function qa() {
             q = f.innerWidth;
             r = f.innerHeight;
-            ia.width = A.width = q;
-            ia.height = A.height = r;
-            ka()
+            fa.width = A.width = q;
+            fa.height = A.height = r;
+            ha()
         }
 
-        function Ja() {
-            var a;
-            a = 1 * Math.max(r / 1080, q / 1920);
-            return a *= C
-        }
-
-        function Sa() {
+        function Ka() {
             if (0 != l.length) {
                 for (var a = 0, b = 0; b < l.length; b++) a += l[b].size;
-                a = Math.pow(Math.min(64 / a, 1), .4) * Ja();
+                a = Math.pow(Math.min(64 / a, 1), .4) * Math.max(r / 1080, q / 1920);
                 h = (9 * h + a) / 10
             }
         }
 
-        function ka() {
-            var a, b, c = +new Date;
-            ++Ta;
-            H = +new Date;
+        function ha() {
+            var a = +new Date;
+            ++La;
+            G = +new Date;
             if (0 < l.length) {
-                Sa();
-                for (var d = a = b = 0; d < l.length; d++) l[d].updatePos(), b += l[d].x / l.length, a += l[d].y / l.length;
-                M = b;
-                N = a;
-                O = h;
+                Ka();
+                for (var b = 0, c = 0, d = 0; d < l.length; d++) l[d].updatePos(), b += l[d].x / l.length, c += l[d].y / l.length;
+                L = b;
+                M = c;
+                N = h;
                 s = (s + b) / 2;
-                t = (t + a) / 2
-            } else s = (29 * s + M) / 30, t = (29 * t + N) / 30, h = (9 * h + O * Ja()) / 10;
+                t = (t + c) / 2
+            } else s = (29 * s + L) / 30, t = (29 * t + M) / 30, h = (9 * h + N) / 10;
             /*new*/ var tmp_a = window.ontando.core.preRender(/*coords (center of creen): x, y |, scale*/ s, t, h);
             /*new*/ s = tmp_a[0], t = tmp_a[1], h = tmp_a[2];
-            Na();
-            ja();
+            Fa();
+            ga();
             e.clearRect(0, 0, q, r);
-            e.fillStyle = qa ? "#111111" : "#F2FBFF";
+            e.fillStyle = ka ? "#111111" : "#F2FBFF";
             e.fillRect(0, 0, q, r);
             e.save();
-            e.strokeStyle = qa ? "#AAAAAA" : "#000000";
+            e.strokeStyle = ka ? "#AAAAAA" : "#000000";
             e.globalAlpha = .2;
             e.scale(h, h);
             b = q / h;
-            a = r / h;
-            for (d = -.5 + (-s + b / 2) % 50; d < b; d += 50) e.beginPath(), e.moveTo(d, 0), e.lineTo(d, a), e.stroke();
-            for (d = -.5 + (-t + a / 2) % 50; d < a; d += 50) e.beginPath(), e.moveTo(0, d), e.lineTo(b, d), e.stroke();
+            c = r / h;
+            for (d = -.5 + (-s + b / 2) % 50; d < b; d += 50) e.beginPath(), e.moveTo(d, 0), e.lineTo(d, c), e.stroke();
+            for (d = -.5 + (-t + c / 2) % 50; d < c; d += 50) e.beginPath(), e.moveTo(0, d), e.lineTo(b, d), e.stroke();
             e.restore();
             n.sort(function(a, b) {
                 return a.size == b.size ? a.id - b.id : a.size - b.size
@@ -470,50 +441,35 @@ if (document.currentScript.override < window.ontando_core_base_override) {
             e.translate(q / 2, r / 2);
             e.scale(h, h);
             e.translate(-s, -t);
-            for (d = 0; d < F.length; d++) F[d].draw();
+            for (d = 0; d < E.length; d++) E[d].draw();
             for (d = 0; d < n.length; d++) n[d].draw();
-            if (na) {
-                Z = (3 * Z + la) / 4;
-                $ = (3 * $ + ma) / 4;
-                e.save();
-                e.strokeStyle = "#FFAAAA";
-                e.lineWidth = 10;
-                e.lineCap = "round";
-                e.lineJoin = "round";
-                e.globalAlpha = .5;
-                e.beginPath();
-                for (d = 0; d < l.length; d++) e.moveTo(l[d].x, l[d].y), e.lineTo(Z, $);
-                e.stroke();
-                e.restore()
-            }
             e.restore();
             v && v.width && e.drawImage(v, q - v.width - 10, 10);
-            G = Math.max(G, Ua());
-            0 != G && (null == ea && (ea = new fa(24, "#FFFFFF")), ea.setValue("Score: " + ~~(G / 100)), a = ea.render(), b = a.width, e.globalAlpha = .2, e.fillStyle = "#000000", e.fillRect(10, r - 10 - 24 - 10, b + 10,
-                34), e.globalAlpha = 1, e.drawImage(a, 15, r - 10 - 24 - 5));
-            Va();
-            c = +new Date - c;
-            c > 1E3 / 60 ? x -= .01 : c < 1E3 / 65 && (x += .01);.4 > x && (x = .4);
+            F = Math.max(F, Ma());
+            0 != F && (null == ba && (ba = new ca(24, "#FFFFFF")), ba.setValue("Score: " + ~~(F / 100)), c = ba.render(), b = c.width, e.globalAlpha = .2, e.fillStyle = "#000000", e.fillRect(10, r - 10 - 24 - 10, b + 10, 34), e.globalAlpha = 1, e.drawImage(c, 15, r - 10 - 24 - 5));
+            Na();
+            a = +new Date - a;
+            a > 1E3 / 60 ? x -= .01 : a < 1E3 / 65 && (x += .01);.4 > x && (x = .4);
             1 < x && (x = 1)
             /*new*/ window.ontando.core.postRender(/*canvas context*/ e);
         }
 
-        function Va() {
-            if (va && ra.width) {
+        function Na() {
+            if (oa && la.width) {
                 var a = q / 5;
-                e.drawImage(ra, 5, 5, a, a)
+                e.drawImage(la, 5, 5, a, a)
             }
         }
 
-        function Ua() {
+        function Ma() {
             for (var a = 0, b = 0; b < l.length; b++) a += l[b].nSize * l[b].nSize;
             return a
         }
 
-        function Fa() {
+        function xa() {
             v = null;
             if (null != w || 0 != z.length)
-                if (null != w || ga) {
+                if (null != w || da) {
                     v = document.createElement("canvas");
                     var a = v.getContext("2d"),
                         b = 60,
@@ -522,8 +478,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                     v.width = 200 * c;
                     v.height = b * c;
                     a.scale(c, c);
-                    a.globalAlpha =
-                        .4;
+                    a.globalAlpha = .4;
                     a.fillStyle = "#000000";
                     a.fillRect(0, 0, 200, b);
                     a.globalAlpha = 1;
@@ -531,15 +486,16 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                     c = null;
                     c = "Leaderboard";
                     a.font = "30px Ubuntu";
-                    a.fillText(c, 100 - a.measureText(c).width / 2, 40);
+                    a.fillText(c, 100 - a.measureText(c).width /
+                        2, 40);
                     if (null == w)
-                        for (a.font = "20px Ubuntu", b = 0; b < z.length; ++b) c = z[b].name || "An unnamed cell", ga || (c = "An unnamed cell"), -1 != E.indexOf(z[b].id) ? (l[0].name && (c = l[0].name), a.fillStyle = "#FFAAAA") : a.fillStyle = "#FFFFFF", c = b + 1 + ". " + c, a.fillText(c, 100 - a.measureText(c).width / 2, 70 + 24 * b);
+                        for (a.font = "20px Ubuntu", b = 0; b < z.length; ++b) c = z[b].name || "An unnamed cell", da || (c = "An unnamed cell"), -1 != D.indexOf(z[b].id) ? (l[0].name && (c = l[0].name), a.fillStyle = "#FFAAAA") : a.fillStyle = "#FFFFFF", c = b + 1 + ". " + c, a.fillText(c, 100 - a.measureText(c).width / 2, 70 + 24 * b);
                     else
-                        for (b = c = 0; b < w.length; ++b) angEnd = c + w[b] * Math.PI * 2, a.fillStyle = Wa[b + 1], a.beginPath(), a.moveTo(100, 140), a.arc(100, 140, 80, c, angEnd, !1), a.fill(), c = angEnd
+                        for (b = c = 0; b < w.length; ++b) angEnd = c + w[b] * Math.PI * 2, a.fillStyle = Oa[b + 1], a.beginPath(), a.moveTo(100, 140), a.arc(100, 140, 80, c, angEnd, !1), a.fill(), c = angEnd
                 }
         }
 
-        function Ga(a, b, c, d, e, f) {
+        function ya(a, b, c, d, e, f) {
             n.push(this);
             y[a] = this;
             this.id = a;
@@ -553,116 +509,109 @@ if (document.currentScript.override < window.ontando_core_base_override) {
             this.setName(f)
         }
 
-        function fa(a, b, c, d) {
+        function ca(a, b, c, d) {
             a && (this._size = a);
             b && (this._color = b);
             this._stroke = !!c;
             d && (this._strokeColor = d)
         }
 
-        /*new*/ ontando_variables.newDocument = fa;
 
         if ("agar.io" != f.location.hostname && "localhost" != f.location.hostname && "10.10.2.13" != f.location.hostname) f.location = "http://agar.io/";
         else if (f.top != f) f.top.location = "http://agar.io/";
         else {
-            var ia, e, A, q, r, K = null,
+            var fa, e, A, q, r, J = null,
                 m = null,
                 s = 0,
                 t = 0,
-                E = [],
+                D = [],
                 l = [],
                 y = {},
                 n = [],
-                F = [],
+                E = [],
                 z = [],
+                Q = 0,
                 R = 0,
-                S = 0,
+                U = -1,
                 V = -1,
-                W = -1,
-                Ta = 0,
-                H = 0,
-                D = null,
-                aa = 0,
-                ba = 0,
-                ca = 1E4,
-                da = 1E4,
+                La = 0,
+                G = 0,
+                C = null,
+                Y = 0,
+                Z = 0,
+                $ = 1E4,
+                aa = 1E4,
                 h = 1,
                 u = null,
-                Ka = !0,
-                ga = !0,
-                sa = !1,
-                oa = !1,
-                G = 0,
-                qa = !1,
-                La = !1,
-                M = s = ~~((aa + ca) / 2),
-                N = t = ~~((ba + da) / 2),
-                O = 1,
-                L = "",
+                Ba = !0,
+                da = !0,
+                ma = !1,
+                ia = !1,
+                F = 0,
+                ka = !1,
+                Ca = !1,
+                L = s = ~~((Y + $) / 2),
+                M = t = ~~((Z + aa) / 2),
+                N = 1,
+                K = "",
                 w = null,
-                ha = !1,
-                na = !1,
-                la = 0,
-                ma = 0,
-                Z = 0,
-                $ = 0,
-                P = 0,
-                Wa = ["#333333", "#FF3333", "#33FF33", "#3333FF"],
-                C = 1,
-                va = "ontouchstart" in f && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
-                ra = new Image;
-            ra.src = "img/split.png";
-            P = document.createElement("canvas");
-            if ("undefined" == typeof console || "undefined" == typeof DataView || "undefined" == typeof WebSocket || null == P || null == P.getContext || null == f.localStorage) alert("You browser does not support this game, we recommend you to use Firefox to play this");
+                ea = !1,
+                O = 0,
+                Oa = ["#333333", "#FF3333", "#33FF33", "#3333FF"],
+                oa = "ontouchstart" in f && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent),
+                la = new Image;
+            la.src = "img/split.png";
+            O = document.createElement("canvas");
+            if ("undefined" == typeof console || "undefined" == typeof DataView || "undefined" == typeof WebSocket || null == O || null == O.getContext || null == f.localStorage) alert("You browser does not support this game, we recommend you to use Firefox to play this");
             else {
-                var X = null;
+                var W = null;
                 f.setNick = function(a) {
                     /* new */ if (a == undefined) a = document.getElementById('nick').value;
                     /* new */ a = window.ontando.core.options.setNick(a);
-                    Ba();
-                    D = a;
-                    Ea();
-                    G = 0
+                    ta();
+                    C = a;
+                    wa();
+                    F = 0
                 };
-                f.setRegion = T;
+                f.setRegion = S;
                 f.setSkins = function(a) {
                     /*new*/ window.ontando.core.options.setSkins(a);
-                    Ka = a
+                    Ba = a
                 };
                 f.setNames = function(a) {
                     /*new*/ window.ontando.core.options.setNames(a);
-                    ga = a
+                    da = a
                 };
                 f.setDarkTheme = function(a) {
                     /*new*/ window.ontando.core.options.setDarkTheme(a);
-                    qa = a
+                    ka = a
                 };
                 f.setColors = function(a) {
                     /*new */ window.ontando.core.options.setSkins(a);
-                    sa = a
+                    ma = a
                 };
                 f.setShowMass = function(a) {
                     /*new*/ window.ontando.core.options.setShowMass(a);
-                    La = a
+                    Ca = a
                 };
                 f.spectate = function() {
-                    D = null;
+                    C = null;
                     B(1);
-                    Ba()
+                    ta()
                 };
                 f.setGameMode = function(a) {
                     /*new*/ window.ontando.core.options.setGameMode(a);
-                    a != L && (L = a, U())
+                    a != K && (K = a, T())
                 };
-                null != f.localStorage && (null == f.localStorage.AB8 && (f.localStorage.AB8 = 0 + ~~(100 * Math.random())), P = +f.localStorage.AB8, f.ABGroup = P);
+                null != f.localStorage && (null == f.localStorage.AB8 && (f.localStorage.AB8 = 0 + ~~(100 * Math.random())), O = +f.localStorage.AB8, f.ABGroup = O);
                 g.get("http://gc.agar.io", function(a) {
                     var b = a.split(" ");
                     a = b[0];
-                    b = b[1] || ""; - 1 == "DE IL PL HU BR AT UA".split(" ").indexOf(a) && ta.push("nazi"); - 1 == ["UA"].indexOf(a) && ta.push("ussr");
-                    Q.hasOwnProperty(a) && ("string" == typeof Q[a] ? u || T(Q[a]) : Q[a].hasOwnProperty(b) && (u || T(Q[a][b])))
+                    b = b[1] || ""; - 1 == "DE IL PL HU BR AT".split(" ").indexOf(a) && Da.push("nazi");
+                    P.hasOwnProperty(a) && ("string" == typeof P[a] ? u || S(P[a]) : P[a].hasOwnProperty(b) && (u || S(P[a][b])))
                 }, "text");
                 setTimeout(function() {}, 3E5);
-                var Q = {
+                var P = {
                     AF: "JP-Tokyo",
                     AX: "EU-London",
                     AL: "EU-London",
@@ -966,18 +915,18 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                     ZM: "EU-London",
                     ZW: "EU-London"
                 };
-                f.connect = Da;
-                var Y = 500,
-                    Ha = -1,
-                    Ia = -1,
+                f.connect = va;
+                var X = 500,
+                    za = -1,
+                    Aa = -1,
                     v = null,
                     x = 1,
-                    ea = null,
-                    I = {},
-                    ta = "poland;usa;china;russia;canada;australia;spain;brazil;germany;ukraine;france;sweden;hitler;north korea;south korea;japan;united kingdom;earth;greece;latvia;lithuania;estonia;finland;norway;cia;maldivas;austria;nigeria;reddit;yaranaika;confederate;9gag;indiana;4chan;italy;bulgaria;tumblr;2ch.hk;hong kong;portugal;jamaica;german empire;mexico;sanik;switzerland;croatia;chile;indonesia;bangladesh;thailand;iran;iraq;peru;moon;botswana;bosnia;netherlands;european union;taiwan;pakistan;hungary;satanist;qing dynasty;matriarchy;patriarchy;feminism;ireland;texas;facepunch;prodota;cambodia;steam;piccolo;ea;india;kc;denmark;quebec;ayy lmao;sealand;bait;tsarist russia;origin;vinesauce;stalin;belgium;luxembourg;stussy;prussia;8ch;argentina;scotland;sir;romania;belarus;wojak;doge;nasa;byzantium;imperial japan;french kingdom;somalia;turkey;mars;pokerface;8;irs;receita federal".split(";"),
-                    Xa = ["8", "nasa"],
-                    Ya = ["m'blob"];
-                Ga.prototype = {
+                    ba = null,
+                    H = {},
+                    Da = "poland;usa;china;russia;canada;australia;spain;brazil;germany;ukraine;france;sweden;hitler;north korea;south korea;japan;united kingdom;earth;greece;latvia;lithuania;estonia;finland;norway;cia;maldivas;austria;nigeria;reddit;yaranaika;confederate;9gag;indiana;4chan;italy;ussr;bulgaria;tumblr;2ch.hk;hong kong;portugal;jamaica;german empire;mexico;sanik;switzerland;croatia;chile;indonesia;bangladesh;thailand;iran;iraq;peru;moon;botswana;bosnia;netherlands;european union;taiwan;pakistan;hungary;satanist;qing dynasty;matriarchy;patriarchy;feminism;ireland;texas;facepunch;prodota;cambodia;steam;piccolo;ea;india;kc;denmark;quebec;ayy lmao;sealand;bait;tsarist russia;origin;vinesauce;stalin;belgium;luxembourg;stussy;prussia;8ch;argentina;scotland;sir;romania;belarus;wojak;doge;nasa;byzantium;imperial japan;french kingdom;somalia;turkey;mars;pokerface;8".split(";"),
+                    Pa = ["8", "nasa"],
+                    Qa = ["m'blob"];
+                ya.prototype = {
                     id: 0,
                     points: null,
                     pointsAcc: null,
@@ -1009,16 +958,16 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                                 break
                             }
                         delete y[this.id];
-                        a = l.indexOf(this); - 1 != a && (oa = !0, l.splice(a, 1));
-                        a = E.indexOf(this.id); - 1 != a && E.splice(a, 1);
+                        a = l.indexOf(this); - 1 != a && (ia = !0, l.splice(a, 1));
+                        a = D.indexOf(this.id); - 1 != a && D.splice(a, 1);
                         this.destroyed = !0;
-                        F.push(this)
+                        E.push(this)
                     },
                     getNameSize: function() {
                         return Math.max(~~(.3 * this.size), 24)
                     },
                     setName: function(a) {
-                        if (this.name = a) null == this.nameCache ? this.nameCache = new fa(this.getNameSize(), "#FFFFFF", !0, "#000000") : this.nameCache.setSize(this.getNameSize()), this.nameCache.setValue(this.name)
+                        if (this.name = a) null == this.nameCache ? this.nameCache = new ca(this.getNameSize(), "#FFFFFF", !0, "#000000") : this.nameCache.setSize(this.getNameSize()), this.nameCache.setValue(this.name)
                     },
                     createPoints: function() {
                         for (var a = this.getNumPoints(); this.points.length > a;) {
@@ -1064,14 +1013,14 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                             var g = a[d].v,
                                 e = a[(d - 1 + c) % c].v,
                                 f = a[(d + 1) % c].v;
-                            if (15 < this.size && null != K) {
+                            if (15 < this.size && null != J) {
                                 var l = !1,
                                     m = a[d].x,
                                     n = a[d].y;
-                                K.retrieve2(m - 5, n - 5, 10, 10, function(a) {
+                                J.retrieve2(m - 5, n - 5, 10, 10, function(a) {
                                     a.c != h && 25 > (m - a.x) * (m - a.x) + (n - a.y) * (n - a.y) && (l = !0)
                                 });
-                                !l && (a[d].x < aa || a[d].y < ba || a[d].x > ca || a[d].y > da) && (l = !0);
+                                !l && (a[d].x < Y || a[d].y < Z || a[d].x > $ || a[d].y > aa) && (l = !0);
                                 l && (0 < b[d] && (b[d] = 0), b[d] -= 1)
                             }
                             g += b[d];
@@ -1087,12 +1036,12 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                     },
                     updatePos: function() {
                         var a;
-                        a = (H - this.updateTime) / 120;
+                        a = (G - this.updateTime) / 120;
                         a = 0 > a ? 0 : 1 < a ? 1 : a;
                         var b = 0 > a ? 0 : 1 < a ? 1 : a;
                         this.getNameSize();
                         if (this.destroyed && 1 <= b) {
-                            var c = F.indexOf(this); - 1 != c && F.splice(c, 1)
+                            var c = E.indexOf(this); - 1 != c && E.splice(c, 1)
                         }
                         this.x = a * (this.nx - this.ox) + this.ox;
                         this.y = a * (this.ny - this.oy) + this.oy;
@@ -1103,25 +1052,25 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                     },
                     shouldRender: function() {
                         return this.x + this.size + 40 < s - q / 2 / h || this.y + this.size + 40 < t - r / 2 / h || this.x - this.size - 40 >
-                        s + q / 2 / h || this.y - this.size - 40 > t + r / 2 / h ? !1 : !0
+                            s + q / 2 / h || this.y - this.size - 40 > t + r / 2 / h ? !1 : !0
                     },
                     draw: function() {
                         /*new*/ if (window.ontando.core.entity.shouldRender(this, this.shouldRender())) {
                         /*removed*///if (this.shouldRender()) {
-                            var a = !this.isVirus && !this.isAgitated && .35 > h;
+                            var a = !this.isVirus && !this.isAgitated && .5 > h;
                             if (this.wasSimpleDrawing && !a)
                                 for (var b = 0; b < this.points.length; b++) this.points[b].v = this.size;
                             this.wasSimpleDrawing = a;
                             e.save();
-                            this.drawTime = H;
+                            this.drawTime = G;
                             b = this.updatePos();
                             this.destroyed && (e.globalAlpha *= 1 - b);
                             e.lineWidth = 10;
                             e.lineCap = "round";
                             e.lineJoin = this.isVirus ? "mitter" : "round";
-                            sa ? (e.fillStyle = "#FFFFFF", e.strokeStyle = "#AAAAAA") : (e.fillStyle = this.color, e.strokeStyle = this.color);
+                            ma ? (e.fillStyle = "#FFFFFF", e.strokeStyle = "#AAAAAA") : (e.fillStyle = this.color, e.strokeStyle = this.color);
                             /*new*/ var tmp_color = window.ontando.core.entity.renderColor(this, e.fillStyle, e.strokeStyle);
-                            /*new*/ e.fillStyle = tmp_color[0];  e.strokeStyle = tmp_color[1];
+                            /*new*/ e.fillStyle = tmp_color[0];  e.strokeStyle = tmp_color[1]; 
                             if (a) e.beginPath(), e.arc(this.x, this.y, this.size, 0, 2 * Math.PI, !1);
                             else {
                                 this.movePoints();
@@ -1135,12 +1084,12 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                             }
                             e.closePath();
                             c = this.name.toLowerCase();
-                            !this.isAgitated && Ka && "" == L ? -1 != ta.indexOf(c) ? (I.hasOwnProperty(c) || (I[c] = new Image, I[c].src = "skins/" + c + ".png"), b = 0 != I[c].width && I[c].complete ? I[c] : null) : b = null : b = null;
-                            b = (d = b) ? -1 != Ya.indexOf(c) : !1;
+                            !this.isAgitated && Ba && "" == K ? -1 != Da.indexOf(c) ? (H.hasOwnProperty(c) || (H[c] = new Image, H[c].src = "skins/" + c + ".png"), b = 0 != H[c].width && H[c].complete ? H[c] : null) : b = null : b = null;
+                            b = (d = b) ? -1 != Qa.indexOf(c) : !1;
                             a || e.stroke();
                             e.fill();
                             null == d || b || (e.save(), e.clip(), e.drawImage(d, this.x - this.size, this.y - this.size, 2 * this.size, 2 * this.size), e.restore());
-                            (sa || 15 < this.size) && !a && (e.strokeStyle = "#000000", e.globalAlpha *= .1, e.stroke());
+                            (ma || 15 < this.size) && !a && (e.strokeStyle = "#000000", e.globalAlpha *= .1, e.stroke());
                             e.globalAlpha = 1;
                             null != d && b && e.drawImage(d, this.x - 2 * this.size, this.y - 2 * this.size, 4 * this.size, 4 * this.size);
                             /*new*/ this.api.renderLines(this.getNameSize()); // Rendering lines from this entity
@@ -1149,7 +1098,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                             /*new*/ return; // And skipping default text
                             b = -1 != l.indexOf(this);
                             a = ~~this.y;
-                            if ((ga || b) && this.name && this.nameCache && (null == d || -1 == Xa.indexOf(c))) {
+                            if ((da || b) && this.name && this.nameCache && (null == d || -1 == Pa.indexOf(c))) {
                                 d = this.nameCache;
                                 d.setValue(this.name);
                                 d.setSize(this.getNameSize());
@@ -1161,12 +1110,12 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                                 e.drawImage(d, ~~this.x - ~~(f / 2), a - ~~(g / 2), f, g);
                                 a += d.height / 2 / c + 4
                             }
-                            La && (b || 0 == l.length && (!this.isVirus || this.isAgitated) && 20 < this.size) && (null == this.sizeCache && (this.sizeCache = new fa(this.getNameSize() / 2, "#FFFFFF", !0, "#000000")), b = this.sizeCache, b.setSize(this.getNameSize() / 2), b.setValue(~~(this.size * this.size / 100)), c = Math.ceil(10 * h) / 10, b.setScale(c), d = b.render(), f = ~~(d.width / c), g = ~~(d.height / c), e.drawImage(d, ~~this.x - ~~(f / 2), a - ~~(g / 2), f, g));
+                            Ca && (b || 0 == l.length && (!this.isVirus || this.isAgitated) && 20 < this.size) && (null == this.sizeCache && (this.sizeCache = new ca(this.getNameSize() / 2, "#FFFFFF", !0, "#000000")), b = this.sizeCache, b.setSize(this.getNameSize() / 2), b.setValue(~~(this.size * this.size / 100)), c = Math.ceil(10 * h) / 10, b.setScale(c), d = b.render(), f = ~~(d.width / c), g = ~~(d.height / c), e.drawImage(d, ~~this.x - ~~(f / 2), a - ~~(g / 2), f, g));
                             e.restore()
                         }
                     }
                 };
-                fa.prototype = {
+                ca.prototype = {
                     _value: "",
                     _color: "#000000",
                     _stroke: !1,
@@ -1221,7 +1170,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
                         return this._canvas
                     }
                 };
-                f.onload = Ma
+                f.onload = Ea
             }
         }
     })(window, jQuery);
