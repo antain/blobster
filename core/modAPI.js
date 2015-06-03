@@ -121,45 +121,45 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     }
                 }
             },
-            gameConfig : {
+            gameOptions : {
                 name : {
                     get : function() {
-                        return data.gameConfig.name;
+                        return data.gameOptions.name;
                     },
                     set : function(name) {
-                        data.gameConfig.name = name;
+                        data.gameOptions.name = name;
                         jQuery("#nick").val(name);
                     }
                 },
                 options : {
                     get : function(option) {
-                        return data.gameConfig.options[option];
+                        return data.gameOptions.options[option];
                     },
                     set : function(option, value) {
-                        data.gameConfig.options[option] = value;
+                        data.gameOptions.options[option] = value;
                         switch (option) {
                             case 0: //SKINS
-                                value = (value == ENUM.Options.data[ENUM.Options.SKINS].values.DISABLED);
+                                value = (value == ENUM.GameOptions.data[ENUM.GameOptions.SKINS].values.DISABLED);
                                 $(jQuery("#settings input")[0]).prop("checked", value);
                                 window.setSkins(!value);
                             break;
                             case 1: //NAMES
-                                value = (value == ENUM.Options.data[ENUM.Options.NAMES].values.DISABLED);
+                                value = (value == ENUM.GameOptions.data[ENUM.GameOptions.NAMES].values.DISABLED);
                                 $(jQuery("#settings input")[1]).prop("checked", value);
                                 window.setNames(!value);
                             break;
                             case 2: //THEME
-                                value = (value == ENUM.Options.data[ENUM.Options.THEME].values.DARK);
+                                value = (value == ENUM.GameOptions.data[ENUM.GameOptions.THEME].values.DARK);
                                 $(jQuery("#settings input")[2]).prop("checked", value);
                                 window.setDarkTheme(value);
                             break;
                             case 3: //COLORS
-                                value = (value == ENUM.Options.data[ENUM.Options.COLORS].values.DISABLED);
+                                value = (value == ENUM.GameOptions.data[ENUM.GameOptions.COLORS].values.DISABLED);
                                 $(jQuery("#settings input")[3]).prop("checked", value);
                                 window.setColors(value);
                             break;
                             case 4: //MASS
-                                value = (value == ENUM.Options.data[ENUM.Options.MASS].values.ENABLED);
+                                value = (value == ENUM.GameOptions.data[ENUM.GameOptions.MASS].values.ENABLED);
                                 $(jQuery("#settings input")[4]).prop("checked", value);
                                 window.setShowMass(value);
                             break;
@@ -387,6 +387,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 events.onPlayerSpawn.add(new EventHandler(this, handler, priority));
             }
         };
+        Module.prototype.gameConfig = Module.prototype.gameOptions;
 
 
 //=================================================
@@ -470,7 +471,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                 this.state = false;
                 return suppress;
             }
-        }
+        };
         
         function KeyBindingHandler(module, uuid, handler) {
             this.module = module;
@@ -673,14 +674,14 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
 //=================================================
 
         var data = {
-            gameConfig : {
+            gameOptions : {
                 name : "",
                 options : [
-                    ENUM.Options.data[ENUM.Options.SKINS].values.ENABLED, 
-                    ENUM.Options.data[ENUM.Options.NAMES].values.ENABLED, 
-                    ENUM.Options.data[ENUM.Options.THEME].values.LIGHT,
-                    ENUM.Options.data[ENUM.Options.COLORS].values.ENABLED,
-                    ENUM.Options.data[ENUM.Options.MASS].values.DISABLED
+                    ENUM.GameOptions.data[ENUM.GameOptions.SKINS].values.ENABLED,
+                    ENUM.GameOptions.data[ENUM.GameOptions.NAMES].values.ENABLED,
+                    ENUM.GameOptions.data[ENUM.GameOptions.THEME].values.LIGHT,
+                    ENUM.GameOptions.data[ENUM.GameOptions.COLORS].values.ENABLED,
+                    ENUM.GameOptions.data[ENUM.GameOptions.MASS].values.DISABLED
                 ]
             }
         };
@@ -885,38 +886,38 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                     return e.name;
                 },
                 setSkins : function(showSkins) {
-                    var value = showSkins ? ENUM.Options.data[ENUM.Options.SKINS].values.ENABLED : ENUM.Options.data[ENUM.Options.SKINS].values.DISABLED;
-                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.SKINS, value));
-                    data.gameConfig.options[ENUM.Options.SKINS] = value;
+                    var value = showSkins ? ENUM.GameOptions.data[ENUM.GameOptions.SKINS].values.ENABLED : ENUM.GameOptions.data[ENUM.GameOptions.SKINS].values.DISABLED;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.GameOptions.SKINS, value));
+                    data.gameOptions.options[ENUM.GameOptions.SKINS] = value;
                 },
                 setNames : function(showNames) {
-                    var value = showNames ? ENUM.Options.data[ENUM.Options.NAMES].values.ENABLED : ENUM.Options.data[ENUM.Options.NAMES].values.DISABLED;
-                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.NAMES, value));
-                    data.gameConfig.options[ENUM.Options.NAMES] = value;
+                    var value = showNames ? ENUM.GameOptions.data[ENUM.GameOptions.NAMES].values.ENABLED : ENUM.GameOptions.data[ENUM.GameOptions.NAMES].values.DISABLED;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.GameOptions.NAMES, value));
+                    data.gameOptions.options[ENUM.GameOptions.NAMES] = value;
                     
                 },
                 setDarkTheme : function(darkTheme) {
-                    var value = darkTheme ? ENUM.Options.data[ENUM.Options.THEME].values.DARK : ENUM.Options.data[ENUM.Options.THEME].values.LIGHT;
-                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.THEME, value));
-                    data.gameConfig.options[ENUM.Options.THEME] = value;
+                    var value = darkTheme ? ENUM.GameOptions.data[ENUM.GameOptions.THEME].values.DARK : ENUM.GameOptions.data[ENUM.GameOptions.THEME].values.LIGHT;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.GameOptions.THEME, value));
+                    data.gameOptions.options[ENUM.GameOptions.THEME] = value;
                     
                 },
                 setColors : function(colorTheme) {
-                    var value = colorTheme ? ENUM.Options.data[ENUM.Options.COLORS].values.DISABLED : ENUM.Options.data[ENUM.Options.COLORS].values.ENABLED;
-                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.COLORS, value));
-                    data.gameConfig.options[ENUM.Options.COLORS] = value;
+                    var value = colorTheme ? ENUM.GameOptions.data[ENUM.GameOptions.COLORS].values.DISABLED : ENUM.GameOptions.data[ENUM.GameOptions.COLORS].values.ENABLED;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.GameOptions.COLORS, value));
+                    data.gameOptions.options[ENUM.GameOptions.COLORS] = value;
                     
                 },
                 setShowMass : function(showMass) {
-                    var value = showMass ? ENUM.Options.data[ENUM.Options.MASS].values.ENABLED : ENUM.Options.data[ENUM.Options.MASS].values.DISABLED;
-                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.MASS, value));
-                    data.gameConfig.options[ENUM.Options.MASS] = value;
+                    var value = showMass ? ENUM.GameOptions.data[ENUM.GameOptions.MASS].values.ENABLED : ENUM.GameOptions.data[ENUM.GameOptions.MASS].values.DISABLED;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.GameOptions.MASS, value));
+                    data.gameOptions.options[ENUM.GameOptions.MASS] = value;
                     
                 },
                 setGameMode : function(gameMode) {
-                    var value = gameMode ? ENUM.Options.data[ENUM.Options.GAME_MODE].values.TEAMS : ENUM.Options.data[ENUM.Options.GAME_MODE].values.FFA;
-                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.Options.GAME_MODE, value));
-                    data.gameConfig.options[ENUM.Options.GAME_MODE] = value;
+                    var value = gameMode ? ENUM.GameOptions.data[ENUM.GameOptions.GAME_MODE].values.TEAMS : ENUM.GameOptions.data[ENUM.GameOptions.GAME_MODE].values.FFA;
+                    events.onOptionChange.apply(new OptionChangeEvent(ENUM.GameOptions.GAME_MODE, value));
+                    data.gameOptions.options[ENUM.GameOptions.GAME_MODE] = value;
                 }
             }
         };

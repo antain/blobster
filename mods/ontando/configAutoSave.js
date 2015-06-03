@@ -13,17 +13,17 @@ window.install.push({
 		});
 		var value = this.moduleData.load("config.name");
 		if (value !== undefined) {
-			this.gameConfig.name.set(value);
+			this.gameOptions.name.set(value);
 		}
 	    
 		this.onOptionChangeEvent(function(e) {
 			this.module.moduleData.save("config.option." + e.option, e.value);
 		});
 	    
-		for (var i = 0; i < this.constants.Options.size; i++) {
+		for (var i = 0; i < this.constants.GameOptions.size; i++) {
 			var value = this.moduleData.load("config.option." + i);
 			if (value !== undefined) {
-				this.gameConfig.options.set(i, value)
+				this.gameOptions.options.set(i, value)
 			}
 		}
 	}

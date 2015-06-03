@@ -25,6 +25,10 @@ window.install.push({
             if (small) {
                 if (total > bigSize) {
                     beep();
+                    setTimeout(beep, 500);
+                    setTimeout(beep, 1000);
+                    setTimeout(beep, 1500);
+                    setTimeout(beep, 2000);
                     small = false;
                 }
             } else if (total < smallSize) {

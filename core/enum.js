@@ -21,7 +21,7 @@
             data : [{}, {}, {}, {}, {}]
         };
 
-        ENUM.Options = {
+        ENUM.GameOptions = {
             SKINS : 0,
             NAMES : 1,
             THEME : 2,
@@ -68,5 +68,7 @@
                 }
             ]
         };
+
+        ENUM.Options = ENUM.GameOptions;
     }
 })();
