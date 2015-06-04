@@ -15,7 +15,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             window.ontando.ENUM = {};
         }
         var ENUM = window.ontando.ENUM;
-        var v = {main : "0.1.2", script : "???"};
+        var v = {main : "0.1.3", script : "???"};
         var GM_getValue = function(){}, GM_setValue = function(){};
         var keybindings = {};
         var keyBindingUUID = 0;
@@ -140,30 +140,43 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
                         switch (option) {
                             case 0: //SKINS
                                 value = (value == ENUM.GameOptions.data[ENUM.GameOptions.SKINS].values.DISABLED);
-                                $(jQuery("#settings input")[0]).prop("checked", value);
+                                $($("#settings input")[0]).prop("checked", value);
                                 window.setSkins(!value);
                             break;
                             case 1: //NAMES
                                 value = (value == ENUM.GameOptions.data[ENUM.GameOptions.NAMES].values.DISABLED);
-                                $(jQuery("#settings input")[1]).prop("checked", value);
+                                $($("#settings input")[1]).prop("checked", value);
                                 window.setNames(!value);
                             break;
                             case 2: //THEME
                                 value = (value == ENUM.GameOptions.data[ENUM.GameOptions.THEME].values.DARK);
-                                $(jQuery("#settings input")[2]).prop("checked", value);
+                                $($("#settings input")[2]).prop("checked", value);
                                 window.setDarkTheme(value);
                             break;
                             case 3: //COLORS
                                 value = (value == ENUM.GameOptions.data[ENUM.GameOptions.COLORS].values.DISABLED);
-                                $(jQuery("#settings input")[3]).prop("checked", value);
+                                $($("#settings input")[3]).prop("checked", value);
                                 window.setColors(value);
                             break;
                             case 4: //MASS
                                 value = (value == ENUM.GameOptions.data[ENUM.GameOptions.MASS].values.ENABLED);
-                                $(jQuery("#settings input")[4]).prop("checked", value);
+                                $($("#settings input")[4]).prop("checked", value);
                                 window.setShowMass(value);
                             break;
-                            case 5: //GAME_MODE
+                            case ENUM.GameOptions.GAME_MODE: //GAME_MODE
+                                switch (value) {
+                                    case ENUM.GameOptions.data[ENUM.GameOptions.GAME_MODE].values.FFA:
+                                        $("#gamemode option")[0].selected = true;
+                                        window.setGameMode("");
+                                        break;
+                                    case ENUM.GameOptions.data[ENUM.GameOptions.GAME_MODE].values.TEAMS:
+                                        $("#gamemode option")[1].selected = true;
+                                        window.setGameMode(":teams");
+                                        break;
+                                    default:
+                                        window.setGameMode("");
+                                        break;
+                                }
                             break;
                         }
                     }
@@ -762,6 +775,9 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
         window.ontando.core = {
             newEntity : Entity,
             init : function(canvas, canvasContext2D) {
+
+                v.script = window.ontando_agario_original_version;
+
                 Module.prototype.renderTools = new window.ontando.RenderTools(canvas, canvasContext2D, window.ontando.script.newDocument);
                 var forceLoad = false;
                 if (GM_getValue("core.installed") != 1) {

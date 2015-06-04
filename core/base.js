@@ -4,7 +4,7 @@ if (document.currentScript.override < window.ontando_core_base_override) {
     console.log("Loading base from " + document.currentScript.src);
     window.ontando_core_base_override = document.currentScript.override;
 
-    window.ontando_agario_original_version = 526;
+    window.ontando_agario_original_version = "526";
 
     (function(f, g) {
         /*new {*/
