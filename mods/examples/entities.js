@@ -82,6 +82,11 @@ window.install.push({
                  * @type {number}
                  */
                 ent.mass;
+                /**
+                 * Time in milliseconds, when entity first appear in visible zone.
+                 * @type {number}
+                 */
+                ent.appearTime;
 
                 /**
                  * Entity render X coord

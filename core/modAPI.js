@@ -527,7 +527,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.isMe = false;
             this.isAlive = true;
             this.name = name;
-            var that = this;
+            this.appearTime = new Date().getTime();
             this.text = [];
             this.lines = {};
 
@@ -535,7 +535,8 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             this.list.all[id] = this;
             this.list.amount++;
             this.list.allAmount++;
-            
+
+            var that = this;
             if (!this.isVirus && !this.isFood) {
                 this.text.push(Module.prototype.renderTools.newText(
                     {
