@@ -42,28 +42,28 @@
                     addLine("");
                 });
 
-                $("#ontando_devTools_loaderConfig_config_branch").val(window.ontando_mainLoader_branch);
-                $("#ontando_devTools_loaderConfig_config_localRepo_enabled").prop('checked', window.ontando_mainLoader_loadLocals);
-                $("#ontando_devTools_loaderConfig_config_localRepo_host").val(window.ontando_mainLoader_localhost);
+                $("#ontando_devTools_loaderConfig_config_branch").val(window.ontando_blobster_mainLoader.branch);
+                $("#ontando_devTools_loaderConfig_config_localRepo_enabled").prop('checked', window.ontando_blobster_mainLoader.loadLocals);
+                $("#ontando_devTools_loaderConfig_config_localRepo_host").val(window.ontando_blobster_mainLoader.localhost);
 
-                for (var i = 0; i < window.ontando_mainLoader_customScripts.length; i++) {
-                    var src = window.ontando_mainLoader_customScripts[i];
+                for (var i = 0; i < window.ontando_blobster_mainLoader.customScripts.length; i++) {
+                    var src = window.ontando_blobster_mainLoader.customScripts[i];
                     addLine(src);
                 }
 
                 $("#ontando_devTools_loaderConfig_config_save").click(function() {
-                    window.ontando_mainLoader_branch = $("#ontando_devTools_loaderConfig_config_branch").val();
-                    window.ontando_mainLoader_loadLocals = $("#ontando_devTools_loaderConfig_config_localRepo_enabled").prop('checked');
-                    window.ontando_mainLoader_localhost = $("#ontando_devTools_loaderConfig_config_localRepo_host").val();
+                    window.ontando_blobster_mainLoader.branch = $("#ontando_devTools_loaderConfig_config_branch").val();
+                    window.ontando_blobster_mainLoader.loadLocals = $("#ontando_devTools_loaderConfig_config_localRepo_enabled").prop('checked');
+                    window.ontando_blobster_mainLoader.localhost = $("#ontando_devTools_loaderConfig_config_localRepo_host").val();
 
-                    window.ontando_mainLoader_customScripts = [];
+                    window.ontando_blobster_mainLoader.customScripts = [];
                     var customs = $('#ontando_devTools_loaderConfig_config_customScripts')
                         .find('.ontando_devTools_loaderConfig_config_customScripts_entry');
                     for (var i = 0; i < customs.length; i++) {
-                        window.ontando_mainLoader_customScripts.push(customs[i].value);
+                        window.ontando_blobster_mainLoader.customScripts.push(customs[i].value);
                     }
 
-                    window.ontando_mainLoader_updateOptions();
+                    window.ontando_blobster_mainLoader.updateOptions();
                 })
             },
             error: function(jqXHR, textStatus, errorThrown) {

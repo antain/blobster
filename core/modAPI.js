@@ -15,7 +15,7 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
             window.ontando.ENUM = {};
         }
         var ENUM = window.ontando.ENUM;
-        var v = {main : "0.1.3", script : "???"};
+        var v = {main : "0.1.4", script : "???"};
         var GM_getValue = function(){}, GM_setValue = function(){};
         var keybindings = {};
         var keyBindingUUID = 0;
@@ -986,6 +986,6 @@ if (document.currentScript.override < window.ontando_core_modAPI_override) {
 //          Saying mainLoader, that we are ready, to receive access to GreaseMonkey storage
 //=================================================
 
-        window.ontando_mainLoader_load();
+        window.ontando_blobster_mainLoader.load();
     })();
 }

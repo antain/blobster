@@ -2,10 +2,11 @@ window.ontando = {};
 window.ontando_scriptLoader = {};
 
 (function() {
-    var loadLocals = window.ontando_mainLoader_loadLocals;
-    var localhost = window.ontando_mainLoader_localhost;
-    var core_name = window.ontando_mainLoader_core_name;
-    var branch = window.ontando_mainLoader_branch;
+
+    var loadLocals = window.ontando_blobster_mainLoader.loadLocals;
+    var localhost = window.ontando_blobster_mainLoader.localhost;
+    var branch = window.ontando_blobster_mainLoader.branch;
+    var customScripts = window.ontando_blobster_mainLoader.customScripts;
     
     function pushScript(src, override, async) {
         var script = document.createElement('script');
@@ -57,8 +58,8 @@ window.ontando_scriptLoader = {};
     // Loading module providers
     loadDefault("mods/modsLoader.js");
 
-    for (var i = 0; i < window.ontando_mainLoader_customScripts.length; i++) {
-        var src = window.ontando_mainLoader_customScripts[i];
+    for (var i = 0; i < customScripts.length; i++) {
+        var src = customScripts[i];
         pushScript(src, 20, true);
     }
     

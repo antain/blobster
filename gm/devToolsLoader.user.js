@@ -3,7 +3,7 @@
 // @namespace    ontando.io.agar.devTools
 // @updateURL    https://rawgit.com/antain/blobster/master/gm/devToolsLoader.user.js
 // @downloadURL  https://rawgit.com/antain/blobster/master/gm/devToolsLoader.user.js
-// @version      0.1.1
+// @version      0.1.2
 // @description  Arag.IO script group loader
 // @author       ontando (angal)
 // @include      http://agar.io/
@@ -14,13 +14,6 @@
 // ==/UserScript==
 
 (function(w) {
-    window.ontando_devToolsLoader = {
-        GM : {
-            setValue : GM_setValue,
-            getValue : GM_getValue
-        }
-    }
-    
     var pushScript = function(src) {
         var script = document.createElement('script');
         script.type = "text/javascript";
